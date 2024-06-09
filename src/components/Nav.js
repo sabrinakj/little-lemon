@@ -1,4 +1,5 @@
 import React from 'react';
+import './Nav.css';
 
 function Nav() {
   return (
@@ -7,7 +8,9 @@ function Nav() {
         <li href="#home">Home</li>
         <li href="#about">About</li>
         <li href="#menu">Menu</li>
-        <li href="#contact">Contact</li>
+        <li href="#reservation">Reservation</li>
+        <li href="#orderonline">Order Online</li>
+        <li href="#login">Login</li>
       </ul>
     </nav>
   )

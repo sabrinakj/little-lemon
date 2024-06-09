@@ -1,0 +1,18 @@
+header {
+  border: 2px red solid;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 6rem;
+  align-items: center;
+  max-width: 53.75rem;
+  margin: auto;
+}
+
+img {
+  height: 2.5rem;
+  width: 9.25rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}

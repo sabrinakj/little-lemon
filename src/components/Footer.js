@@ -1,8 +1,9 @@
 import React from 'react';
+import './Footer.css';
 
 function Footer() {
   return (
-    <footer>
+    <footer id='contact'>
       <p>&copy; 2024 Little Lemon. All rights reserved.</p>
       <p>Contact us: info@littlelemon.com</p>
     </footer>
