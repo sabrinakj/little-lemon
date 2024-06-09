@@ -1,0 +1,11 @@
+nav ul {
+  border: 3px blue solid;
+
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+li {
+  list-style-type: none;
+}
