@@ -1,0 +1,45 @@
+h2 {
+  color: #F4CE14;
+  font-size: 50pt;
+  margin-top: 100px;
+  margin-bottom: 15px;
+}
+
+h3 {
+  color: #ffffff;
+  font-size: 30pt;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #ffffff;
+  width: 250px;
+}
+ button {
+  background-color: #F4CE14;
+  color: 495E57;
+  width: 25rem;
+  height: 5rem;
+  border-radius: 8px;
+ }
+
+section img {
+  width: 25.60rem;
+  height: 30rem;
+ }
+
+ /* section {
+  display: flex;          Use flexbox for the section
+  justify-content: center;  Center the children horizontally
+  align-items: center;     Center the children vertically
+  height: 100vh;           Full viewport height
+  text-align: center;      Center text
+} */
+
+section {
+  display: flex;
+  max-width: 53.75rem;
+  margin: auto;
+
+}
