@@ -1,0 +1,11 @@
+#card {
+ width: 16.90rem;
+ height: 29.40rem;
+ border-radius: 0.375rem/* 6px */;
+ background-color: #EDEFEE;
+}
+
+#card img {
+  width: auto;
+  height: 170;
+}
