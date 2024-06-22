@@ -28,7 +28,7 @@ const cardsFood = [
     dishName: "Lemon desert",
     dishPrice: "$ 11.00",
     dishDescription:
-      "Tis comes straight from grama’s recipe book, every last ingredient has been sourced and is as authentic as can be imagined.",
+      "This comes straight from grama’s recipe book, every last ingredient has been sourced and is as authentic as can be imagined.",
     delivery: "Order a delivey",
     image: lemonDesertImg,
   },
@@ -48,6 +48,7 @@ function SectionSpecials() {
             imgURL={cardFood.image}
             title={cardFood.dishName}
             description={cardFood.dishDescription}
+            dishPrice={cardFood.dishPrice}
           />
         ))}
       </div>
