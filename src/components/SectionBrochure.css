@@ -19,7 +19,7 @@
 
 .btn-sec-brouchure {
   background-color: #F4CE14;
-  color: 495E57;
+  color: #333333;
   width: 25rem;
   height: 5rem;
   border-radius: 8px;
@@ -29,7 +29,8 @@
 .section-brochure img {
   width: 25.60rem;
   height: 30rem;
-  margin-top: 5rem;
+  margin-top: 2rem;
+  border-radius: 0.8rem;
  }
 
 .section-brochure {
@@ -38,6 +39,6 @@
   flex-direction: row;
   max-width: 53.75rem;
   margin: auto;
-
+  justify-content: space-between;
 }
 
