@@ -10,7 +10,7 @@ function Card({ description, title, imgURL, dishPrice }) {
             <h3>{title}</h3>
             <p className="price-card">{dishPrice}</p>
           </div>
-          <p>{description}</p>
+          <p className="card-descr">{description}</p>
         </div>
       </div>
     </>

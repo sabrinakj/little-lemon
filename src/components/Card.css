@@ -20,3 +20,8 @@
 .price-card {
   color: red;
 }
+
+.card-descr {
+  width: 80%;
+  margin: auto;
+}
