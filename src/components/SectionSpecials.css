@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .specials-cards {
@@ -25,4 +25,14 @@
   font-size: 16pt;
   color: #333333;
   align-self: center;
+  font-family: "Markazi Text", "Karla", serif;
+}
+
+.btn-specials {
+    background-color: #F4CE14;
+    color: 495E57;
+    width: 10rem;
+    height: 4rem;
+    border-radius: 8px;
+    font-size: 1.5rem;
 }
