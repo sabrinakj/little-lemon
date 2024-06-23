@@ -10,8 +10,13 @@
   height: 170px;
   margin: 0;
 }
+/* .img-card {
+  width: 16.90rem;
+  height: 10.63rem;
+  margin: 0;
+} */
 
-.title-price {
+/* .title-price {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -19,4 +24,25 @@
 
 .price-card {
   color: red;
+} */
+
+.descrip-card {
+  padding: 0 30px;
+}
+
+
+.card-delivery {
+  color: #E00000;
+}
+
+.div-card-first {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.div-card-second {
+  display: flex;
+  flex-direction: column;
 }

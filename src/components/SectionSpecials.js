@@ -46,7 +46,9 @@ function SectionSpecials() {
           <Card
             key={cardFood.id}
             imgURL={cardFood.image}
+            dishPrice={cardFood.dishPrice}
             title={cardFood.dishName}
+            delivery={cardFood.delivery}
             description={cardFood.dishDescription}
             dishPrice={cardFood.dishPrice}
           />
