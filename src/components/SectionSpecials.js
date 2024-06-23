@@ -39,16 +39,17 @@ function SectionSpecials() {
     <section className="section-specials">
       <div className="online-menu">
         <h2 className="card-titolo">This weeks special!</h2>
-        <button>Online Menu</button>
+        <button className="btn-specials">Online Menu</button>
       </div>
       <div className="specials-cards">
         {cardsFood.map((cardFood) => (
           <Card
             key={cardFood.id}
             imgURL={cardFood.image}
-            title={cardFood.dishName}
-            description={cardFood.dishDescription}
             dishPrice={cardFood.dishPrice}
+            title={cardFood.dishName}
+            delivery={cardFood.delivery}
+            description={cardFood.dishDescription}
           />
         ))}
       </div>

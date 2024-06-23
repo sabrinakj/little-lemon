@@ -1,8 +1,10 @@
 .card {
  width: 16.90rem;
  height: 29.40rem;
- border-radius: 0.375rem/* 6px */;
  background-color: #EDEFEE;
+ border-top-right-radius: 1rem;
+ border-top-left-radius: 1rem;
+ overflow: hidden;
 }
 
 .img-card {
@@ -11,7 +13,30 @@
   margin: 0;
 }
 
-.title-price {
+.descrip-card {
+  padding: 0 30px;
+}
+
+
+.card-delivery {
+  color: #E00000;
+}
+
+.div-card-first {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.div-card-second {
+  display: flex;
+  flex-direction: column;
+  height: 13rem;
+  justify-content: space-between;
+}
+
+/* .title-price {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -19,9 +44,4 @@
 
 .price-card {
   color: red;
-}
-
-.card-descr {
-  width: 80%;
-  margin: auto;
-}
+} */

@@ -1,16 +1,23 @@
 import "./Card.css";
 
-function Card({ description, title, imgURL, dishPrice }) {
+function Card({ description, title, imgURL, dishPrice, delivery }) {
   return (
     <>
       <div className="card">
         <img className="img-card" src={imgURL} alt="food pic"></img>
-        <div>
-          <div className="title-price">
+
+        <div className="descrip-card">
+
+          <div className="div-card-first">
             <h3>{title}</h3>
-            <p className="price-card">{dishPrice}</p>
+            <p className="card-delivery">{dishPrice}</p>
           </div>
-          <p className="card-descr">{description}</p>
+
+          <div className="div-card-second">
+            <p>{description}</p>
+            <p>{delivery}</p>
+          </div>
+
         </div>
       </div>
     </>
