@@ -1,4 +1,4 @@
-.section-brochure h2 {
+.title-section-brochure {
   color: #F4CE14;
   font-size: 50pt;
   margin-top: 100px;
@@ -35,10 +35,14 @@
 
 .section-brochure {
   border: 2px blue solid;
+  margin: auto;
+  background-color: #495E57;
+  height: 29rem;
+}
+.wrapped-section {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   max-width: 53.75rem;
   margin: auto;
-  justify-content: space-between;
 }
-

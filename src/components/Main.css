@@ -1,8 +1,4 @@
-main {
+.main {
   border: 2px green solid;
-
-  /* max-width: 53.75rem; */
   margin: auto;
-  background-color: #495E57;
-  height: 29rem;
 }

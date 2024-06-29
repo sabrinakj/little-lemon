@@ -5,7 +5,7 @@ import SectionSpecials from "./SectionSpecials";
 
 function Main() {
   return (
-    <main>
+    <main className="main">
       <SectionBrochure
         title="Little lemon"
         subTitle="Chicago"
