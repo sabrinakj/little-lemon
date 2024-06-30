@@ -5,24 +5,24 @@ import "./Nav.css";
 function Nav() {
   return (
     <nav>
-      <ul>
-        <li href="#home">
-          <Link to="/">Home</Link>
+      <ul className="ul-list">
+        <li className="list">
+          <Link to="/" className="custom-link">Home</Link>
         </li>
-        <li href="#about">
-          <Link to="/about">About</Link>
+        <li className="list">
+          <Link to="/about" className="custom-link">About</Link>
         </li>
-        <li href="#menu">
-          <Link to="/menu">Menu</Link>
+        <li className="list">
+          <Link to="/menu" className="custom-link">Menu</Link>
         </li>
-        <li href="#reservation">
-          <Link to="/reservation">Reservation</Link>
+        <li className="list">
+          <Link to="/reservation" className="custom-link">Reservation</Link>
         </li>
-        <li href="#orderonline">
-          <Link to="/orderonline">Order Online</Link>
+        <li className="list">
+          <Link to="/orderonline" className="custom-link">Order Online</Link>
         </li>
-        <li href="#login">
-          <Link to="/login">Login</Link>
+        <li className="list">
+          <Link to="/login" className="custom-link">Login</Link>
         </li>
       </ul>
     </nav>

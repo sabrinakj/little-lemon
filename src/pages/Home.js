@@ -1,9 +1,18 @@
+import SectionBrochure from "../components/SectionBrochure";
+import SectionSpecials from "../components/SectionSpecials";
+
+
 function Home() {
   return (
-    <div>
-      <h1>Home Page</h1>
-      <p>Welcome to the Home page!</p>
-    </div>
+    <>
+      <SectionBrochure
+        title="Little lemon"
+        subTitle="Chicago"
+        description="We are a family owned Mediterranean resturant, focused on traditional
+        recipes served with a modern twist."
+      />
+      <SectionSpecials />
+    </>
   );
 }
 

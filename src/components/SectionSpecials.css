@@ -1,6 +1,6 @@
 
 .section-specials {
-  border: 2px blueviolet solid;
+  border: 1px blueviolet solid;
   display: flex;
   flex-direction: column;
   max-width: 53.75rem;
