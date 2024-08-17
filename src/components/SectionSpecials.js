@@ -50,6 +50,7 @@ function SectionSpecials() {
             title={cardFood.dishName}
             delivery={cardFood.delivery}
             description={cardFood.dishDescription}
+            isSmall={false}
           />
         ))}
       </div>

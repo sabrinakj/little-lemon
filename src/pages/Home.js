@@ -1,5 +1,6 @@
 import SectionBrochure from "../components/SectionBrochure";
 import SectionSpecials from "../components/SectionSpecials";
+import Testimonials from "../components/Testimonials";
 
 
 function Home() {
@@ -12,6 +13,7 @@ function Home() {
         recipes served with a modern twist."
       />
       <SectionSpecials />
+      <Testimonials />
     </>
   );
 }
