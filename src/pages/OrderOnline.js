@@ -1,8 +1,8 @@
 function OrderOnline() {
   return (
     <div>
-      <h1>About Page</h1>
-      <p>This is the About page.</p>
+      <h1>Order Online Page</h1>
+      <p>This is the Order Online page.</p>
     </div>
   );
 }

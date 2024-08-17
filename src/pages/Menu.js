@@ -1,8 +1,8 @@
 function Menu() {
   return (
     <div>
-      <h1>About Page</h1>
-      <p>This is the About page.</p>
+      <h1>Menu Page</h1>
+      <p>This is the Menu page.</p>
     </div>
   );
 }

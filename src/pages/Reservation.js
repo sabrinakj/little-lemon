@@ -1,8 +1,8 @@
 function Reservation() {
   return (
     <div>
-      <h1>About Page</h1>
-      <p>This is the About page.</p>
+      <h1>Reservation Page</h1>
+      <p>This is the Reservation page.</p>
     </div>
   );
 }
