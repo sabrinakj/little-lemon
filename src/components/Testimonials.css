@@ -1,0 +1,34 @@
+
+.testimonials-specials {
+  height: 20rem;
+  /* border: 1px blueviolet solid; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 53.75rem;
+  margin: auto;
+}
+
+.testimonials-online-menu {
+  /* border: 2px yellowgreen solid; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.testimonials-specials-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.testimonials-card-titolo {
+  font-size: 16pt;
+  color: #333333;
+  align-self: center;
+  font-family: "Markazi Text", "Karla", serif;
+}
+
+

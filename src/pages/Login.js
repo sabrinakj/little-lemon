@@ -1,8 +1,8 @@
 function Login() {
   return (
     <div>
-      <h1>About Page</h1>
-      <p>This is the About page.</p>
+      <h1>Login Page</h1>
+      <p>This is the Login page.</p>
     </div>
   );
 }
