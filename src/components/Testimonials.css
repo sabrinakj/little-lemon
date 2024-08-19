@@ -13,13 +13,14 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .testimonials-specials-cards {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .testimonials-card-titolo {

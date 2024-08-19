@@ -12,7 +12,7 @@ const cardsFood = [
   {
     id: 1,
     dishName: "Mark Red",
-    dishDescription:"Great service, despite we were late we were able to have a great dinner.",
+    dishDescription:"Great service, we were late but we had a great dinner.",
     image: raitingIcon,
   },
   {
@@ -24,7 +24,7 @@ const cardsFood = [
   {
     id: 3,
     dishName: "Sarah Simpson",
-    dishDescription:"Not the best place I have ever been, but I appreciated the food variety.",
+    dishDescription:"Not the best place I have ever been, but great food variety.",
     image: raitingIcon,
   },
 ];
