@@ -1,15 +1,16 @@
 
 .testimonials-specials {
-  border: 1px blueviolet solid;
+  height: 20rem;
+  /* border: 1px blueviolet solid; */
   display: flex;
   flex-direction: column;
+  justify-content: center;
   max-width: 53.75rem;
   margin: auto;
-  padding-top: 4rem;
 }
 
 .testimonials-online-menu {
-  border: 2px yellowgreen solid;
+  /* border: 2px yellowgreen solid; */
   display: flex;
   flex-direction: row;
   align-items: center;
