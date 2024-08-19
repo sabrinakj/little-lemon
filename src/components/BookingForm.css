@@ -1,0 +1,15 @@
+.booking-form-style {
+  display: grid;
+  max-width: 200px;
+  gap: 20px;
+  text-align: center;
+  margin: auto;
+}
+
+.booking-img {
+  height: 10rem;
+  width: 100%;
+  object-fit: none;
+margin-left: auto;
+margin-right: auto;
+}
