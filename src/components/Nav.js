@@ -2,10 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Nav.css";
 
-function Nav() {
+
+
+function Nav({ isVertical }) {
+  const navClass = isVertical ? "ul-list-vertical" : "ul-list";
   return (
     <nav>
-      <ul className="ul-list">
+      <ul className={navClass}>
         <li className="list">
           <Link to="/" className="custom-link">Home</Link>
         </li>

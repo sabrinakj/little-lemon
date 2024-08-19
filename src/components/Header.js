@@ -7,7 +7,7 @@ function Header() {
   return (
   <header id="home">
     <img src={logo} alt="Little Lemon Logo"/>
-    <Nav/>
+    <Nav isVertical={false}/>
   </header>
   )
 }

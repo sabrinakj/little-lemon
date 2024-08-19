@@ -6,6 +6,15 @@
   gap: 2rem;
 }
 
+.ul-list-vertical {
+  /* border: 1px blue solid; */
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0px;
+}
+
 .list {
   list-style-type: none;
 }
