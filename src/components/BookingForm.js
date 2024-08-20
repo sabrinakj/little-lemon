@@ -3,13 +3,11 @@ import resturantImg from "../assets/icons_assets/restaurant.jpg";
 import { useState } from "react";
 
 function BookingForm(props) {
-  // Define a state variable for each field in the form
   const [date, setdate] = useState("");
   const [selectedTime, SetSelectedTime] = useState("");
   const [guests, SetGuests] = useState("");
   const [occasion, setOccasion] = useState("");
 
-  // create a stateful array in the component named availableTimes and use this state variable to populate the time select field options
   const [availableTimes] = useState([
     "17:00",
     "18:00",
