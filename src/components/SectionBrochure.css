@@ -34,7 +34,7 @@
  }
 
 .section-brochure {
-  border: 1px blue solid;
+  /* border: 1px blue solid; */
   margin: auto;
   background-color: #495E57;
   height: 29rem;
