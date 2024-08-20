@@ -2,15 +2,15 @@ import "./BookingForm.css";
 import resturantImg from "../assets/icons_assets/restaurant.jpg";
 import { useState } from "react";
 
-function BookingForm() {
+function BookingForm(props) {
   // Define a state variable for each field in the form
   const [date, setdate] = useState("");
-  const [time, SetTime] = useState("");
+  const [selectedTime, SetSelectedTime] = useState("");
   const [guests, SetGuests] = useState("");
   const [occasion, setOccasion] = useState("");
 
   // create a stateful array in the component named availableTimes and use this state variable to populate the time select field options
-  const [availableTimes, setAvailableTimes] = useState([
+  const [availableTimes] = useState([
     "17:00",
     "18:00",
     "19:00",
@@ -21,7 +21,7 @@ function BookingForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ date, time, guests, occasion, availableTimes });
+    console.log({ date, guests, occasion, selectedTime });
   };
 
   return (
@@ -42,8 +42,8 @@ function BookingForm() {
         <select
           name="res-time"
           id="res-time"
-          value={time}
-          onChange={(e) => SetTime(e.target.value)}
+          value={selectedTime}
+          onChange={(e) => SetSelectedTime(e.target.value)}
           required
         >
           {availableTimes.map((availableTime) => (
