@@ -1,5 +1,4 @@
 import "./BookingForm.css";
-import resturantImg from "../assets/icons_assets/restaurant.jpg";
 import { useState } from "react";
 
 function BookingForm({ availableTimes, dispatchTimeSlot }) {
@@ -20,7 +19,6 @@ function BookingForm({ availableTimes, dispatchTimeSlot }) {
 
   return (
     <div>
-      <img className="booking-img" src={resturantImg} alt="resturant" />
       <form onSubmit={handleSubmit} className="booking-form-style">
         <label htmlFor="res-date">Choose date</label>
         <input

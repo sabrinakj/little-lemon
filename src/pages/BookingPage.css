@@ -1,0 +1,13 @@
+.booking-page-form-container {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.booking-img {
+  height: 10rem;
+  width: 100%;
+  object-fit: none;
+  margin-left: auto;
+  margin-right: auto;
+}
