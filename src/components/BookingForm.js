@@ -2,20 +2,16 @@ import "./BookingForm.css";
 import resturantImg from "../assets/icons_assets/restaurant.jpg";
 import { useState } from "react";
 
-function BookingForm(props) {
-  const [date, setdate] = useState("");
+function BookingForm({ availableTimes, dispatchTimeSlot }) {
+  const [date, setDate] = useState("");
   const [selectedTime, SetSelectedTime] = useState("");
   const [guests, SetGuests] = useState("");
   const [occasion, setOccasion] = useState("");
 
-  const [availableTimes] = useState([
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-  ]);
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+    dispatchTimeSlot({ type: "UPDATE_TIMES", payload: e.target.value });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,7 +26,7 @@ function BookingForm(props) {
         <input
           type="date"
           value={date}
-          onChange={(e) => setdate(e.target.value)}
+          onChange={handleDateChange}
           name="res-date"
           id="res-date"
           required
