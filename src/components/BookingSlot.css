@@ -1,6 +1,14 @@
 .table-ui {
-  background-color: green;
+  background-color: #495E57;
   width: 150px;
   height: 30px;
   margin: 8px;
+  color: #EDEFEE;
+  text-align: center;
+  align-content: center;
+  font-weight: 600;
+}
+
+.booking-slot-time-slot {
+  align-content: center;
 }

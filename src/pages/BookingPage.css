@@ -2,6 +2,8 @@
   display: flex;
   justify-content: center;
   gap: 4rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .booking-img {

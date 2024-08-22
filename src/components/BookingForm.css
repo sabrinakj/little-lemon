@@ -1,7 +1,18 @@
 .booking-form-style {
   display: grid;
-  max-width: 200px;
-  gap: 20px;
+  /* max-width: 200px; */
+  gap: 15px;
   text-align: center;
+  /* margin: auto; */
+  width: 15rem;
+  font-size: x-large;
+}
+
+.booking-form-submit {
+  font-size: large;
+  width: fit-content;
+  align-content: center;
   margin: auto;
+  margin-top: 20px;
+  /* margin-bottom: 20px; */
 }
