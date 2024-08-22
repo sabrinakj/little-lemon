@@ -10,7 +10,7 @@
 .footer-container {
   width: 53.75rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin: auto;
 }
 
@@ -18,4 +18,21 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.footer-nav h2 {
+    margin-bottom: 0px;
+}
+
+.footer-logo-bg {
+  margin-top: 22px;
+  height: 180px;
+  width: 120px;
+  background-color: white;
+  padding: 8px;
+}
+
+.footer-img {
+  height: 180px;
+  width: 120px;
 }
