@@ -8,14 +8,60 @@ import Login from "../pages/Login";
 import BookingPage from "../pages/BookingPage";
 import "./Main.css";
 
+const dayStandard = [
+  {
+    bookingStatus: false,
+    date: new Date(),
+    hour: "17:00",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: false,
+    date: new Date(),
+    hour: "18:00",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: false,
+    date: new Date(),
+    hour: "19:00",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: false,
+    date: new Date(),
+    hour: "20:00",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: false,
+    date: new Date(),
+    hour: "21:00",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: false,
+    date: new Date(),
+    hour: "22:00",
+    guests: "0",
+    occasion: "birthday",
+  },
+];
+
 // Reducer function to update available times
 const updateTimes = (state, action) => {
   switch (action.type) {
     case "UPDATE_TIMES": {
-      console.log('state', state);
-      console.log('action', action);
+      console.log("state", state);
+      console.log("action", action);
       // For now, returning the same times regardless of the date
-      return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+      // return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+      return dayStandard;
     }
 
     default:
@@ -24,12 +70,40 @@ const updateTimes = (state, action) => {
 };
 
 // Initial state for the availableTimes
+// const initializeTimes = () => {
+//   return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+// };
 const initializeTimes = () => {
-  return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+  let currentInitialBookingState = dayStandard;
+
+  for (let i = 0; i < 7; i++) {
+
+    for (let j = 0; j < 6; j++) {
+
+      currentInitialBookingState.push({
+        bookingStatus: false,
+        date: new Date(
+          (new Date()).getFullYear(),
+          (new Date()).getMonth(),
+          (new Date()).getDate() + i
+        ),
+        hour: 17 + j + ":00",
+        guests: "0",
+        occasion: ""
+      })
+    }
+  }
+
+  console.log('currentInitialBookingState', currentInitialBookingState);
+
 };
 
 function Main() {
-const [availableTimes, dispatchTimeSlot] = useReducer(updateTimes, [], initializeTimes);
+  const [availableTimes, dispatchTimeSlot] = useReducer(
+    updateTimes,
+    dayStandard,
+    initializeTimes
+  );
 
   return (
     <main className="main">
@@ -37,7 +111,15 @@ const [availableTimes, dispatchTimeSlot] = useReducer(updateTimes, [], initializ
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/menu" element={<Menu />} />
-        <Route path="/reservation" element={<BookingPage availableTimes={availableTimes} dispatchTimeSlot={dispatchTimeSlot}/>} />
+        <Route
+          path="/reservation"
+          element={
+            <BookingPage
+              availableTimes={availableTimes}
+              dispatchTimeSlot={dispatchTimeSlot}
+            />
+          }
+        />
         <Route path="/orderonline" element={<OrderOnline />} />
         <Route path="/login" element={<Login />} />
       </Routes>

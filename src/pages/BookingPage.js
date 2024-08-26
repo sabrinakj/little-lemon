@@ -14,7 +14,7 @@ function BookingPage({ availableTimes, dispatchTimeSlot }) {
           availableTimes={availableTimes}
           dispatchTimeSlot={dispatchTimeSlot}
         />
-        <BookingSlot></BookingSlot>
+        <BookingSlot availableTimes={availableTimes} />
       </div>
     </>
   );

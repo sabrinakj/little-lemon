@@ -1,13 +1,14 @@
 import "./BookingSlot.css";
 
-function BookingSlot({ availableTimes, dispatchTimeSlot }) {
-  const tablesUi = ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+function BookingSlot({ availableTimes }) {
+  console.log("availableTimes BookingSlot", availableTimes.hour);
 
   return (
     <div className="booking-slot-time-slot">
-      {tablesUi.map((table, index) => (
+      Available time slots
+      {availableTimes.map((table, index) => (
         <div key={index} className="table-ui">
-          {table}
+          {table.hour}
         </div>
       ))}
     </div>

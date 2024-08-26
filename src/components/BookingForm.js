@@ -39,8 +39,8 @@ function BookingForm({ availableTimes, dispatchTimeSlot }) {
           required
         >
           {availableTimes.map((availableTime) => (
-            <option key={availableTime} value={availableTime}>
-              {availableTime}
+            <option key={availableTime} value={availableTime.hour}>
+              {availableTime.hour}
             </option>
           ))}
         </select>
@@ -66,6 +66,7 @@ function BookingForm({ availableTimes, dispatchTimeSlot }) {
           onChange={(e) => setOccasion(e.target.value)}
           required
         >
+          <option value="">Select an Option</option>
           <option>Birthday</option>
           <option>Anniversary</option>
         </select>

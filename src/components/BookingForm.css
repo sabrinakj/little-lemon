@@ -6,6 +6,10 @@
   /* margin: auto; */
   width: 15rem;
   font-size: x-large;
+  border: 2px solid #c1c1c12e;
+  box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.175);
+  border-radius: 8px;
+  padding: 1rem;
 }
 
 .booking-form-submit {
@@ -14,5 +18,6 @@
   align-content: center;
   margin: auto;
   margin-top: 20px;
+  border-radius: 8px;
   /* margin-bottom: 20px; */
 }
