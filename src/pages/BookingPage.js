@@ -5,6 +5,7 @@ import resturantImg from "../assets/icons_assets/restaurant.jpg";
 
 
 function BookingPage({ availableTimes, dispatchTimeSlot }) {
+  console.table(availableTimes);
   return (
     <>
       <img className="booking-img" src={resturantImg} alt="resturant" />

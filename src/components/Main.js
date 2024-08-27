@@ -59,9 +59,7 @@ const updateTimes = (state, action) => {
     case "UPDATE_TIMES": {
       console.log("state", state);
       console.log("action", action);
-      // For now, returning the same times regardless of the date
-      // return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
-      return dayStandard;
+      return state.filter(el => el.date === action.payload);
     }
 
     default:
@@ -70,11 +68,8 @@ const updateTimes = (state, action) => {
 };
 
 // Initial state for the availableTimes
-// const initializeTimes = () => {
-//   return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
-// };
 const initializeTimes = () => {
-  let currentInitialBookingState = dayStandard;
+  let currentInitialBookingState = [];
 
   for (let i = 0; i < 7; i++) {
 
@@ -86,7 +81,7 @@ const initializeTimes = () => {
           (new Date()).getFullYear(),
           (new Date()).getMonth(),
           (new Date()).getDate() + i
-        ),
+        ).toLocaleDateString('it-IT'),
         hour: 17 + j + ":00",
         guests: "0",
         occasion: ""
@@ -95,7 +90,7 @@ const initializeTimes = () => {
   }
 
   console.log('currentInitialBookingState', currentInitialBookingState);
-
+  return currentInitialBookingState;
 };
 
 function Main() {
@@ -105,6 +100,9 @@ function Main() {
     initializeTimes
   );
 
+
+
+  console.table(availableTimes);
   return (
     <main className="main">
       <Routes>
