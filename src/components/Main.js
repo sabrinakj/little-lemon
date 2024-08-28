@@ -53,13 +53,18 @@ const dayStandard = [
   },
 ];
 
+const mainState = {
+  tablesForTheWeek: [...dayStandard],
+  tableInUiForTheSelectedDay: [...dayStandard]
+}
+
 // Reducer function to update available times
 const updateTimes = (state, action) => {
   switch (action.type) {
     case "UPDATE_TIMES": {
       console.log("state", state);
       console.log("action", action);
-      return state.filter(el => el.date === action.payload);
+      return state.tablesForTheWeek.filter(el => el.date === action.payload);
     }
 
     default:
@@ -68,7 +73,7 @@ const updateTimes = (state, action) => {
 };
 
 // Initial state for the availableTimes
-const initializeTimes = () => {
+const initializeMainState = () => {
   let currentInitialBookingState = [];
 
   for (let i = 0; i < 7; i++) {
@@ -90,14 +95,18 @@ const initializeTimes = () => {
   }
 
   console.log('currentInitialBookingState', currentInitialBookingState);
-  return currentInitialBookingState;
+  return {
+    ...mainState.tableInUiForTheSelectedDay,
+    tablesForTheWeek: currentInitialBookingState
+  }
+  
 };
 
 function Main() {
   const [availableTimes, dispatchTimeSlot] = useReducer(
     updateTimes,
-    dayStandard,
-    initializeTimes
+    mainState,
+    initializeMainState
   );
 
 
@@ -113,7 +122,7 @@ function Main() {
           path="/reservation"
           element={
             <BookingPage
-              availableTimes={availableTimes}
+              availableTimes={availableTimes.tablesForTheWeek}
               dispatchTimeSlot={dispatchTimeSlot}
             />
           }
