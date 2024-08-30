@@ -9,7 +9,11 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
   const [occasion, setOccasion] = useState("");
 
   const handleDateChange = (e) => {
-    const selectedDate = new Date(e.target.value).toLocaleDateString('it-IT');
+    let selectedDate = new Date().toLocaleDateString('it-IT');
+    
+    if (e.target.value) {
+      selectedDate = new Date(e.target.value).toLocaleDateString('it-IT');
+    } 
     setDate(e.target.value);
     dispatchTimeSlot({ type: "UPDATE_TIMES", payload: selectedDate });
   };
