@@ -1,8 +1,8 @@
 import "./BookingForm.css";
 import { useState } from "react";
 
-function BookingForm({ availableTimes, dispatchTimeSlot }) {
-  console.table(availableTimes);
+function BookingForm({ mainState, dispatchTimeSlot }) {
+  console.table(mainState);
   const [date, setDate] = useState("");
   const [selectedTime, SetSelectedTime] = useState("");
   const [guests, SetGuests] = useState("");
@@ -40,9 +40,9 @@ function BookingForm({ availableTimes, dispatchTimeSlot }) {
           onChange={(e) => SetSelectedTime(e.target.value)}
           required
         >
-          {availableTimes.map((availableTime) => (
-            <option key={availableTime.date + availableTime.hour} value={availableTime.hour}>
-              {availableTime.hour}
+          {mainState.tablesForTheWeek.map((table) => (
+            <option key={table.date + table.hour} value={table.hour}>
+              {table.hour}
             </option>
           ))}
         </select>

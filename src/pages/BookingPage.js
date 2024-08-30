@@ -4,18 +4,18 @@ import "./BookingPage.css";
 import resturantImg from "../assets/icons_assets/restaurant.jpg";
 
 
-function BookingPage({ availableTimes, dispatchTimeSlot }) {
-  console.table(availableTimes);
+function BookingPage({ mainState, dispatchTimeSlot }) {
+  console.table(mainState);
   return (
     <>
       <img className="booking-img" src={resturantImg} alt="resturant" />
 
       <div className="booking-page-form-container">
         <BookingForm
-          availableTimes={availableTimes}
+          mainState={mainState}
           dispatchTimeSlot={dispatchTimeSlot}
         />
-        <BookingSlot availableTimes={availableTimes} />
+        <BookingSlot mainState={mainState} />
       </div>
     </>
   );

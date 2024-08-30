@@ -8,7 +8,7 @@ import Login from "../pages/Login";
 import BookingPage from "../pages/BookingPage";
 import "./Main.css";
 
-const dayStandard = [
+const tablesForToday = [
   {
     bookingStatus: false,
     date: new Date(),
@@ -53,18 +53,23 @@ const dayStandard = [
   },
 ];
 
-const mainState = {
-  tablesForTheWeek: [...dayStandard],
-  tableInUiForTheSelectedDay: [...dayStandard]
+const initialMainState = {
+  tablesForTheWeek: [...tablesForToday],
+  tableInUiForTheSelectedDay: [...tablesForToday]
 }
 
 // Reducer function to update available times
-const updateTimes = (state, action) => {
+const updateMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_TIMES": {
       console.log("state", state);
       console.log("action", action);
-      return state.tablesForTheWeek.filter(el => el.date === action.payload);
+      return {
+        tablesForTheWeek: [...state.tablesForTheWeek],
+        tableInUiForTheSelectedDay: state.tablesForTheWeek.filter(el => el.date === action.payload)
+      }
+      
+      
     }
 
     default:
@@ -72,15 +77,15 @@ const updateTimes = (state, action) => {
   }
 };
 
-// Initial state for the availableTimes
+// Initial state for the mainState
 const initializeMainState = () => {
-  let currentInitialBookingState = [];
+  let initializedMainState = [];
 
   for (let i = 0; i < 7; i++) {
 
     for (let j = 0; j < 6; j++) {
 
-      currentInitialBookingState.push({
+      initializedMainState.push({
         bookingStatus: false,
         date: new Date(
           (new Date()).getFullYear(),
@@ -94,24 +99,24 @@ const initializeMainState = () => {
     }
   }
 
-  console.log('currentInitialBookingState', currentInitialBookingState);
+  console.log('initializedMainState', initializedMainState);
   return {
-    ...mainState.tableInUiForTheSelectedDay,
-    tablesForTheWeek: currentInitialBookingState
+    tableInUiForTheSelectedDay: tablesForToday,
+    tablesForTheWeek: initializedMainState
   }
   
 };
 
 function Main() {
-  const [availableTimes, dispatchTimeSlot] = useReducer(
-    updateTimes,
-    mainState,
+  const [mainState, dispatchTimeSlot] = useReducer(
+    updateMainState,
+    initialMainState,
     initializeMainState
   );
 
 
 
-  console.table(availableTimes);
+  console.table(mainState);
   return (
     <main className="main">
       <Routes>
@@ -122,7 +127,7 @@ function Main() {
           path="/reservation"
           element={
             <BookingPage
-              availableTimes={availableTimes.tablesForTheWeek}
+              mainState={mainState}
               dispatchTimeSlot={dispatchTimeSlot}
             />
           }
