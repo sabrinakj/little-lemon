@@ -58,24 +58,45 @@ const initialMainState = {
   tableInUiForTheSelectedDay: [...tablesForToday]
 }
 
+const updateBookingStatus = (bookings, date, hour) => {
+  return bookings.map(booking => {
+    if (booking.date === date && booking.hour === hour) {
+      return {
+        ...booking,
+        bookingStatus: true
+      };
+    }
+    return booking;
+  });
+};
+
 // Reducer function to update available times
 const updateMainState = (state, action) => {
   switch (action.type) {
-    case "UPDATE_TIMES": {
+    case "UPDATE_SLOTS_SHOWN_IN_UI":
       console.log("state", state);
       console.log("action", action);
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
         tableInUiForTheSelectedDay: state.tablesForTheWeek.filter(el => el.date === action.payload)
       }
-      
-      
-    }
-
+    case "BOOK_A_TIME_SLOT":
+      console.log(action.payload);
+      const updatedBookings = updateBookingStatus(
+        state.tablesForTheWeek, 
+        new Date(action.payload.date).toLocaleDateString('it-IT'), 
+        action.payload.selectedTime
+      );
+      return {
+        ...state,
+        tablesForTheWeek: updatedBookings,
+      }
+      // return initialMainState;
     default:
       return state;
   }
 };
+
 
 // Initial state for the mainState
 const initializeMainState = () => {
