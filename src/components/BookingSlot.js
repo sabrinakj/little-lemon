@@ -2,7 +2,7 @@ import "./BookingSlot.css";
 
 function BookingSlot({ mainState }) {
   console.log("mainState BookingSlot", mainState);
-
+  
   return (
     <div className="booking-slot-time-slot">
       {mainState.tableInUiForTheSelectedDay.length === 0 ?
@@ -10,8 +10,9 @@ function BookingSlot({ mainState }) {
 
           mainState.tableInUiForTheSelectedDay.map((table) => (
 
-            <div key={table.date + table.hour} className="table-ui">
-              {"Day: " + table.date + "\n" + "Time slot: " + table.hour}
+            <div key={table.date + table.hour} className={`table-ui ${table.bookingStatus ? 'table-ui-reserved' : ''}`} >
+
+              {table.bookingStatus ? "Reserved" : "Available"} <br/> {"Day: " + table.date} <br/> {"Time slot: " + table.hour}
             </div>
 
           ))

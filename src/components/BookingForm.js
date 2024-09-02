@@ -1,5 +1,6 @@
 import "./BookingForm.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function BookingForm({ mainState, dispatchTimeSlot }) {
   console.table(mainState);
@@ -8,51 +9,59 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
   // const [guests, SetGuests] = useState("");
   // const [occasion, setOccasion] = useState("");
   const [formData, setFormData] = useState({
-    date: '',
-    selectedTime: '',
-    guests: '',
-    occasion: ''
+    date: "",
+    selectedTime: "",
+    guests: "",
+    occasion: "",
   });
 
-
-  const genericTimeSlots = ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+  const genericTimeSlots = [
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
+    "22:00",
+  ];
 
   const handleDateChange = (event) => {
-    let selectedDate = new Date().toLocaleDateString('it-IT');
-    
+    let selectedDate = new Date().toLocaleDateString("it-IT");
+
     if (event.target.value) {
-      selectedDate = new Date(event.target.value).toLocaleDateString('it-IT');
-    } 
+      selectedDate = new Date(event.target.value).toLocaleDateString("it-IT");
+    }
     // setDate(e.target.value);
     setFormData({
       ...formData,
-      date: event.target.value
+      date: event.target.value,
     });
 
-    dispatchTimeSlot({ type: "UPDATE_SLOTS_SHOWN_IN_UI", payload: selectedDate });
+    dispatchTimeSlot({
+      type: "UPDATE_SLOTS_SHOWN_IN_UI",
+      payload: selectedDate,
+    });
   };
 
   const handleTimeChange = (event) => {
     setFormData({
       ...formData,
-      selectedTime: event.target.value
+      selectedTime: event.target.value,
     });
   };
 
   const handleGuestsChange = (event) => {
     setFormData({
       ...formData,
-      guests: event.target.value
+      guests: event.target.value,
     });
   };
 
   const handleOccasionChange = (event) => {
     setFormData({
       ...formData,
-      occasion: event.target.value
+      occasion: event.target.value,
     });
   };
-
 
   const bookATimeSlot = (event) => {
     event.preventDefault();

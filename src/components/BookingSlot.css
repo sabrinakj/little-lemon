@@ -1,12 +1,21 @@
 .table-ui {
   background-color: #495E57;
   width: 150px;
-  height: 50px;
+  height: 60px;
   margin: 8px;
   color: #EDEFEE;
   text-align: center;
   align-content: center;
   font-weight: 600;
+  border-radius: 5px;
+  box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.175);
+}
+
+.table-ui-reserved {
+  background-color: #F4CE14;
+  background-color: #EE9972;
+  background-color: #dc43439e;
+  background-color: #495e5771;
 }
 
 .booking-slot-time-slot {
