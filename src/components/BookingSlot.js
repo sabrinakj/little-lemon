@@ -6,12 +6,16 @@ function BookingSlot({ mainState }) {
   return (
     <div className="booking-slot-time-slot">
       {mainState.tableInUiForTheSelectedDay.length === 0 ?
-       <div>Booking available for only the next seven days.</div> :
-        mainState.tableInUiForTheSelectedDay.map((table) => (
-          <div key={table.date + table.hour} className="table-ui">
-            {"Day: " + table.date + "\n" + "Time slot: " + table.hour}
-          </div>
-      ))}
+        <div>Booking available for only the next seven days.</div> :
+
+          mainState.tableInUiForTheSelectedDay.map((table) => (
+
+            <div key={table.date + table.hour} className="table-ui">
+              {"Day: " + table.date + "\n" + "Time slot: " + table.hour}
+            </div>
+
+          ))
+      }
     </div>
   );
 }
