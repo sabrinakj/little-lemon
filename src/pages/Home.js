@@ -1,6 +1,7 @@
 import SectionBrochure from "../components/SectionBrochure";
 import SectionSpecials from "../components/SectionSpecials";
 import Testimonials from "../components/Testimonials";
+import About from "./About";
 
 
 function Home() {
@@ -14,6 +15,7 @@ function Home() {
       />
       <SectionSpecials />
       <Testimonials />
+      <About />
     </>
   );
 }

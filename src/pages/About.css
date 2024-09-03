@@ -1,0 +1,28 @@
+.about-page {
+    height: 20rem;
+    display: flex;
+    justify-content: center;
+    max-width: 53.75rem;
+    margin: auto;
+  }
+
+  .about-div-left {
+    width: 400px;
+    margin-right: 20px;
+  }
+
+  .about-div-right {
+    display: flex;
+  }
+
+  .about-img-one {
+    width: 264px;
+    height: 311px;
+    object-fit: cover;
+  }
+  .about-img-two {
+    width: 264px;
+    height: 311px;
+    object-fit: cover;
+
+  }
