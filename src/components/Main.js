@@ -81,7 +81,7 @@ const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
 };
 
 // Reducer function to update the main state
-const updateMainState = (state, action) => {
+export const updateMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI":
       console.log("state", state);
@@ -119,7 +119,7 @@ const updateMainState = (state, action) => {
 };
 
 // Initial state for the mainState
-const initializeMainState = () => {
+export const initializeMainState = () => {
   let initializedMainState = [];
 
   for (let i = 0; i < 7; i++) {
