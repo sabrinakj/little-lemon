@@ -2,6 +2,7 @@ import "./SectionSpecials.css";
 import greekSaladImg from "../assets/icons_assets/greek salad.jpg";
 import lemonDesertImg from "../assets/icons_assets/lemon dessert.jpg";
 import Card from "./Card";
+import { Link } from "react-router-dom";
 
 const cardsFood = [
   {
@@ -39,7 +40,9 @@ function SectionSpecials() {
     <section className="section-specials">
       <div className="online-menu">
         <h2 className="card-titolo">This weeks special!</h2>
-        <button className="btn-specials">Online Menu</button>
+        <Link to="/menu" className="custom-link">
+          <button className="btn-specials">Online Menu</button>
+        </Link>
       </div>
       <div className="specials-cards">
         {cardsFood.map((cardFood) => (
