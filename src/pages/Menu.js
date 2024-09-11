@@ -103,6 +103,48 @@ function Menu() {
     <div>
       <h1>Menu Page</h1>
       <p>This is the Menu page.</p>
+
+      <div className="menu-cards-sides">
+        {cardsSides.map((cardFood) => (
+          <Card
+            key={cardFood.id}
+            imgURL={cardFood.image}
+            dishPrice={cardFood.dishPrice}
+            title={cardFood.dishName}
+            delivery={cardFood.delivery}
+            description={cardFood.dishDescription}
+            isSmall={false}
+          />
+        ))}
+      </div>
+
+      <div className="menu-cards-meal">
+        {cardsMeal.map((cardFood) => (
+          <Card
+            key={cardFood.id}
+            imgURL={cardFood.image}
+            dishPrice={cardFood.dishPrice}
+            title={cardFood.dishName}
+            delivery={cardFood.delivery}
+            description={cardFood.dishDescription}
+            isSmall={false}
+          />
+        ))}
+      </div>
+
+      <div className="menu-cards-dessert">
+        {cardsDessert.map((cardFood) => (
+          <Card
+            key={cardFood.id}
+            imgURL={cardFood.image}
+            dishPrice={cardFood.dishPrice}
+            title={cardFood.dishName}
+            delivery={cardFood.delivery}
+            description={cardFood.dishDescription}
+            isSmall={false}
+          />
+        ))}
+      </div>
     </div>
   );
 }
