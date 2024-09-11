@@ -1,11 +1,11 @@
 import Card from "../components/Card";
 import lemonDesertImg from "../assets/icons_assets/lemon dessert.jpg";
-
+import "./Menu.css"
 
 const cardsSides = [
   {
     id: 0,
-    dishName: "Smoked eggplant tortelli",
+    dishName: "Eggplant Tortelli",
     dishPrice: "$ 13.00",
     dishDescription:
       "Homemade with fresh tomatoes, smoked eggplants and eggplants scapece.",
@@ -25,7 +25,7 @@ const cardsSides = [
   },
   {
     id: 2,
-    dishName: "Fettuccine with Lamb and Lemon Ragù",
+    dishName: "Fettuccine with Lamb",
     dishPrice: "$ 15.00",
     dishDescription:
       "Homemade fettuccine with a rich ragù of naturally raised lamb and lemon.",
@@ -50,17 +50,17 @@ const cardsMeal = [
     dishName: "Meat of the day",
     dishPrice: "$ 20.00",
     dishDescription:
-      "Our meat comes from natural farms. The available cuts vary based on the availability of the fresh product",
+      "Our meat comes from natural farms. The available cuts vary based on the availability of the fresh product.",
     delivery: "Order a delivey",
     image:
-      "https://plus.unsplash.com/premium_photo-1664297897697-b8ee713dbe65?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1683315446874-e6a629087ef8?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 2,
-    dishName: "Catch of the day",
+    dishName: "Fish of the day",
     dishPrice: "$ 23.00",
     dishDescription:
-      "fish available based on the catch of the day",
+      "The menù changes based on the fresh fish of the day. Our chefs will surprise you with delicious Italian recipes.",
     image:
       "https://images.unsplash.com/photo-1587913956756-4fcf4833241d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
@@ -100,10 +100,10 @@ const cardsDessert = [
 
 function Menu() {
   return (
-    <div>
-      <h1>Menu Page</h1>
-      <p>This is the Menu page.</p>
+    <div className="menu-container">
+      <div className="menu-div"></div>
 
+      <h2 className="menu-title">Pasta</h2>
       <div className="menu-cards-sides">
         {cardsSides.map((cardFood) => (
           <Card
@@ -111,13 +111,13 @@ function Menu() {
             imgURL={cardFood.image}
             dishPrice={cardFood.dishPrice}
             title={cardFood.dishName}
-            delivery={cardFood.delivery}
             description={cardFood.dishDescription}
             isSmall={false}
           />
         ))}
       </div>
 
+      <h2 className="menu-title">Main courses</h2>
       <div className="menu-cards-meal">
         {cardsMeal.map((cardFood) => (
           <Card
@@ -125,13 +125,13 @@ function Menu() {
             imgURL={cardFood.image}
             dishPrice={cardFood.dishPrice}
             title={cardFood.dishName}
-            delivery={cardFood.delivery}
             description={cardFood.dishDescription}
             isSmall={false}
           />
         ))}
       </div>
 
+      <h2 className="menu-title">Dessert</h2>
       <div className="menu-cards-dessert">
         {cardsDessert.map((cardFood) => (
           <Card
@@ -139,12 +139,16 @@ function Menu() {
             imgURL={cardFood.image}
             dishPrice={cardFood.dishPrice}
             title={cardFood.dishName}
-            delivery={cardFood.delivery}
             description={cardFood.dishDescription}
             isSmall={false}
           />
         ))}
       </div>
+
+      <h2 className="menu-h3">A charge of €2 is applied to each place setting.</h2>
+      <div className="menu-div"></div>
+   
+    
     </div>
   );
 }
