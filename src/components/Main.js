@@ -139,10 +139,14 @@ export const initializeMainState = () => {
   }
 
   console.log("initializedMainState", initializedMainState);
+  console.log("initialMainState", initialMainState);
+  console.log("initialMainState.tablesForTheWeek", initialMainState.tablesForTheWeek);
+
   return {
     tableInUiForTheSelectedDay: tablesForToday,
     tablesForTheWeek: initializedMainState,
   };
+  
 };
 
 function Main() {
