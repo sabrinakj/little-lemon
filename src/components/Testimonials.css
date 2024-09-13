@@ -7,6 +7,7 @@
   justify-content: center;
   max-width: 53.75rem;
   margin: auto;
+  margin-bottom: 2rem;
 }
 
 .testimonials-online-menu {
@@ -29,6 +30,7 @@
   color: #333333;
   align-self: center;
   font-family: "Markazi Text", "Karla", serif;
+  font-size: 40px;
 }
 
 

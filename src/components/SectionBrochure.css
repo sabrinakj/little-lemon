@@ -26,6 +26,10 @@
   font-size: 1.5rem;
  }
 
+ .btn-sec-brouchure:hover {
+  cursor: pointer;
+ }
+
 .section-brochure img {
   width: 25.60rem;
   height: 30rem;
@@ -34,7 +38,7 @@
  }
 
 .section-brochure {
-  border: 1px blue solid;
+  /* border: 1px blue solid; */
   margin: auto;
   background-color: #495E57;
   height: 29rem;

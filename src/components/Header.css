@@ -1,6 +1,4 @@
 header {
-  border: 1px red solid;
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;

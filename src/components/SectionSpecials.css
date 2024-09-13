@@ -1,6 +1,6 @@
 
 .section-specials {
-  border: 1px blueviolet solid;
+  /* border: 1px blueviolet solid; */
   display: flex;
   flex-direction: column;
   max-width: 53.75rem;
@@ -9,7 +9,7 @@
 }
 
 .online-menu {
-  border: 2px yellowgreen solid;
+  /* border: 2px yellowgreen solid; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -27,6 +27,7 @@
   color: #333333;
   align-self: center;
   font-family: "Markazi Text", "Karla", serif;
+  font-size: 40px;
 }
 
 .btn-specials {
@@ -37,4 +38,8 @@
     border-radius: 8px;
     font-size: 1.5rem;
     color: #333333;
+}
+
+.btn-specials:hover {
+  cursor: pointer;
 }

@@ -1,10 +1,23 @@
 import BookingForm from "../components/BookingForm";
+import BookingSlot from "../components/BookingSlot";
+import "./BookingPage.css";
+import resturantImg from "../assets/icons_assets/restaurant.jpg";
 
-function BookingPage({availableTimes, dispatchTimeSlot}) {
+
+function BookingPage({ mainState, dispatchTimeSlot }) {
+  console.table(mainState);
   return (
-    <div>
-      <BookingForm availableTimes={availableTimes} dispatchTimeSlot={dispatchTimeSlot} />
-    </div>
+    <>
+      <img className="booking-img" src={resturantImg} alt="resturant" />
+
+      <div className="booking-page-form-container">
+        <BookingForm
+          mainState={mainState}
+          dispatchTimeSlot={dispatchTimeSlot}
+        />
+        <BookingSlot mainState={mainState} />
+      </div>
+    </>
   );
 }
 

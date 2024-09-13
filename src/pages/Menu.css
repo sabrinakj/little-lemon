@@ -1,0 +1,45 @@
+.menu-container {
+}
+
+.menu-container img {
+    object-fit: cover;
+}
+
+.menu-title {
+    text-align: center;
+    font-size: 2.18rem;
+    font-family: 'Karla', 'serif' ;
+}
+
+.menu-cards-sides {
+    display: flex;
+    max-width: 53.75rem;
+    margin: auto;
+    justify-content: space-between;
+}
+
+.menu-cards-meal {
+    display: flex;
+    max-width: 53.75rem;
+    margin: auto;
+    justify-content: space-between;
+}
+
+.menu-cards-dessert {
+    display: flex;
+    max-width: 53.75rem;
+    margin: auto;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.menu-h3 {
+    max-width: 53.75rem;
+    margin: auto;
+}
+
+.menu-div {
+    height: 1rem;
+    width: 100%;
+    background-color: #EE9972;
+}
