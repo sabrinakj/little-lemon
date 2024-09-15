@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
@@ -8,6 +8,8 @@ import Login from "../pages/Login";
 import BookingPage from "../pages/BookingPage";
 import ConfirmedBooking from "./ConfirmedBooking";
 import "./Main.css";
+import { type } from "@testing-library/user-event/dist/type";
+import {fetchAPI} from "../BookingAPI";
 
 const tablesForToday = [
   {
@@ -56,7 +58,7 @@ const tablesForToday = [
 
 const initialMainState = {
   tablesForTheWeek: [...tablesForToday],
-  tableInUiForTheSelectedDay: [...tablesForToday],
+  tableInUiForTheSelectedDay: [...tablesForToday] || [],
 };
 
 const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
@@ -84,13 +86,17 @@ const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
 export const updateMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI":
-      console.log("state", state);
-      console.log("action", action);
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
-        tableInUiForTheSelectedDay: state.tablesForTheWeek.filter(
-          (el) => el.date === action.payload
-        ),
+        tableInUiForTheSelectedDay: action.payload.times
+          ? action.payload.times.map(time => ({
+              bookingStatus: false,
+              date: action.payload.date,
+              hour: time,
+              guests: "0",
+              occasion: "",
+            }))
+          : [], // Usa un array vuoto se `times` è undefined
       };
 
     case "BOOK_A_TIME_SLOT":
@@ -146,8 +152,9 @@ export const initializeMainState = () => {
     tableInUiForTheSelectedDay: tablesForToday,
     tablesForTheWeek: initializedMainState,
   };
-  
 };
+
+console.log(fetchAPI);
 
 function Main() {
   const [mainState, dispatchTimeSlot] = useReducer(
@@ -155,6 +162,21 @@ function Main() {
     initialMainState,
     initializeMainState
   );
+
+// useEffect per caricare gli orari al primo montaggio del componente
+useEffect(() => {
+  const today = new Date(); // Data di oggi
+  const availableTimes = fetchAPI(today); // Chiama fetchAPI con la data di oggi
+
+ // Aggiorna lo stato con gli orari disponibili
+ dispatchTimeSlot({
+  type: "UPDATE_SLOTS_SHOWN_IN_UI",
+  payload: {
+    date: today.toLocaleDateString("it-IT"), // Data in formato "it-IT"
+    times: availableTimes,                   // Lista degli orari disponibili
+  }
+});
+}, []); // L'array vuoto assicura che l'effetto venga eseguito solo al montaggio
 
   console.table(mainState);
   return (

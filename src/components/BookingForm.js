@@ -1,28 +1,25 @@
 import "./BookingForm.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { fetchAPI, submitAPI } from "../BookingAPI";
 
 function BookingForm({ mainState, dispatchTimeSlot }) {
   console.table(mainState);
-  // const [date, setDate] = useState("");
-  // const [selectedTime, SetSelectedTime] = useState("");
-  // const [guests, SetGuests] = useState("");
-  // const [occasion, setOccasion] = useState("");
+
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
     guests: "",
     occasion: "",
   });
-
-  const genericTimeSlots = [
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-  ];
+  // const genericTimeSlots = [
+  //   "17:00",
+  //   "18:00",
+  //   "19:00",
+  //   "20:00",
+  //   "21:00",
+  //   "22:00",
+  // ];
 
   const handleDateChange = (event) => {
     let selectedDate = new Date().toLocaleDateString("it-IT");
@@ -30,7 +27,6 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
     if (event.target.value) {
       selectedDate = new Date(event.target.value).toLocaleDateString("it-IT");
     }
-    // setDate(e.target.value);
     setFormData({
       ...formData,
       date: event.target.value,
@@ -66,7 +62,42 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
   const bookATimeSlot = (event) => {
     event.preventDefault();
     dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
+
+    // Chiama submitAPI con i dati del form
+    // const isSubmitted = submitAPI(formData);
+
+    // // Verifica se l'invio è andato a buon fine
+    // if (isSubmitted) {
+    //   // Ad esempio, puoi mostrare un messaggio di successo
+    //   // alert("Your reservation has been successfully submitted!");
+
+    //   // Puoi anche ridirigere l'utente a una pagina di conferma
+    //   history.push("/confirmed-booking");
+    // } else {
+    //   // Se l'invio fallisce, mostra un messaggio di errore
+    //   alert("There was an error submitting your reservation. Please try again.");
+    // }
+
+    // // Aggiorna lo stato del time slot prenotato
+    // dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
   };
+
+  // useEffect per aggiornare gli orari disponibili quando la data cambia
+  useEffect(() => {
+    if (formData.date) {
+      const selectedDate = new Date(formData.date);
+      const availableTimes = fetchAPI(selectedDate); // Chiama fetchAPI per ottenere gli orari disponibili
+
+      // Aggiorna lo stato con gli orari disponibili
+      dispatchTimeSlot({
+        type: "UPDATE_SLOTS_SHOWN_IN_UI",
+        payload: {
+          date: selectedDate.toLocaleDateString("it-IT"),
+          times: availableTimes,
+        },
+      });
+    }
+  }, [formData.date, dispatchTimeSlot]);
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -94,11 +125,17 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
           onChange={handleTimeChange}
           required
         >
-          {genericTimeSlots.map((tableHour) => (
-            <option key={tableHour} value={tableHour}>
-              {tableHour}
-            </option>
-          ))}
+          {/* Usa gli orari disponibili dallo stato */}
+          {mainState.tableInUiForTheSelectedDay &&
+          mainState.tableInUiForTheSelectedDay.length > 0 ? (
+            mainState.tableInUiForTheSelectedDay.map((tableHour) => (
+              <option key={tableHour.hour} value={tableHour.hour}>
+                {tableHour.hour}
+              </option>
+            ))
+          ) : (
+            <option value="">No available times</option>
+          )}
         </select>
 
         <label htmlFor="guests">Number of guests</label>
@@ -127,7 +164,11 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
           <option>Anniversary</option>
         </select>
 
-        <input className="booking-form-submit" type="submit" value="Make Your reservation" />
+        <input
+          className="booking-form-submit"
+          type="submit"
+          value="Make Your reservation"
+        />
       </form>
     </div>
   );
