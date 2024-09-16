@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { fetchAPI, submitAPI } from "../BookingAPI";
 
-function BookingForm({ mainState, dispatchTimeSlot }) {
+function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
   console.table(mainState);
 
   const [formData, setFormData] = useState({
@@ -61,6 +61,8 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
 
   const bookATimeSlot = (event) => {
     event.preventDefault();
+    // Chiama la funzione submitForm passando i dati del form
+    submitForm(formData);
     dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
 
     // Chiama submitAPI con i dati del form

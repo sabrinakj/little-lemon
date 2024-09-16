@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
 import Menu from "../pages/Menu";
@@ -9,7 +9,7 @@ import BookingPage from "../pages/BookingPage";
 import ConfirmedBooking from "./ConfirmedBooking";
 import "./Main.css";
 import { type } from "@testing-library/user-event/dist/type";
-import {fetchAPI} from "../BookingAPI";
+import { fetchAPI, submitAPI } from "../BookingAPI";
 
 const tablesForToday = [
   {
@@ -89,7 +89,7 @@ export const updateMainState = (state, action) => {
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
         tableInUiForTheSelectedDay: action.payload.times
-          ? action.payload.times.map(time => ({
+          ? action.payload.times.map((time) => ({
               bookingStatus: false,
               date: action.payload.date,
               hour: time,
@@ -146,7 +146,10 @@ export const initializeMainState = () => {
 
   console.log("initializedMainState", initializedMainState);
   console.log("initialMainState", initialMainState);
-  console.log("initialMainState.tablesForTheWeek", initialMainState.tablesForTheWeek);
+  console.log(
+    "initialMainState.tablesForTheWeek",
+    initialMainState.tablesForTheWeek
+  );
 
   return {
     tableInUiForTheSelectedDay: tablesForToday,
@@ -157,26 +160,37 @@ export const initializeMainState = () => {
 console.log(fetchAPI);
 
 function Main() {
+  const navigate = useNavigate();
+
   const [mainState, dispatchTimeSlot] = useReducer(
     updateMainState,
     initialMainState,
     initializeMainState
   );
 
-// useEffect per caricare gli orari al primo montaggio del componente
-useEffect(() => {
-  const today = new Date(); // Data di oggi
-  const availableTimes = fetchAPI(today); // Chiama fetchAPI con la data di oggi
+  const submitForm = (formData) => {
+    const isSubmitted = submitAPI(formData);
+    if (isSubmitted) {
+      navigate("/confermed-booking");
+    } else {
+      alert("There was an error submitting your booking. Please try again.");
+    }
+  };
 
- // Aggiorna lo stato con gli orari disponibili
- dispatchTimeSlot({
-  type: "UPDATE_SLOTS_SHOWN_IN_UI",
-  payload: {
-    date: today.toLocaleDateString("it-IT"), // Data in formato "it-IT"
-    times: availableTimes,                   // Lista degli orari disponibili
-  }
-});
-}, []); // L'array vuoto assicura che l'effetto venga eseguito solo al montaggio
+  // useEffect per caricare gli orari al primo montaggio del componente
+  useEffect(() => {
+    const today = new Date(); // Data di oggi
+    const availableTimes = fetchAPI(today); // Chiama fetchAPI con la data di oggi
+
+    // Aggiorna lo stato con gli orari disponibili
+    dispatchTimeSlot({
+      type: "UPDATE_SLOTS_SHOWN_IN_UI",
+      payload: {
+        date: today.toLocaleDateString("it-IT"), // Data in formato "it-IT"
+        times: availableTimes, // Lista degli orari disponibili
+      },
+    });
+  }, []); // L'array vuoto assicura che l'effetto venga eseguito solo al montaggio
 
   console.table(mainState);
   return (
@@ -191,6 +205,7 @@ useEffect(() => {
             <BookingPage
               mainState={mainState}
               dispatchTimeSlot={dispatchTimeSlot}
+              submitForm={submitForm}
             />
           }
         />
