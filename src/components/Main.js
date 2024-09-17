@@ -169,7 +169,8 @@ function Main() {
   );
 
   const submitForm = (formData) => {
-    localStorage.setItem('bookingDta', JSON.stringify(formData));
+    // Save booking data in Local Storage
+    localStorage.setItem('bookingData', JSON.stringify(formData));
     const isSubmitted = submitAPI(formData);
     if (isSubmitted) {
       navigate("/confermed-booking");
@@ -214,7 +215,7 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route
           path="/confermed-booking"
-          element={<ConfirmedBooking mainState={mainState} />}
+          element={<ConfirmedBooking />}
         />
       </Routes>
     </main>
