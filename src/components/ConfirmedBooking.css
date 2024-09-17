@@ -1,5 +1,29 @@
-.confirmed-container {}
+.confirmed-page {
+    height: calc(100vh - 337px);
+    display: flex;
+    align-items: center;
+}
 
-.confirmed-title {}
+.confirmed-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    width: 32rem;
+    text-align: center;
+
+    border: 2px solid #c1c1c12e;
+    box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.175);
+    border-radius: 8px;
+    padding: 1rem;
+
+    height: 20rem;
+  
+}
+
+.confirmed-title {
+    font-size: 40px;
+    margin-bottom: 0;
+}
 
 .confirmed-p {}

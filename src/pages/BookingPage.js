@@ -1,5 +1,5 @@
 import BookingForm from "../components/BookingForm";
-import BookingSlot from "../components/BookingSlot";
+// import BookingSlot from "../components/BookingSlot";
 import "./BookingPage.css";
 import resturantImg from "../assets/icons_assets/restaurant.jpg";
 
@@ -16,7 +16,7 @@ function BookingPage({ mainState, dispatchTimeSlot, submitForm }) {
           dispatchTimeSlot={dispatchTimeSlot}
           submitForm={submitForm}
         />
-        <BookingSlot mainState={mainState} />
+        {/* <BookingSlot mainState={mainState} /> */}
       </div>
     </>
   );

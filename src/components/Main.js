@@ -169,6 +169,7 @@ function Main() {
   );
 
   const submitForm = (formData) => {
+    localStorage.setItem('bookingDta', JSON.stringify(formData));
     const isSubmitted = submitAPI(formData);
     if (isSubmitted) {
       navigate("/confermed-booking");
