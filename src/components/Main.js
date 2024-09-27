@@ -8,7 +8,6 @@ import Login from "../pages/Login";
 import BookingPage from "../pages/BookingPage";
 import ConfirmedBooking from "./ConfirmedBooking";
 import "./Main.css";
-import { type } from "@testing-library/user-event/dist/type";
 import { fetchAPI, submitAPI } from "../BookingAPI";
 
 const tablesForToday = [
@@ -104,21 +103,15 @@ export const updateMainState = (state, action) => {
       const updatedBookings = updateBookingStatus(
         state.tablesForTheWeek,
         action.payload
-        // new Date(action.payload.date).toLocaleDateString('it-IT'),
-        // action.payload.selectedTime
       );
       const updatedBookingsUi = updateBookingStatus(
         state.tableInUiForTheSelectedDay,
         action.payload
-        // new Date(action.payload.date).toLocaleDateString('it-IT'),
-        // action.payload.selectedTime
       );
       return {
         tableInUiForTheSelectedDay: updatedBookingsUi,
         tablesForTheWeek: updatedBookings,
       };
-
-    // return initialMainState;
     default:
       return state;
   }
@@ -126,6 +119,9 @@ export const updateMainState = (state, action) => {
 
 // Initial state for the mainState
 export const initializeMainState = () => {
+  const today = new Date(); // Get today's date
+  const availableTimes = fetchAPI(today); // Fetch available times for today
+
   let initializedMainState = [];
 
   for (let i = 0; i < 7; i++) {
@@ -152,7 +148,7 @@ export const initializeMainState = () => {
   );
 
   return {
-    tableInUiForTheSelectedDay: tablesForToday,
+    tableInUiForTheSelectedDay: availableTimes || [], // Use available times from fetchAPI
     tablesForTheWeek: initializedMainState,
   };
 };
@@ -170,10 +166,10 @@ function Main() {
 
   const submitForm = (formData) => {
     // Save booking data in Local Storage
-    localStorage.setItem('bookingData', JSON.stringify(formData));
+    localStorage.setItem("bookingData", JSON.stringify(formData));
     const isSubmitted = submitAPI(formData);
     if (isSubmitted) {
-      navigate("/confermed-booking");
+      navigate("/confirmed-booking");
     } else {
       alert("There was an error submitting your booking. Please try again.");
     }
@@ -213,10 +209,7 @@ function Main() {
         />
         <Route path="/orderonline" element={<OrderOnline />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/confermed-booking"
-          element={<ConfirmedBooking />}
-        />
+        <Route path="/confirmed-booking" element={<ConfirmedBooking />} />
       </Routes>
     </main>
   );

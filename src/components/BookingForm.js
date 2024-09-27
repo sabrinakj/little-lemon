@@ -1,6 +1,5 @@
 import "./BookingForm.css";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { fetchAPI, submitAPI } from "../BookingAPI";
 
 function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
@@ -12,14 +11,6 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     guests: "",
     occasion: "",
   });
-  // const genericTimeSlots = [
-  //   "17:00",
-  //   "18:00",
-  //   "19:00",
-  //   "20:00",
-  //   "21:00",
-  //   "22:00",
-  // ];
 
   const handleDateChange = (event) => {
     let selectedDate = new Date().toLocaleDateString("it-IT");
@@ -64,24 +55,6 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     // Chiama la funzione submitForm passando i dati del form
     submitForm(formData);
     dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
-
-    // Chiama submitAPI con i dati del form
-    // const isSubmitted = submitAPI(formData);
-
-    // // Verifica se l'invio è andato a buon fine
-    // if (isSubmitted) {
-    //   // Ad esempio, puoi mostrare un messaggio di successo
-    //   // alert("Your reservation has been successfully submitted!");
-
-    //   // Puoi anche ridirigere l'utente a una pagina di conferma
-    //   history.push("/confirmed-booking");
-    // } else {
-    //   // Se l'invio fallisce, mostra un messaggio di errore
-    //   alert("There was an error submitting your reservation. Please try again.");
-    // }
-
-    // // Aggiorna lo stato del time slot prenotato
-    // dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
   };
 
   // useEffect per aggiornare gli orari disponibili quando la data cambia
