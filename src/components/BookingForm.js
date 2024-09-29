@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { fetchAPI, submitAPI } from "../BookingAPI";
 
 function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
-  console.table(mainState);
-
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
@@ -12,22 +10,19 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     occasion: "",
   });
 
+  const [isFormValid, setIsFormValid] = useState(false); // Track form validity
 
   const handleDateChange = (event) => {
     let selectedDate = new Date();
-
     if (event.target.value) {
       selectedDate = new Date(event.target.value);
     }
-
     setFormData({
       ...formData,
       date: event.target.value,
     });
-
     // Fetch available times using the raw Date object
     const availableTimes = fetchAPI(selectedDate);
-
     // Dispatch with the selected date and available times
     dispatchTimeSlot({
       type: "UPDATE_SLOTS_SHOWN_IN_UI",
@@ -66,23 +61,7 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
   };
 
-  // // useEffect per aggiornare gli orari disponibili quando la data cambia
-  // useEffect(() => {
-  //   if (formData.date) {
-  //     const selectedDate = new Date(formData.date);
-  //     const availableTimes = fetchAPI(selectedDate); // Chiama fetchAPI per ottenere gli orari disponibili
-
-  //     // Aggiorna lo stato con gli orari disponibili
-  //     dispatchTimeSlot({
-  //       type: "UPDATE_SLOTS_SHOWN_IN_UI",
-  //       payload: {
-  //         date: selectedDate.toLocaleDateString("it-IT"),
-  //         times: availableTimes,
-  //       },
-  //     });
-  //   }
-  // }, [formData.date, dispatchTimeSlot]);
-// useEffect for any initial API calls (optional, remove if not needed)
+// useEffect for any initial API calls
 useEffect(() => {
   if (!formData.date) {
     const today = new Date();
@@ -97,6 +76,19 @@ useEffect(() => {
   }
 }, [dispatchTimeSlot, formData.date]); // Run only if no date is selected
 
+  // Check form validity on every formData change
+  useEffect(() => {
+    if (
+      formData.date &&
+      formData.selectedTime &&
+      formData.guests > 0 &&
+      formData.occasion
+    ) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [formData]);
 
   return (
     <div>
@@ -162,6 +154,8 @@ useEffect(() => {
           className="booking-form-submit"
           type="submit"
           value="Make Your reservation"
+          disabled={!isFormValid} // Disable submit button if form is invalid
+          aria-label="On Click Submit the form"
         />
       </form>
     </div>
