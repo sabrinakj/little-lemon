@@ -85,17 +85,16 @@ const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
 export const updateMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI":
+      const availableTimes = fetchAPI(new Date(action.payload.date)); // Call fetchAPI
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
-        tableInUiForTheSelectedDay: action.payload.times
-          ? action.payload.times.map((time) => ({
-              bookingStatus: false,
-              date: action.payload.date,
-              hour: time,
-              guests: "0",
-              occasion: "",
-            }))
-          : [], // Usa un array vuoto se `times` è undefined
+        tableInUiForTheSelectedDay: availableTimes.map((time) => ({
+          bookingStatus: false,
+          date: action.payload.date,
+          hour: time,
+          guests: "0",
+          occasion: "",
+        })),
       };
 
     case "BOOK_A_TIME_SLOT":

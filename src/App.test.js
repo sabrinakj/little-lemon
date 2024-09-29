@@ -58,32 +58,35 @@ test('initializeMainState calls fetchAPI and returns available times', () => {
 
 
 
-// // Mock the fetchAPI function
-// jest.mock('./BookingAPI', () => ({
-//   fetchAPI: jest.fn(),
-// }));
+// Mock the fetchAPI function
+jest.mock('./BookingAPI', () => ({
+  fetchAPI: jest.fn(),
+}));
 
-// test('updateMainState updates available times for a selected date', () => {
-//   // Arrange: Mock fetchAPI to return a non-empty array of times
-//   const mockTimes = ['17:00', '18:00', '19:00'];
-//   fetchAPI.mockReturnValue(mockTimes);
+test('updateMainState updates available times for a selected date', () => {
+  // Arrange: Mock fetchAPI to return a non-empty array of times
+  const mockTimes = ['17:00', '18:00', '19:00'];
+  fetchAPI.mockReturnValue(mockTimes);
 
-//   const selectedDate = new Date('2023-09-10');
-//   const initialState = { tablesForTheWeek: [] };
+  // Define the selected date and create an action
+  const selectedDate = new Date('2023-09-10'); // Define the selected date
+  const initialState = { tablesForTheWeek: [], tableInUiForTheSelectedDay: [] };
 
-//   const action = {
-//     type: 'UPDATE_SLOTS_SHOWN_IN_UI',
-//     payload: {
-//       date: selectedDate.toLocaleDateString('it-IT'),
-//       times: mockTimes,
-//     },
-//   };
+  const action = {
+    type: 'UPDATE_SLOTS_SHOWN_IN_UI',
+    payload: {
+      date: selectedDate.toISOString(), // Ensure the date is in the correct format
+      times: mockTimes,
+    },
+  };
 
-//   // Act: Call updateMainState
-//   const updatedState = updateMainState(initialState, action);
+  // Act: Call updateMainState
+  const updatedState = updateMainState(initialState, action);
 
-//   // Assert: Ensure fetchAPI was called and the state is updated correctly
-//   expect(updatedState.tableInUiForTheSelectedDay).toHaveLength(mockTimes.length);
-//   expect(updatedState.tableInUiForTheSelectedDay[0].hour).toEqual('17:00');
-//   expect(fetchAPI).toHaveBeenCalledWith(selectedDate);
-// });
+  // Assert: Ensure fetchAPI was called with the correct date
+  expect(fetchAPI).toHaveBeenCalledWith(selectedDate); // Ensure fetchAPI is called with the correct date
+
+  // Assert: Ensure the state was updated correctly
+  expect(updatedState.tableInUiForTheSelectedDay).toHaveLength(mockTimes.length);
+  expect(updatedState.tableInUiForTheSelectedDay[0].hour).toEqual('17:00'); // Check if the first time matches
+});
