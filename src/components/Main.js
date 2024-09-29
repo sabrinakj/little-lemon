@@ -81,7 +81,7 @@ const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
   });
 };
 
-// Reducer function to update the main state
+// Reducer function to update the main state - per far funzionare il secondo test
 export const updateMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI":
@@ -115,6 +115,40 @@ export const updateMainState = (state, action) => {
       return state;
   }
 };
+
+// // Reducer function to update the main state
+// export const updateMainState = (state, action) => {
+//   switch (action.type) {
+//     case "UPDATE_SLOTS_SHOWN_IN_UI":
+//       return {
+//         tablesForTheWeek: [...state.tablesForTheWeek],
+//         tableInUiForTheSelectedDay: action.payload.times.map((time) => ({
+//           bookingStatus: false,
+//           date: action.payload.date,
+//           hour: time,
+//           guests: "0",
+//           occasion: "",
+//         })),
+//       };
+
+//     case "BOOK_A_TIME_SLOT":
+//       console.log(action.payload);
+//       const updatedBookings = updateBookingStatus(
+//         state.tablesForTheWeek,
+//         action.payload
+//       );
+//       const updatedBookingsUi = updateBookingStatus(
+//         state.tableInUiForTheSelectedDay,
+//         action.payload
+//       );
+//       return {
+//         tableInUiForTheSelectedDay: updatedBookingsUi,
+//         tablesForTheWeek: updatedBookings,
+//       };
+//     default:
+//       return state;
+//   }
+// };
 
 // Initial state for the mainState
 export const initializeMainState = () => {

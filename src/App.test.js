@@ -1,7 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import BookingForm from "./components/BookingForm";
 import { initializeMainState, updateMainState } from "./components/Main";
-import { fetchAPI } from "./BookingAPI";
+import { fetchAPI, submitAPI } from "./BookingAPI";
+import { MemoryRouter } from 'react-router-dom';
+import ConfirmedBooking from "./components/ConfirmedBooking";
+import '@testing-library/jest-dom';
 
 // test("Renders the BookingForm heading", () => {
 //   render(<BookingForm />);
@@ -89,4 +92,85 @@ test('updateMainState updates available times for a selected date', () => {
   // Assert: Ensure the state was updated correctly
   expect(updatedState.tableInUiForTheSelectedDay).toHaveLength(mockTimes.length);
   expect(updatedState.tableInUiForTheSelectedDay[0].hour).toEqual('17:00'); // Check if the first time matches
+});
+
+// Unit Tests for Writing to Local Storage
+jest.spyOn(Storage.prototype, 'setItem'); // Spy on localStorage.setItem
+
+test('writes form data to localStorage when the form is submitted', () => {
+  // Mock submitForm to track the localStorage setItem call
+  const mockSubmitForm = jest.fn((formData) => {
+    localStorage.setItem('bookingData', JSON.stringify(formData));
+  });
+
+  render(
+    <MemoryRouter>
+      <BookingForm
+        mainState={{
+          tableInUiForTheSelectedDay: [{ hour: '17:00' }, { hour: '18:00' }], // Simulate available times
+        }}
+        dispatchTimeSlot={jest.fn()}
+        submitForm={mockSubmitForm} // Pass the mocked submitForm
+      />
+    </MemoryRouter>
+  );
+
+  // Act: Fill out the form
+  const dateInput = screen.getByLabelText('Choose date');
+  fireEvent.change(dateInput, { target: { value: '2023-09-10' } });
+
+  const timeInput = screen.getByLabelText('Choose time');
+  fireEvent.change(timeInput, { target: { value: '17:00' } }); // Ensure selectedTime is set
+
+  const guestsInput = screen.getByLabelText('Number of guests');
+  fireEvent.change(guestsInput, { target: { value: '3' } });
+
+  const occasionInput = screen.getByLabelText('Occasion');
+  fireEvent.change(occasionInput, { target: { value: 'Birthday' } });
+
+  // Submit the form
+  const submitButton = screen.getByRole('button', { name: /Make Your reservation/i });
+  fireEvent.click(submitButton);
+
+  // Assert: Check that submitForm was called and localStorage.setItem was called with the correct data
+  expect(mockSubmitForm).toHaveBeenCalledWith({
+    date: '2023-09-10',
+    selectedTime: '17:00', // Ensure the selectedTime is correctly passed
+    guests: '3',
+    occasion: 'Birthday',
+  });
+
+  expect(localStorage.setItem).toHaveBeenCalledWith(
+    'bookingData',
+    JSON.stringify({
+      date: '2023-09-10',
+      selectedTime: '17:00',
+      guests: '3',
+      occasion: 'Birthday',
+    })
+  );
+});
+
+// Unit Tests for Reading from Local Storage
+jest.spyOn(Storage.prototype, 'getItem'); // Spy on localStorage.getItem
+
+test('reads form data from localStorage and displays it on the confirmation page', () => {
+  // Mock localStorage.getItem to return a specific value
+  localStorage.getItem.mockReturnValue(
+    JSON.stringify({
+      date: '2023-09-10',
+      selectedTime: '17:00',
+      guests: '3',
+      occasion: 'Birthday',
+    })
+  );
+
+  // Render the ConfirmedBooking component
+  render(<ConfirmedBooking />);
+
+  // Assert: Check that the booking details are displayed correctly
+  expect(screen.getByText('Date: 2023-09-10')).toBeInTheDocument();
+  expect(screen.getByText('Time: 17:00')).toBeInTheDocument();
+  expect(screen.getByText('Guests: 3')).toBeInTheDocument();
+  expect(screen.getByText('Occasion: Birthday')).toBeInTheDocument();
 });

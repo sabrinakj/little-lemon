@@ -12,20 +12,29 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     occasion: "",
   });
 
+
   const handleDateChange = (event) => {
-    let selectedDate = new Date().toLocaleDateString("it-IT");
+    let selectedDate = new Date();
 
     if (event.target.value) {
-      selectedDate = new Date(event.target.value).toLocaleDateString("it-IT");
+      selectedDate = new Date(event.target.value);
     }
+
     setFormData({
       ...formData,
       date: event.target.value,
     });
 
+    // Fetch available times using the raw Date object
+    const availableTimes = fetchAPI(selectedDate);
+
+    // Dispatch with the selected date and available times
     dispatchTimeSlot({
       type: "UPDATE_SLOTS_SHOWN_IN_UI",
-      payload: selectedDate,
+      payload: {
+        date: selectedDate.toLocaleDateString("it-IT"),
+        times: availableTimes, // Pass available times directly to the reducer
+      },
     });
   };
 
@@ -57,27 +66,37 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
   };
 
-  // useEffect per aggiornare gli orari disponibili quando la data cambia
-  useEffect(() => {
-    if (formData.date) {
-      const selectedDate = new Date(formData.date);
-      const availableTimes = fetchAPI(selectedDate); // Chiama fetchAPI per ottenere gli orari disponibili
+  // // useEffect per aggiornare gli orari disponibili quando la data cambia
+  // useEffect(() => {
+  //   if (formData.date) {
+  //     const selectedDate = new Date(formData.date);
+  //     const availableTimes = fetchAPI(selectedDate); // Chiama fetchAPI per ottenere gli orari disponibili
 
-      // Aggiorna lo stato con gli orari disponibili
-      dispatchTimeSlot({
-        type: "UPDATE_SLOTS_SHOWN_IN_UI",
-        payload: {
-          date: selectedDate.toLocaleDateString("it-IT"),
-          times: availableTimes,
-        },
-      });
-    }
-  }, [formData.date, dispatchTimeSlot]);
+  //     // Aggiorna lo stato con gli orari disponibili
+  //     dispatchTimeSlot({
+  //       type: "UPDATE_SLOTS_SHOWN_IN_UI",
+  //       payload: {
+  //         date: selectedDate.toLocaleDateString("it-IT"),
+  //         times: availableTimes,
+  //       },
+  //     });
+  //   }
+  // }, [formData.date, dispatchTimeSlot]);
+// useEffect for any initial API calls (optional, remove if not needed)
+useEffect(() => {
+  if (!formData.date) {
+    const today = new Date();
+    const availableTimes = fetchAPI(today);
+    dispatchTimeSlot({
+      type: "UPDATE_SLOTS_SHOWN_IN_UI",
+      payload: {
+        date: today.toLocaleDateString("it-IT"),
+        times: availableTimes,
+      },
+    });
+  }
+}, [dispatchTimeSlot, formData.date]); // Run only if no date is selected
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log({ date, guests, occasion, selectedTime });
-  // };
 
   return (
     <div>
