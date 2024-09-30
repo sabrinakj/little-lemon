@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import ConfirmedBooking from "./components/ConfirmedBooking";
 import '@testing-library/jest-dom';
 
+// First unit test
 // test("Renders the BookingForm heading", () => {
 //   render(<BookingForm />);
 //   const headingElement = screen.getByText("Make Your reservation");
@@ -133,7 +134,7 @@ test('writes form data to localStorage when the form is submitted', () => {
   fireEvent.change(occasionInput, { target: { value: 'Birthday' } });
 
   // Submit the form
-  const submitButton = screen.getByRole('button', { name: /Make Your reservation/i });
+  const submitButton = screen.getByRole('button', { name: /On Click Submit the form/i });
   fireEvent.click(submitButton);
 
   // Assert: Check that submitForm was called and localStorage.setItem was called with the correct data
@@ -234,7 +235,7 @@ test('should disable the submit button when the form is invalid', () => {
   );
 
   // Check that the submit button is initially disabled
-  const submitButton = screen.getByRole('button', { name: /Make Your reservation/i });
+  const submitButton = screen.getByRole('button', { name: /On Click Submit the form/i });
   expect(submitButton).toBeDisabled();
 
   // Fill in the form partially (missing some inputs)
@@ -257,7 +258,7 @@ test('should enable the submit button when the form is valid', () => {
   );
 
   // Check that the submit button is initially disabled
-  const submitButton = screen.getByRole('button', { name: /Make Your reservation/i });
+  const submitButton = screen.getByRole('button', { name: /On Click Submit the form/i });
   expect(submitButton).toBeDisabled();
 
   // Fill in the form correctly

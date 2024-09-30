@@ -61,20 +61,20 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
   };
 
-// useEffect for any initial API calls
-useEffect(() => {
-  if (!formData.date) {
-    const today = new Date();
-    const availableTimes = fetchAPI(today);
-    dispatchTimeSlot({
-      type: "UPDATE_SLOTS_SHOWN_IN_UI",
-      payload: {
-        date: today.toLocaleDateString("it-IT"),
-        times: availableTimes,
-      },
-    });
-  }
-}, [dispatchTimeSlot, formData.date]); // Run only if no date is selected
+  // useEffect for any initial API calls
+  useEffect(() => {
+    if (!formData.date) {
+      const today = new Date();
+      const availableTimes = fetchAPI(today);
+      dispatchTimeSlot({
+        type: "UPDATE_SLOTS_SHOWN_IN_UI",
+        payload: {
+          date: today.toLocaleDateString("it-IT"),
+          times: availableTimes,
+        },
+      });
+    }
+  }, [dispatchTimeSlot, formData.date]); // Run only if no date is selected
 
   // Check form validity on every formData change
   useEffect(() => {
@@ -150,13 +150,14 @@ useEffect(() => {
           <option>Anniversary</option>
         </select>
 
-        <input
+        <button
           className="booking-form-submit"
           type="submit"
-          value="Make Your reservation"
           disabled={!isFormValid} // Disable submit button if form is invalid
           aria-label="On Click Submit the form"
-        />
+        >
+          Make Your reservation
+        </button>
       </form>
     </div>
   );
