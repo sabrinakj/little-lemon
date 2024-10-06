@@ -1,6 +1,18 @@
 import "./BookingForm.css";
 import { useState, useEffect } from "react";
-import { fetchAPI, submitAPI } from "../BookingAPI";
+import { fetchAPI } from "../BookingAPI";
+
+// using the functions definitions below (remoteFunctionFetchAPI) was the reccomended way 
+// indicated by the coursera meta fe course capstone project,
+// but due to security reasons (net::ERR_BLOCKED_BY_ORB) the react application is not able to 
+// load this remote  JavaScript code (see comments in index.html) - and even I proxy the request via the proxy property in package.json
+// then I will have an error because the indicated url https://raw.githubusercontent.com/courseraap/capstone/main/api.js
+// is providing an http response which has as content type "text/plain" instead of "application/javascript" or "text/javascript"
+// and therefore the browser is not executing such external javascript code and as a consequence it could not be available
+// via the window object in the react components
+// therefore as a workaroud i have copied the JS code from that URL and put it inside the file src/BookingAPI.js
+// 
+// const remoteFunctionFetchAPI = window.fetchAPI;
 
 function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
   const [formData, setFormData] = useState({

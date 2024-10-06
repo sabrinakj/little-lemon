@@ -10,9 +10,9 @@
       content="Little Lemon is a cozy and delightful restaurant serving a variety of delicious dishes made from fresh ingredients. Visit us for an unforgettable dining experience."
     />
     <!-- Open Graph meta tags for social media -->
-  <meta property="og:title" content="Little Lemon - Delightful Dining Experience"/>
-  <meta property="og:description" content="Discover the best of culinary delights at Little Lemon, where every meal is a memorable experience. Enjoy our fresh and flavorful dishes in a cozy ambiance."/>
-  <meta property="og:image" content="https://media.istockphoto.com/id/1288064106/it/foto/interno-ristorante-vuoto.jpg?s=1024x1024&w=is&k=20&c=gThNZC6I6tX3YWpnp4UXp8Vz9kSyASI7ZL_waNt3m6o="/>
+    <meta property="og:title" content="Little Lemon - Delightful Dining Experience"/>
+    <meta property="og:description" content="Discover the best of culinary delights at Little Lemon, where every meal is a memorable experience. Enjoy our fresh and flavorful dishes in a cozy ambiance."/>
+    <meta property="og:image" content="https://media.istockphoto.com/id/1288064106/it/foto/interno-ristorante-vuoto.jpg?s=1024x1024&w=is&k=20&c=gThNZC6I6tX3YWpnp4UXp8Vz9kSyASI7ZL_waNt3m6o="/>
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -35,16 +35,14 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script src="https://raw.githubusercontent.com/courseraap/capstone/main/api.js"></script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
+    <!-- the script below was the reccomended way indicated by the coursera meta fe course capstone project,
+      but due to security reasons (net::ERR_BLOCKED_BY_ORB) the react application is not able to 
+      load this remote  JavaScript code - and even I proxy the request via the proxy property in package.json
+      then I will have an error because the indicated url https://raw.githubusercontent.com/courseraap/capstone/main/api.js
+      is providing an http response which has as content type "text/plain" instead of "application/javascript" or "text/javascript"
+      and therefore the browser is not executing such external javascript code and as a consequence it could not be available
+      via the window object in the react components
     -->
+    <script src="https://raw.githubusercontent.com/courseraap/capstone/main/api.js"></script>
   </body>
 </html>

@@ -10,6 +10,19 @@ import ConfirmedBooking from "./ConfirmedBooking";
 import "./Main.css";
 import { fetchAPI, submitAPI } from "../BookingAPI";
 
+// using the two functions definitions below (remoteFunctionFetchAPI and remoteFuctionSubmitAPI) was the reccomended way 
+// indicated by the coursera meta fe course capstone project,
+// but due to security reasons (net::ERR_BLOCKED_BY_ORB) the react application is not able to 
+// load this remote  JavaScript code (see comments in index.html) - and even I proxy the request via the proxy property in package.json
+// then I will have an error because the indicated url https://raw.githubusercontent.com/courseraap/capstone/main/api.js
+// is providing an http response which has as content type "text/plain" instead of "application/javascript" or "text/javascript"
+// and therefore the browser is not executing such external javascript code and as a consequence it could not be available
+// via the window object in the react components
+// therefore as a workaroud i have copied the JS code from that URL and put it inside the file src/BookingAPI.js
+// 
+// const remoteFunctionFetchAPI = window.fetchAPI;
+// const remoteFuctionSubmitAPI = window.submitAPI;
+
 const tablesForToday = [
   {
     bookingStatus: false,
@@ -83,9 +96,10 @@ const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
 
 // Reducer function to update the main state - per far funzionare il secondo test
 export const updateMainState = (state, action) => {
+
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI":
-      const availableTimes = fetchAPI(new Date(action.payload.date)); // Call fetchAPI
+      const availableTimes = fetchAPI(new Date(action.payload.date)); // Call remoteFunctionFetchAPI
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
         tableInUiForTheSelectedDay: availableTimes.map((time) => ({
@@ -114,82 +128,31 @@ export const updateMainState = (state, action) => {
     default:
       return state;
   }
+  
 };
 
-// // Reducer function to update the main state
-// export const updateMainState = (state, action) => {
-//   switch (action.type) {
-//     case "UPDATE_SLOTS_SHOWN_IN_UI":
-//       const availableTimes = fetchAPI(new Date(action.payload.date)); // Call fetchAPI
-//       return {
-//         tablesForTheWeek: [...state.tablesForTheWeek],
-//         tableInUiForTheSelectedDay: action.payload.times.map((time) => ({
-//           bookingStatus: false,
-//           date: action.payload.date,
-//           hour: time,
-//           guests: "0",
-//           occasion: "",
-//         })),
-//       };
-
-//     case "BOOK_A_TIME_SLOT":
-//       console.log(action.payload);
-//       const updatedBookings = updateBookingStatus(
-//         state.tablesForTheWeek,
-//         action.payload
-//       );
-//       const updatedBookingsUi = updateBookingStatus(
-//         state.tableInUiForTheSelectedDay,
-//         action.payload
-//       );
-//       return {
-//         tableInUiForTheSelectedDay: updatedBookingsUi,
-//         tablesForTheWeek: updatedBookings,
-//       };
-//     default:
-//       return state;
-//   }
-// };
 
 // Initial state for the mainState
 export const initializeMainState = () => {
+
   const today = new Date(); // Get today's date
   const availableTimes = fetchAPI(today); // Fetch available times for today
-
+  console.log(availableTimes);
   let initializedMainState = [];
-
-  for (let i = 0; i < 7; i++) {
-    for (let j = 0; j < 6; j++) {
-      initializedMainState.push({
-        bookingStatus: false,
-        date: new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate() + i
-        ).toLocaleDateString("it-IT"),
-        hour: 17 + j + ":00",
-        guests: "0",
-        occasion: "",
-      });
-    }
-  }
 
   console.log("initializedMainState", initializedMainState);
   console.log("initialMainState", initialMainState);
-  console.log(
-    "initialMainState.tablesForTheWeek",
-    initialMainState.tablesForTheWeek
-  );
+  console.log("initialMainState.tablesForTheWeek", initialMainState.tablesForTheWeek);
 
   return {
-    tableInUiForTheSelectedDay: availableTimes || [], // Use available times from fetchAPI
+    tableInUiForTheSelectedDay: availableTimes || [], // Use available times from remoteFunctionFetchAPI
     tablesForTheWeek: initializedMainState,
   };
+  
 };
 
-console.log(fetchAPI);
-
 function Main() {
+  console.log(window)
   const navigate = useNavigate();
 
   const [mainState, dispatchTimeSlot] = useReducer(
@@ -199,6 +162,7 @@ function Main() {
   );
 
   const submitForm = (formData) => {
+  
     // Save booking data in Local Storage
     localStorage.setItem("bookingData", JSON.stringify(formData));
     const isSubmitted = submitAPI(formData);
@@ -207,12 +171,14 @@ function Main() {
     } else {
       alert("There was an error submitting your booking. Please try again.");
     }
+    
   };
 
   // useEffect per caricare gli orari al primo montaggio del componente
   useEffect(() => {
+  
     const today = new Date(); // Data di oggi
-    const availableTimes = fetchAPI(today); // Chiama fetchAPI con la data di oggi
+    const availableTimes = fetchAPI(today); // Chiama remoteFunctionFetchAPI con la data di oggi
 
     // Aggiorna lo stato con gli orari disponibili
     dispatchTimeSlot({
@@ -222,6 +188,7 @@ function Main() {
         times: availableTimes, // Lista degli orari disponibili
       },
     });
+    
   }, []); // L'array vuoto assicura che l'effetto venga eseguito solo al montaggio
 
   console.table(mainState);
