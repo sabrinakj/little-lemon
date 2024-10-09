@@ -24,6 +24,8 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
 
   const [isFormValid, setIsFormValid] = useState(false); // Track form validity
 
+  // console.log(mainState);
+  
   const handleDateChange = (event) => {
     let selectedDate = new Date();
     if (event.target.value) {
@@ -74,19 +76,19 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
   };
 
   // useEffect for any initial API calls
-  useEffect(() => {
-    if (!formData.date) {
-      const today = new Date();
-      const availableTimes = fetchAPI(today);
-      dispatchTimeSlot({
-        type: "UPDATE_SLOTS_SHOWN_IN_UI",
-        payload: {
-          date: today.toLocaleDateString("it-IT"),
-          times: availableTimes,
-        },
-      });
-    }
-  }, [dispatchTimeSlot, formData.date]); // Run only if no date is selected
+  // useEffect(() => {
+  //   if (!formData.date) {
+  //     const today = new Date();
+  //     const availableTimes = fetchAPI(today);
+  //     dispatchTimeSlot({
+  //       type: "UPDATE_SLOTS_SHOWN_IN_UI",
+  //       payload: {
+  //         date: today.toLocaleDateString("it-IT"),
+  //         times: availableTimes,
+  //       },
+  //     });
+  //   }
+  // }, [dispatchTimeSlot, formData.date]); // Run only if no date is selected
 
   // Check form validity on every formData change
   useEffect(() => {
