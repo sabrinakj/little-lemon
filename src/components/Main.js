@@ -129,57 +129,57 @@ const initialMainState = {
   tableInUiForTheSelectedDay: [...tablesForToday],
 };
 
-const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
-  const actionPayloadDate = new Date(actionPayload.date).toLocaleDateString(
+const updateBookingStatusOld = (tablesForTheWeek, detailsForBookingAtable) => {
+  const actionPayloadDate = new Date(detailsForBookingAtable.date).toLocaleDateString(
     "it-IT"
   );
 
   return tablesForTheWeek.map((booking) => {
     if (
       booking.date === actionPayloadDate &&
-      booking.hour === actionPayload.selectedTime
+      booking.hour === detailsForBookingAtable.selectedTime
     ) {
       return {
         ...booking,
         bookingStatus: true,
-        guests: actionPayload.guests,
-        occasion: actionPayload.occasion,
+        guests: detailsForBookingAtable.guests,
+        occasion: detailsForBookingAtable.occasion,
       };
     }
     return booking;
   });
 };
 
+// (initialMainState.tablesForTheWeek, {availableTimesForSelectedDay, SelectedDate})
+const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
+  const availableTimesForSelectedDay = fetchAPI(reservedTablesDetails.date);
+  const tablesWithAvailabilities = tablesForTheWeek.map((table) => {
+    if (
+      table.date === (reservedTablesDetails.date.toLocaleDateString("it-IT")) &&
+      (availableTimesForSelectedDay.some(item => item.includes(table.hour)))
+    ) {
+      return {
+        ...table,
+        bookingStatus: false,
+      };
+    }
+    return table;
+  });
+  return tablesWithAvailabilities;
+}
+
 // Reducer function to update the main state - per far funzionare il secondo test
 export const updateMainState = (state, action) => {
 
   switch (action.type) {
-    // case "UPDATE_SLOTS_SHOWN_IN_UI":
-    //   const availableTimes = fetchAPI(new Date(action.payload.date)); // Call remoteFunctionFetchAPI
-    //   return {
-    //     tablesForTheWeek: [...state.tablesForTheWeek],
-    //     tableInUiForTheSelectedDay: availableTimes.map((time) => ({
-    //       bookingStatus: false,
-    //       date: action.payload.date,
-    //       hour: time,
-    //       guests: "0",
-    //       occasion: "",
-    //     })),
-    //   };
-
     case "UPDATE_SLOTS_SHOWN_IN_UI":
       // console.log("state", state);
       // console.log("action", action);
+      console.log(action.payload);
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
         tableInUiForTheSelectedDay: state.tablesForTheWeek.filter(
-          // Here, you're filtering state.tablesForTheWeek based on el.date === action.payload. 
-          //However, this action.payload is likely the full object containing the date and times, 
-          // and not just a string representing the date. If action.payload is an object, your filter 
-          //condition will never match, resulting in an empty array for tableInUiForTheSelectedDay.
-          // Make sure you're passing the correct date as action.payload and adjust how you're filtering state.tablesForTheWeek.
-          // If your action.payload contains both the date and available times, you should access the date field from payload like this:
-          (el) => el.date === action.payload.date
+          (el) => el.date === action.payload.selectedDate
         ),
       };
 
@@ -203,36 +203,16 @@ export const updateMainState = (state, action) => {
   
 };
 
-
 // Initial state for the mainState
 export const initializeMainState = () => {
-
-  // const today = new Date(); // Get today's date
-  // const availableTimes = fetchAPI(today); // Fetch available times for today
-  // // console.log(availableTimes);
-  // let initializedMainState = [];
-
-  // // console.log("initializedMainState", initializedMainState);
-  // // console.log("initialMainState", initialMainState);
-  // // console.log("initialMainState.tablesForTheWeek", initialMainState.tablesForTheWeek);
-
-  // return {
-  //   tableInUiForTheSelectedDay: availableTimes || [], // Use available times from remoteFunctionFetchAPI
-  //   tablesForTheWeek: initializedMainState,
-  // };
-  let initializedMainState = [];
-
+  let initializedTableForTheWeek = [];
   for (let i = 0; i < 7; i++) {
-    let hour = 17; // starting hour
-    let minute = 0; // starting minute
-  
+    let hour = 17;
+    let minute = 0;
     for (let j = 0; j < 14; j++) {
-      // Construct time string
       let timeString =
         hour.toString().padStart(2, '0') + ":" + minute.toString().padStart(2, '0');
-  
-      // Push the object to the array
-      initializedMainState.push({
+      initializedTableForTheWeek.push({
         bookingStatus: true,
         date: new Date(
           new Date().getFullYear(),
@@ -243,8 +223,6 @@ export const initializeMainState = () => {
         guests: "0",
         occasion: "",
       });
-  
-      // Increment time by 30 minutes
       minute += 30;
       if (minute === 60) {
         minute = 0;
@@ -253,36 +231,33 @@ export const initializeMainState = () => {
     }
   }
 
-  // console.log("initializedMainState", initializedMainState);
-  // console.log("initialMainState", initialMainState);
-  // console.log("initialMainState.tablesForTheWeek", initialMainState.tablesForTheWeek);
 
-  const availableTimesForCurrentDay = fetchAPI(new Date());   // [17:30, 19:30 ]
-  // console.log(availableTimesForCurrentDay)
-  const tablesForTheWeekWithAvailabilities = initializedMainState.map((slot) => {
-    // // console.log(availableTimesForCurrentDay.some(item => item.includes(slot.hour)));
-    // // console.log(slot.date)
-    // // console.log(new Date().toLocaleDateString("it-IT"))
-
-    if (
-      (slot.date === (new Date()).toLocaleDateString("it-IT")) &&
-      (availableTimesForCurrentDay.some(item => item.includes(slot.hour)))
-    ) {
-      // console.log("son qua")
-      return {
-        ...slot,
-        bookingStatus: false,
-      };
+  const tablesForTheWeekWithAvailabilities = updateBookingStatus(
+    initializedTableForTheWeek, 
+    {
+      date: new Date(),
+      hour: []
     }
-    return slot;
-  });
+  
+  );
+
+  // const availableTimesForCurrentDay = fetchAPI(new Date());
+  // const tablesForTheWeekWithAvailabilities = initializedTableForTheWeek.map((slot) => {
+  //   if (
+  //     (slot.date === (new Date()).toLocaleDateString("it-IT")) &&
+  //     (availableTimesForCurrentDay.some(item => item.includes(slot.hour)))
+  //   ) {
+  //     return {
+  //       ...slot,
+  //       bookingStatus: false,
+  //     };
+  //   }
+  //   return slot;
+  // });
+
 
 
   console.log(tablesForTheWeekWithAvailabilities);
-  // console.log(tablesForTheWeekWithAvailabilities.filter(
-  //   (el) => el.date === new Date().toLocaleDateString("it-IT")
-  // ))
-
   return {
     tablesForTheWeek: tablesForTheWeekWithAvailabilities ,
     tableInUiForTheSelectedDay: tablesForTheWeekWithAvailabilities.filter(
@@ -290,13 +265,7 @@ export const initializeMainState = () => {
     )
   };
 
-  // return {
-  //   tableInUiForTheSelectedDay: tablesForToday,
-  //   tablesForTheWeek: initializedMainState,
-  // };
-  
 };
-
 
 function Main() {
   const navigate = useNavigate();

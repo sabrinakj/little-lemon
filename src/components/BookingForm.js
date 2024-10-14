@@ -36,13 +36,13 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
       date: event.target.value,
     });
     // Fetch available times using the raw Date object
-    const availableTimes = fetchAPI(selectedDate);
+    const availableTimesForTheSelectedDay = fetchAPI(selectedDate);
     // Dispatch with the selected date and available times
     dispatchTimeSlot({
       type: "UPDATE_SLOTS_SHOWN_IN_UI",
       payload: {
-        date: selectedDate.toLocaleDateString("it-IT"),
-        times: availableTimes, // Pass available times directly to the reducer
+        selectedDate: selectedDate.toLocaleDateString("it-IT"),
+        availableTimesForTheSelectedDay: availableTimesForTheSelectedDay, // Pass available times directly to the reducer
       },
     });
   };
