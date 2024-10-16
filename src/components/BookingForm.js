@@ -41,7 +41,7 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     dispatchTimeSlot({
       type: "UPDATE_SLOTS_SHOWN_IN_UI",
       payload: {
-        selectedDate: selectedDate.toLocaleDateString("it-IT"),
+        selectedDate: selectedDate,
         availableTimesForTheSelectedDay: availableTimesForTheSelectedDay, // Pass available times directly to the reducer
       },
     });

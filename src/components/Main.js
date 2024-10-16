@@ -10,16 +10,16 @@ import ConfirmedBooking from "./ConfirmedBooking";
 import "./Main.css";
 import { fetchAPI, submitAPI } from "../BookingAPI";
 
-// using the two functions definitions below (remoteFunctionFetchAPI and remoteFuctionSubmitAPI) was the reccomended way 
+// using the two functions definitions below (remoteFunctionFetchAPI and remoteFuctionSubmitAPI) was the reccomended way
 // indicated by the coursera meta fe course capstone project,
-// but due to security reasons (net::ERR_BLOCKED_BY_ORB) the react application is not able to 
+// but due to security reasons (net::ERR_BLOCKED_BY_ORB) the react application is not able to
 // load this remote  JavaScript code (see comments in index.html) - and even I proxy the request via the proxy property in package.json
 // then I will have an error because the indicated url https://raw.githubusercontent.com/courseraap/capstone/main/api.js
 // is providing an http response which has as content type "text/plain" instead of "application/javascript" or "text/javascript"
 // and therefore the browser is not executing such external javascript code and as a consequence it could not be available
 // via the window object in the react components
 // therefore as a workaroud i have copied the JS code from that URL and put it inside the file src/BookingAPI.js
-// 
+//
 // const remoteFunctionFetchAPI = window.fetchAPI;
 // const remoteFuctionSubmitAPI = window.submitAPI;
 
@@ -81,7 +81,7 @@ const tablesForToday = [
     occasion: "birthday",
   },
   {
-    bookingStatus:true,
+    bookingStatus: true,
     date: new Date().toLocaleDateString("it-IT"),
     hour: "21:00",
     guests: "0",
@@ -129,59 +129,54 @@ const initialMainState = {
   tableInUiForTheSelectedDay: [...tablesForToday],
 };
 
-const updateBookingStatusOld = (tablesForTheWeek, detailsForBookingAtable) => {
-  const actionPayloadDate = new Date(detailsForBookingAtable.date).toLocaleDateString(
-    "it-IT"
-  );
-
-  return tablesForTheWeek.map((booking) => {
-    if (
-      booking.date === actionPayloadDate &&
-      booking.hour === detailsForBookingAtable.selectedTime
-    ) {
-      return {
-        ...booking,
-        bookingStatus: true,
-        guests: detailsForBookingAtable.guests,
-        occasion: detailsForBookingAtable.occasion,
-      };
-    }
-    return booking;
-  });
-};
-
 // (initialMainState.tablesForTheWeek, {availableTimesForSelectedDay, SelectedDate})
 const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
   const availableTimesForSelectedDay = fetchAPI(reservedTablesDetails.date);
+  console.log(availableTimesForSelectedDay);
   const tablesWithAvailabilities = tablesForTheWeek.map((table) => {
     if (
-      table.date === (reservedTablesDetails.date.toLocaleDateString("it-IT")) &&
-      (availableTimesForSelectedDay.some(item => item.includes(table.hour)))
+      table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
+      availableTimesForSelectedDay.some((item) => item.includes(table.hour))
     ) {
       return {
         ...table,
         bookingStatus: false,
       };
+    } else {
+      return table;
     }
-    return table;
   });
   return tablesWithAvailabilities;
-}
+};
 
 // Reducer function to update the main state - per far funzionare il secondo test
 export const updateMainState = (state, action) => {
-
   switch (action.type) {
-    case "UPDATE_SLOTS_SHOWN_IN_UI":
+    case "UPDATE_SLOTS_SHOWN_IN_UI": {
       // console.log("state", state);
       // console.log("action", action);
-      console.log(action.payload);
+      // console.log(new Date (action.payload.selectedDate));
+      // const availableTimesForSelectedDay = fetchAPI(action.payload.selectedDate);
+      // console.log(availableTimesForSelectedDay);
+      // console.log(action.payload);
+
+      const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
+        (el) => el.date === action.payload.selectedDate.toLocaleDateString("it-IT")
+      );
+      console.log(tablesInUiForTheSelectedDay)
+      console.log(action.payload.selectedDate);
+      const tablesInUiForTheSelectedDayWithAvailabilities = 
+        updateBookingStatus(tablesInUiForTheSelectedDay,  { date: action.payload.selectedDate } );
+
+
+
+
+
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
-        tableInUiForTheSelectedDay: state.tablesForTheWeek.filter(
-          (el) => el.date === action.payload.selectedDate
-        ),
+        tableInUiForTheSelectedDay: tablesInUiForTheSelectedDayWithAvailabilities
       };
+    }
 
     case "BOOK_A_TIME_SLOT":
       // console.log(action.payload);
@@ -200,7 +195,6 @@ export const updateMainState = (state, action) => {
     default:
       return state;
   }
-  
 };
 
 // Initial state for the mainState
@@ -211,7 +205,9 @@ export const initializeMainState = () => {
     let minute = 0;
     for (let j = 0; j < 14; j++) {
       let timeString =
-        hour.toString().padStart(2, '0') + ":" + minute.toString().padStart(2, '0');
+        hour.toString().padStart(2, "0") +
+        ":" +
+        minute.toString().padStart(2, "0");
       initializedTableForTheWeek.push({
         bookingStatus: true,
         date: new Date(
@@ -231,14 +227,9 @@ export const initializeMainState = () => {
     }
   }
 
-
   const tablesForTheWeekWithAvailabilities = updateBookingStatus(
-    initializedTableForTheWeek, 
-    {
-      date: new Date(),
-      hour: []
-    }
-  
+    initializedTableForTheWeek,
+    { date: new Date() }
   );
 
   // const availableTimesForCurrentDay = fetchAPI(new Date());
@@ -255,16 +246,13 @@ export const initializeMainState = () => {
   //   return slot;
   // });
 
-
-
-  console.log(tablesForTheWeekWithAvailabilities);
+  console.table(tablesForTheWeekWithAvailabilities);
   return {
-    tablesForTheWeek: tablesForTheWeekWithAvailabilities ,
+    tablesForTheWeek: tablesForTheWeekWithAvailabilities,
     tableInUiForTheSelectedDay: tablesForTheWeekWithAvailabilities.filter(
       (el) => el.date === new Date().toLocaleDateString("it-IT")
-    )
+    ),
   };
-
 };
 
 function Main() {
@@ -277,7 +265,6 @@ function Main() {
   );
 
   const submitForm = (formData) => {
-  
     // Save booking data in Local Storage
     localStorage.setItem("bookingData", JSON.stringify(formData));
     const isSubmitted = submitAPI(formData);
@@ -286,12 +273,11 @@ function Main() {
     } else {
       alert("There was an error submitting your booking. Please try again.");
     }
-    
   };
 
   // // useEffect per caricare gli orari al primo montaggio del componente
   // useEffect(() => {
-  
+
   //   const today = new Date(); // Data di oggi
   //   const availableTimes = fetchAPI(today); // Chiama remoteFunctionFetchAPI con la data di oggi
 
@@ -303,7 +289,7 @@ function Main() {
   //       availableTimesFromApi: availableTimes, // Lista degli orari disponibili
   //     },
   //   });
-    
+
   // }, []); // L'array vuoto assicura che l'effetto venga eseguito solo al montaggio
 
   // console.log(mainState);
