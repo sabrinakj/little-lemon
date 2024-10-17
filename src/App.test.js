@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import BookingForm from "./components/BookingForm";
-import { initializeMainState, updateMainState } from "./components/Main";
+import { initializeMainState, reducerForUpdatingMainState } from "./components/Main";
 import { fetchAPI, submitAPI } from "./BookingAPI";
 import { MemoryRouter } from 'react-router-dom';
 import ConfirmedBooking from "./components/ConfirmedBooking";
@@ -23,7 +23,7 @@ import '@testing-library/jest-dom';
 //     occasion: "",
 //   });
 // });
-// test("updateMainState returns the same state when no valid action is provided", () => {
+// test("reducerForUpdatingMainState returns the same state when no valid action is provided", () => {
 //   const initialState = [
 //     {
 //       bookingStatus: false,
@@ -34,7 +34,7 @@ import '@testing-library/jest-dom';
 //     },
 //   ];
 //   const action = { type: "INVALID_ACTION" };
-//   const updatedState = updateMainState(initialState, action);
+//   const updatedState = reducerForUpdatingMainState(initialState, action);
 //   expect(updatedState).toEqual(initialState);
 // });
 
@@ -68,7 +68,7 @@ jest.mock('./BookingAPI', () => ({
   fetchAPI: jest.fn(),
 }));
 
-test('updateMainState updates available times for a selected date', () => {
+test('reducerForUpdatingMainState updates available times for a selected date', () => {
   // Arrange: Mock fetchAPI to return a non-empty array of times
   const mockTimes = ['17:00', '18:00', '19:00'];
   fetchAPI.mockReturnValue(mockTimes);
@@ -85,8 +85,8 @@ test('updateMainState updates available times for a selected date', () => {
     },
   };
 
-  // Act: Call updateMainState
-  const updatedState = updateMainState(initialState, action);
+  // Act: Call reducerForUpdatingMainState
+  const updatedState = reducerForUpdatingMainState(initialState, action);
 
   // Assert: Ensure fetchAPI was called with the correct date
   expect(fetchAPI).toHaveBeenCalledWith(selectedDate); // Ensure fetchAPI is called with the correct date
@@ -114,7 +114,7 @@ test('writes form data to localStorage when the form is submitted', () => {
         mainState={{
           tableInUiForTheSelectedDay: [{ hour: '17:00' }, { hour: '18:00' }], // Simulate available times
         }}
-        dispatchTimeSlot={jest.fn()}
+        dispatchUpdatingMainState={jest.fn()}
         submitForm={mockSubmitForm} // Pass the mocked submitForm
       />
     </MemoryRouter>
@@ -192,7 +192,7 @@ test('should have correct HTML5 validation attributes on the form fields', () =>
     <MemoryRouter>
       <BookingForm
         mainState={{ tableInUiForTheSelectedDay: [] }}
-        dispatchTimeSlot={jest.fn()}
+        dispatchUpdatingMainState={jest.fn()}
         submitForm={jest.fn()}
       />
     </MemoryRouter>
@@ -228,7 +228,7 @@ test('should disable the submit button when the form is invalid', () => {
     <MemoryRouter>
       <BookingForm
         mainState={{ tableInUiForTheSelectedDay: [{ hour: '17:00' }, { hour: '18:00' }] }}
-        dispatchTimeSlot={jest.fn()}
+        dispatchUpdatingMainState={jest.fn()}
         submitForm={jest.fn()}
       />
     </MemoryRouter>
@@ -251,7 +251,7 @@ test('should enable the submit button when the form is valid', () => {
     <MemoryRouter>
       <BookingForm
         mainState={{ tableInUiForTheSelectedDay: [{ hour: '17:00' }, { hour: '18:00' }] }}
-        dispatchTimeSlot={jest.fn()}
+        dispatchUpdatingMainState={jest.fn()}
         submitForm={jest.fn()}
       />
     </MemoryRouter>

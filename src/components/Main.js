@@ -141,6 +141,8 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
       return {
         ...table,
         bookingStatus: false,
+        guests: reservedTablesDetails.guests? reservedTablesDetails.guests : table.guests,
+        occasion: reservedTablesDetails.occasion? reservedTablesDetails.occasion : table.occasion ,
       };
     } else {
       return table;
@@ -150,7 +152,7 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
 };
 
 // Reducer function to update the main state - per far funzionare il secondo test
-export const updateMainState = (state, action) => {
+export const reducerForUpdatingMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI": {
       // console.log("state", state);
@@ -163,14 +165,11 @@ export const updateMainState = (state, action) => {
       const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
         (el) => el.date === action.payload.selectedDate.toLocaleDateString("it-IT")
       );
-      console.log(tablesInUiForTheSelectedDay)
-      console.log(action.payload.selectedDate);
-      const tablesInUiForTheSelectedDayWithAvailabilities = 
-        updateBookingStatus(tablesInUiForTheSelectedDay,  { date: action.payload.selectedDate } );
 
-
-
-
+      const tablesInUiForTheSelectedDayWithAvailabilities = updateBookingStatus(
+        tablesInUiForTheSelectedDay,
+        { date: action.payload.selectedDate }
+      );
 
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
@@ -178,20 +177,34 @@ export const updateMainState = (state, action) => {
       };
     }
 
-    case "BOOK_A_TIME_SLOT":
+    case "BOOK_A_TIME_SLOT": {
+
+
       // console.log(action.payload);
-      const updatedBookings = updateBookingStatus(
+      const updatedTablesForTheWeek = updateBookingStatus(
         state.tablesForTheWeek,
-        action.payload
+        { date: action.payload.formData.date,
+          selectedTime: action.payload.formData.hour,
+          guests: action.payload.formData.guests,
+          occasion: action.payload.formData.occasion
+         }
       );
-      const updatedBookingsUi = updateBookingStatus(
+
+
+
+      const updatedTablesInUiForTheSelectedDay = updateBookingStatus(
         state.tableInUiForTheSelectedDay,
         action.payload
       );
+
+
+
+
       return {
-        tableInUiForTheSelectedDay: updatedBookingsUi,
-        tablesForTheWeek: updatedBookings,
+        tableInUiForTheSelectedDay: updatedTablesInUiForTheSelectedDay,
+        tablesForTheWeek: updatedTablesForTheWeek,
       };
+    }
     default:
       return state;
   }
@@ -258,8 +271,8 @@ export const initializeMainState = () => {
 function Main() {
   const navigate = useNavigate();
 
-  const [mainState, dispatchTimeSlot] = useReducer(
-    updateMainState,
+  const [mainState, dispatchUpdatingMainState] = useReducer(
+    reducerForUpdatingMainState,
     initialMainState,
     initializeMainState
   );
@@ -275,24 +288,6 @@ function Main() {
     }
   };
 
-  // // useEffect per caricare gli orari al primo montaggio del componente
-  // useEffect(() => {
-
-  //   const today = new Date(); // Data di oggi
-  //   const availableTimes = fetchAPI(today); // Chiama remoteFunctionFetchAPI con la data di oggi
-
-  //   // Aggiorna lo stato con gli orari disponibili
-  //   dispatchTimeSlot({
-  //     type: "UPDATE_SLOTS_SHOWN_IN_UI",
-  //     payload: {
-  //       date: today.toLocaleDateString("it-IT"), // Data in formato "it-IT"
-  //       availableTimesFromApi: availableTimes, // Lista degli orari disponibili
-  //     },
-  //   });
-
-  // }, []); // L'array vuoto assicura che l'effetto venga eseguito solo al montaggio
-
-  // console.log(mainState);
   return (
     <main className="main">
       <Routes>
@@ -304,14 +299,13 @@ function Main() {
           element={
             <BookingPage
               mainState={mainState}
-              dispatchTimeSlot={dispatchTimeSlot}
+              dispatchUpdatingMainState={dispatchUpdatingMainState}
               submitForm={submitForm}
             />
           }
         />
         <Route path="/orderonline" element={<OrderOnline />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/confirmed-booking" element={<ConfirmedBooking />} /> */}
         <Route
           path="/confermed-booking"
           element={<ConfirmedBooking mainState={mainState} />}

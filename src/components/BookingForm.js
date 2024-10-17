@@ -14,7 +14,7 @@ import { fetchAPI } from "../BookingAPI";
 // 
 // const remoteFunctionFetchAPI = window.fetchAPI;
 
-function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
+function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
@@ -25,7 +25,6 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
   const [isFormValid, setIsFormValid] = useState(false); // Track form validity
 
   // console.log(mainState);
-  
   const handleDateChange = (event) => {
     let selectedDate = new Date();
     if (event.target.value) {
@@ -38,7 +37,7 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     // Fetch available times using the raw Date object
     const availableTimesForTheSelectedDay = fetchAPI(selectedDate);
     // Dispatch with the selected date and available times
-    dispatchTimeSlot({
+    dispatchUpdatingMainState({
       type: "UPDATE_SLOTS_SHOWN_IN_UI",
       payload: {
         selectedDate: selectedDate,
@@ -72,7 +71,10 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
     event.preventDefault();
     // Chiama la funzione submitForm passando i dati del form
     submitForm(formData);
-    dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
+    dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
+      formData: formData,
+      tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
+    }});
   };
 
   // useEffect for any initial API calls
@@ -80,7 +82,7 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
   //   if (!formData.date) {
   //     const today = new Date();
   //     const availableTimes = fetchAPI(today);
-  //     dispatchTimeSlot({
+  //     dispatchUpdatingMainState({
   //       type: "UPDATE_SLOTS_SHOWN_IN_UI",
   //       payload: {
   //         date: today.toLocaleDateString("it-IT"),
@@ -88,7 +90,7 @@ function BookingForm({ mainState, dispatchTimeSlot, submitForm }) {
   //       },
   //     });
   //   }
-  // }, [dispatchTimeSlot, formData.date]); // Run only if no date is selected
+  // }, [dispatchUpdatingMainState, formData.date]); // Run only if no date is selected
 
   // Check form validity on every formData change
   useEffect(() => {
