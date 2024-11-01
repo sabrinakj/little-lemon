@@ -134,17 +134,50 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
   const availableTimesForSelectedDay = fetchAPI(reservedTablesDetails.date);
   console.log(availableTimesForSelectedDay);
   const tablesWithAvailabilities = tablesForTheWeek.map((table) => {
+    console.log(table.date);
+    console.log('table.hour', table.hour);
+    console.log('reservedTablesDetails', reservedTablesDetails)
+    // console.log('reservedTablesDetails.selectedTime', reservedTablesDetails.selectedTime)
+    // console.log("else if", table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") );
+    // console.log("else if", availableTimesForSelectedDay.some((item) => item.includes(table.hour)));
+    // console.log("else if", table.hour === reservedTablesDetails.selectedTime);
+    // console.log("else if", reservedTablesDetails.guests !== "0");
+    console.log(
+      table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
+      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      table.hour === reservedTablesDetails.selectedTime &&
+      reservedTablesDetails.guests !== "0"
+    );
+
     if (
       table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
-      availableTimesForSelectedDay.some((item) => item.includes(table.hour))
+      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      (reservedTablesDetails.guests === undefined ||reservedTablesDetails.guests === null)
     ) {
+      console.log("if of update ui slots");
       return {
         ...table,
         bookingStatus: false,
-        guests: reservedTablesDetails.guests? reservedTablesDetails.guests : table.guests,
-        occasion: reservedTablesDetails.occasion? reservedTablesDetails.occasion : table.occasion ,
       };
-    } else {
+    }
+    else if (
+      table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
+      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      table.hour === reservedTablesDetails.selectedTime &&
+      reservedTablesDetails.guests !== "0"
+    ) {
+      console.log("else if of make a reservation");
+      const updatedTable = {
+        ...table,
+        bookingStatus: true,
+        guests: reservedTablesDetails.guests,
+        occasion: reservedTablesDetails.occasion,
+      };
+      console.log(updatedTable);
+      return updatedTable;
+    }
+    else {
+      console.log("else")
       return table;
     }
   });
@@ -179,26 +212,26 @@ export const reducerForUpdatingMainState = (state, action) => {
 
     case "BOOK_A_TIME_SLOT": {
 
-
-      // console.log(action.payload);
       const updatedTablesForTheWeek = updateBookingStatus(
         state.tablesForTheWeek,
-        { date: action.payload.formData.date,
-          selectedTime: action.payload.formData.hour,
+        {
+          date: action.payload.formData.date,
+          selectedTime: action.payload.formData.selectedTime,
           guests: action.payload.formData.guests,
           occasion: action.payload.formData.occasion
          }
       );
-
-
-
       const updatedTablesInUiForTheSelectedDay = updateBookingStatus(
         state.tableInUiForTheSelectedDay,
-        action.payload
+        {
+          date: action.payload.formData.date,
+          selectedTime: action.payload.formData.selectedTime,
+          guests: action.payload.formData.guests,
+          occasion: action.payload.formData.occasion
+         }
       );
-
-
-
+      console.table(updatedTablesForTheWeek);
+      console.table(updatedTablesInUiForTheSelectedDay);
 
       return {
         tableInUiForTheSelectedDay: updatedTablesInUiForTheSelectedDay,
@@ -259,7 +292,7 @@ export const initializeMainState = () => {
   //   return slot;
   // });
 
-  console.table(tablesForTheWeekWithAvailabilities);
+  console.log(tablesForTheWeekWithAvailabilities);
   return {
     tablesForTheWeek: tablesForTheWeekWithAvailabilities,
     tableInUiForTheSelectedDay: tablesForTheWeekWithAvailabilities.filter(
@@ -286,6 +319,8 @@ function Main() {
     } else {
       alert("There was an error submitting your booking. Please try again.");
     }
+    console.table(mainState.tablesForTheWeek);
+    console.table(mainState.tableInUiForTheSelectedDay);
   };
 
   return (
@@ -307,7 +342,7 @@ function Main() {
         <Route path="/orderonline" element={<OrderOnline />} />
         <Route path="/login" element={<Login />} />
         <Route
-          path="/confermed-booking"
+          path="/confirmed-booking"
           element={<ConfirmedBooking mainState={mainState} />}
         />
       </Routes>

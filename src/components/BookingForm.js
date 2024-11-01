@@ -11,14 +11,14 @@ import { fetchAPI } from "../BookingAPI";
 // and therefore the browser is not executing such external javascript code and as a consequence it could not be available
 // via the window object in the react components
 // therefore as a workaroud i have copied the JS code from that URL and put it inside the file src/BookingAPI.js
-// 
+//
 // const remoteFunctionFetchAPI = window.fetchAPI;
 
 function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
-    guests: "",
+    guests: "0",
     occasion: "",
   });
 
@@ -54,6 +54,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   };
 
   const handleGuestsChange = (event) => {
+    console.log(typeof(event.target.value));
     setFormData({
       ...formData,
       guests: event.target.value,
@@ -68,29 +69,19 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   };
 
   const bookATimeSlot = (event) => {
+    console.log(new Date(formData.date))
     event.preventDefault();
     // Chiama la funzione submitForm passando i dati del form
-    submitForm(formData);
+
     dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
-      formData: formData,
+      formData: {
+        ...formData,
+        date: new Date(formData.date)
+      },
       tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
     }});
+    submitForm(formData);
   };
-
-  // useEffect for any initial API calls
-  // useEffect(() => {
-  //   if (!formData.date) {
-  //     const today = new Date();
-  //     const availableTimes = fetchAPI(today);
-  //     dispatchUpdatingMainState({
-  //       type: "UPDATE_SLOTS_SHOWN_IN_UI",
-  //       payload: {
-  //         date: today.toLocaleDateString("it-IT"),
-  //         times: availableTimes,
-  //       },
-  //     });
-  //   }
-  // }, [dispatchUpdatingMainState, formData.date]); // Run only if no date is selected
 
   // Check form validity on every formData change
   useEffect(() => {
@@ -146,7 +137,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
           name="guests"
           value={formData.guests}
           onChange={handleGuestsChange}
-          placeholder="1"
+          placeholder="0"
           min="1"
           max="10"
           id="guests"
