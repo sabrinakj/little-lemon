@@ -5,7 +5,7 @@ import resturantImg from "../assets/icons_assets/restaurant.jpg";
 
 
 function BookingPage({ mainState, dispatchUpdatingMainState, submitForm }) {
-  // console.log(mainState);
+  // // console.log(mainState);
   return (
     <>
       <img className="booking-img" src={resturantImg} alt="resturant" />

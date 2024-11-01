@@ -132,29 +132,29 @@ const initialMainState = {
 // (initialMainState.tablesForTheWeek, {availableTimesForSelectedDay, SelectedDate})
 const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
   const availableTimesForSelectedDay = fetchAPI(reservedTablesDetails.date);
-  console.log(availableTimesForSelectedDay);
+  // console.log(availableTimesForSelectedDay);
   const tablesWithAvailabilities = tablesForTheWeek.map((table) => {
-    console.log(table.date);
-    console.log('table.hour', table.hour);
-    console.log('reservedTablesDetails', reservedTablesDetails)
-    // console.log('reservedTablesDetails.selectedTime', reservedTablesDetails.selectedTime)
-    // console.log("else if", table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") );
-    // console.log("else if", availableTimesForSelectedDay.some((item) => item.includes(table.hour)));
-    // console.log("else if", table.hour === reservedTablesDetails.selectedTime);
-    // console.log("else if", reservedTablesDetails.guests !== "0");
-    console.log(
-      table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
-      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
-      table.hour === reservedTablesDetails.selectedTime &&
-      reservedTablesDetails.guests !== "0"
-    );
+    // console.log(table.date);
+    // console.log('table.hour', table.hour);
+    // console.log('reservedTablesDetails', reservedTablesDetails)
+    // // console.log('reservedTablesDetails.selectedTime', reservedTablesDetails.selectedTime)
+    // // console.log("else if", table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") );
+    // // console.log("else if", availableTimesForSelectedDay.some((item) => item.includes(table.hour)));
+    // // console.log("else if", table.hour === reservedTablesDetails.selectedTime);
+    // // console.log("else if", reservedTablesDetails.guests !== "0");
+    // console.log(
+    //   table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
+    //   availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+    //   table.hour === reservedTablesDetails.selectedTime &&
+    //   reservedTablesDetails.guests !== "0"
+    // );
 
     if (
       table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
       availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
       (reservedTablesDetails.guests === undefined ||reservedTablesDetails.guests === null)
     ) {
-      console.log("if of update ui slots");
+      // console.log("if of update ui slots");
       return {
         ...table,
         bookingStatus: false,
@@ -166,18 +166,18 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
       table.hour === reservedTablesDetails.selectedTime &&
       reservedTablesDetails.guests !== "0"
     ) {
-      console.log("else if of make a reservation");
+      // console.log("else if of make a reservation");
       const updatedTable = {
         ...table,
         bookingStatus: true,
         guests: reservedTablesDetails.guests,
         occasion: reservedTablesDetails.occasion,
       };
-      console.log(updatedTable);
+      // console.log(updatedTable);
       return updatedTable;
     }
     else {
-      console.log("else")
+      // console.log("else")
       return table;
     }
   });
@@ -188,12 +188,12 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
 export const reducerForUpdatingMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI": {
-      // console.log("state", state);
-      // console.log("action", action);
-      // console.log(new Date (action.payload.selectedDate));
+      // // console.log("state", state);
+      // // console.log("action", action);
+      // // console.log(new Date (action.payload.selectedDate));
       // const availableTimesForSelectedDay = fetchAPI(action.payload.selectedDate);
-      // console.log(availableTimesForSelectedDay);
-      // console.log(action.payload);
+      // // console.log(availableTimesForSelectedDay);
+      // // console.log(action.payload);
 
       const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
         (el) => el.date === action.payload.selectedDate.toLocaleDateString("it-IT")
@@ -230,8 +230,8 @@ export const reducerForUpdatingMainState = (state, action) => {
           occasion: action.payload.formData.occasion
          }
       );
-      console.table(updatedTablesForTheWeek);
-      console.table(updatedTablesInUiForTheSelectedDay);
+      // console.table(updatedTablesForTheWeek);
+      // console.table(updatedTablesInUiForTheSelectedDay);
 
       return {
         tableInUiForTheSelectedDay: updatedTablesInUiForTheSelectedDay,
@@ -292,7 +292,7 @@ export const initializeMainState = () => {
   //   return slot;
   // });
 
-  console.log(tablesForTheWeekWithAvailabilities);
+  // console.log(tablesForTheWeekWithAvailabilities);
   return {
     tablesForTheWeek: tablesForTheWeekWithAvailabilities,
     tableInUiForTheSelectedDay: tablesForTheWeekWithAvailabilities.filter(
@@ -319,8 +319,9 @@ function Main() {
     } else {
       alert("There was an error submitting your booking. Please try again.");
     }
-    console.table(mainState.tablesForTheWeek);
-    console.table(mainState.tableInUiForTheSelectedDay);
+    // console.table(mainState.tablesForTheWeek);
+    // console.table(mainState.tableInUiForTheSelectedDay);
+    return isSubmitted;
   };
 
   return (

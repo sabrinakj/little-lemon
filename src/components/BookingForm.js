@@ -24,7 +24,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
 
   const [isFormValid, setIsFormValid] = useState(false); // Track form validity
 
-  // console.log(mainState);
+  // // console.log(mainState);
   const handleDateChange = (event) => {
     let selectedDate = new Date();
     if (event.target.value) {
@@ -54,7 +54,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   };
 
   const handleGuestsChange = (event) => {
-    console.log(typeof(event.target.value));
+    // console.log(typeof(event.target.value));
     setFormData({
       ...formData,
       guests: event.target.value,
@@ -69,18 +69,20 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   };
 
   const bookATimeSlot = (event) => {
-    console.log(new Date(formData.date))
+    // console.log(new Date(formData.date))
     event.preventDefault();
     // Chiama la funzione submitForm passando i dati del form
-
-    dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
-      formData: {
-        ...formData,
-        date: new Date(formData.date)
-      },
-      tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
-    }});
-    submitForm(formData);
+    const formSubmitionStatus = submitForm(formData);
+    if (formSubmitionStatus) {
+      console.log("son qua");
+      dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
+        formData: {
+          ...formData,
+          date: new Date(formData.date)
+        },
+        tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
+      }});
+    }
   };
 
   // Check form validity on every formData change
