@@ -1,7 +1,7 @@
 import "./BookingSlot.css";
 
 function BookingSlot({ mainState }) {
-  console.log("mainState BookingSlot", mainState);
+  // console.log("mainState BookingSlot", mainState);
   
   return (
     <div className="booking-slot-time-slot">

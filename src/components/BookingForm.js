@@ -1,44 +1,48 @@
 import "./BookingForm.css";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { fetchAPI } from "../BookingAPI";
 
-function BookingForm({ mainState, dispatchTimeSlot }) {
-  console.table(mainState);
-  // const [date, setDate] = useState("");
-  // const [selectedTime, SetSelectedTime] = useState("");
-  // const [guests, SetGuests] = useState("");
-  // const [occasion, setOccasion] = useState("");
+// using the functions definitions below (remoteFunctionFetchAPI) was the reccomended way 
+// indicated by the coursera meta fe course capstone project,
+// but due to security reasons (net::ERR_BLOCKED_BY_ORB) the react application is not able to 
+// load this remote  JavaScript code (see comments in index.html) - and even I proxy the request via the proxy property in package.json
+// then I will have an error because the indicated url https://raw.githubusercontent.com/courseraap/capstone/main/api.js
+// is providing an http response which has as content type "text/plain" instead of "application/javascript" or "text/javascript"
+// and therefore the browser is not executing such external javascript code and as a consequence it could not be available
+// via the window object in the react components
+// therefore as a workaroud i have copied the JS code from that URL and put it inside the file src/BookingAPI.js
+//
+// const remoteFunctionFetchAPI = window.fetchAPI;
+
+function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
-    guests: "",
+    guests: "0",
     occasion: "",
   });
 
-  const genericTimeSlots = [
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-  ];
+  const [isFormValid, setIsFormValid] = useState(false); // Track form validity
 
+  // console.log(mainState);
   const handleDateChange = (event) => {
-    let selectedDate = new Date().toLocaleDateString("it-IT");
-
+    let selectedDate = new Date();
     if (event.target.value) {
-      selectedDate = new Date(event.target.value).toLocaleDateString("it-IT");
+      selectedDate = new Date(event.target.value);
     }
-    // setDate(e.target.value);
     setFormData({
       ...formData,
       date: event.target.value,
     });
-
-    dispatchTimeSlot({
+    // Fetch available times using the raw Date object
+    const availableTimesForTheSelectedDay = fetchAPI(selectedDate);
+    // Dispatch with the selected date and available times
+    dispatchUpdatingMainState({
       type: "UPDATE_SLOTS_SHOWN_IN_UI",
-      payload: selectedDate,
+      payload: {
+        selectedDate: selectedDate,
+        availableTimesForTheSelectedDay: availableTimesForTheSelectedDay, // Pass available times directly to the reducer
+      },
     });
   };
 
@@ -50,6 +54,7 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
   };
 
   const handleGuestsChange = (event) => {
+    console.log(typeof(event.target.value));
     setFormData({
       ...formData,
       guests: event.target.value,
@@ -64,14 +69,33 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
   };
 
   const bookATimeSlot = (event) => {
+    console.log(new Date(formData.date))
     event.preventDefault();
-    dispatchTimeSlot({ type: "BOOK_A_TIME_SLOT", payload: formData });
+    // Chiama la funzione submitForm passando i dati del form
+
+    dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
+      formData: {
+        ...formData,
+        date: new Date(formData.date)
+      },
+      tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
+    }});
+    submitForm(formData);
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log({ date, guests, occasion, selectedTime });
-  // };
+  // Check form validity on every formData change
+  useEffect(() => {
+    if (
+      formData.date &&
+      formData.selectedTime &&
+      formData.guests > 0 &&
+      formData.occasion
+    ) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [formData]);
 
   return (
     <div>
@@ -94,11 +118,17 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
           onChange={handleTimeChange}
           required
         >
-          {genericTimeSlots.map((tableHour) => (
-            <option key={tableHour} value={tableHour}>
-              {tableHour}
-            </option>
-          ))}
+          {/* Usa gli orari disponibili dallo stato */}
+          {mainState.tableInUiForTheSelectedDay &&
+          mainState.tableInUiForTheSelectedDay.length > 0 ? (
+            mainState.tableInUiForTheSelectedDay.map((tableHour) => (
+              <option key={tableHour.hour} value={tableHour.hour}>
+                {tableHour.hour}
+              </option>
+            ))
+          ) : (
+            <option value="">No available times</option>
+          )}
         </select>
 
         <label htmlFor="guests">Number of guests</label>
@@ -107,7 +137,7 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
           name="guests"
           value={formData.guests}
           onChange={handleGuestsChange}
-          placeholder="1"
+          placeholder="0"
           min="1"
           max="10"
           id="guests"
@@ -127,7 +157,14 @@ function BookingForm({ mainState, dispatchTimeSlot }) {
           <option>Anniversary</option>
         </select>
 
-        <input className="booking-form-submit" type="submit" value="Make Your reservation" />
+        <button
+          className="booking-form-submit"
+          type="submit"
+          disabled={!isFormValid} // Disable submit button if form is invalid
+          aria-label="On Click Submit the form"
+        >
+          Make Your reservation
+        </button>
       </form>
     </div>
   );

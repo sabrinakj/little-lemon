@@ -1,5 +1,5 @@
-import React, { useReducer } from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useReducer, useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
 import Menu from "../pages/Menu";
@@ -8,47 +8,117 @@ import Login from "../pages/Login";
 import BookingPage from "../pages/BookingPage";
 import ConfirmedBooking from "./ConfirmedBooking";
 import "./Main.css";
+import { fetchAPI, submitAPI } from "../BookingAPI";
+
+// using the two functions definitions below (remoteFunctionFetchAPI and remoteFuctionSubmitAPI) was the reccomended way
+// indicated by the coursera meta fe course capstone project,
+// but due to security reasons (net::ERR_BLOCKED_BY_ORB) the react application is not able to
+// load this remote  JavaScript code (see comments in index.html) - and even I proxy the request via the proxy property in package.json
+// then I will have an error because the indicated url https://raw.githubusercontent.com/courseraap/capstone/main/api.js
+// is providing an http response which has as content type "text/plain" instead of "application/javascript" or "text/javascript"
+// and therefore the browser is not executing such external javascript code and as a consequence it could not be available
+// via the window object in the react components
+// therefore as a workaroud i have copied the JS code from that URL and put it inside the file src/BookingAPI.js
+//
+// const remoteFunctionFetchAPI = window.fetchAPI;
+// const remoteFuctionSubmitAPI = window.submitAPI;
 
 const tablesForToday = [
   {
-    bookingStatus: false,
+    bookingStatus: true,
     date: new Date().toLocaleDateString("it-IT"),
     hour: "17:00",
     guests: "0",
     occasion: "birthday",
   },
   {
-    bookingStatus: false,
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "17:30",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
     date: new Date().toLocaleDateString("it-IT"),
     hour: "18:00",
     guests: "0",
     occasion: "birthday",
   },
   {
-    bookingStatus: false,
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "18:30",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
     date: new Date().toLocaleDateString("it-IT"),
     hour: "19:00",
     guests: "0",
     occasion: "birthday",
   },
   {
-    bookingStatus: false,
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "19:30",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
     date: new Date().toLocaleDateString("it-IT"),
     hour: "20:00",
     guests: "0",
     occasion: "birthday",
   },
   {
-    bookingStatus: false,
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "20:30",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
     date: new Date().toLocaleDateString("it-IT"),
     hour: "21:00",
     guests: "0",
     occasion: "birthday",
   },
   {
-    bookingStatus: false,
+    bookingStatus: true,
     date: new Date().toLocaleDateString("it-IT"),
-    hour: "22:00",
+    hour: "21:30",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "22:0",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "22:30",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "23:00",
+    guests: "0",
+    occasion: "birthday",
+  },
+  {
+    bookingStatus: true,
+    date: new Date().toLocaleDateString("it-IT"),
+    hour: "23:30",
     guests: "0",
     occasion: "birthday",
   },
@@ -59,60 +129,115 @@ const initialMainState = {
   tableInUiForTheSelectedDay: [...tablesForToday],
 };
 
-const updateBookingStatus = (tablesForTheWeek, actionPayload) => {
-  const actionPayloadDate = new Date(actionPayload.date).toLocaleDateString(
-    "it-IT"
-  );
+// (initialMainState.tablesForTheWeek, {availableTimesForSelectedDay, SelectedDate})
+const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
+  const availableTimesForSelectedDay = fetchAPI(reservedTablesDetails.date);
+  console.log(availableTimesForSelectedDay);
+  const tablesWithAvailabilities = tablesForTheWeek.map((table) => {
+    console.log(table.date);
+    console.log('table.hour', table.hour);
+    console.log('reservedTablesDetails', reservedTablesDetails)
+    // console.log('reservedTablesDetails.selectedTime', reservedTablesDetails.selectedTime)
+    // console.log("else if", table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") );
+    // console.log("else if", availableTimesForSelectedDay.some((item) => item.includes(table.hour)));
+    // console.log("else if", table.hour === reservedTablesDetails.selectedTime);
+    // console.log("else if", reservedTablesDetails.guests !== "0");
+    console.log(
+      table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
+      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      table.hour === reservedTablesDetails.selectedTime &&
+      reservedTablesDetails.guests !== "0"
+    );
 
-  return tablesForTheWeek.map((booking) => {
     if (
-      booking.date === actionPayloadDate &&
-      booking.hour === actionPayload.selectedTime
+      table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
+      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      (reservedTablesDetails.guests === undefined ||reservedTablesDetails.guests === null)
     ) {
+      console.log("if of update ui slots");
       return {
-        ...booking,
-        bookingStatus: true,
-        guests: actionPayload.guests,
-        occasion: actionPayload.occasion,
+        ...table,
+        bookingStatus: false,
       };
     }
-    return booking;
+    else if (
+      table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
+      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      table.hour === reservedTablesDetails.selectedTime &&
+      reservedTablesDetails.guests !== "0"
+    ) {
+      console.log("else if of make a reservation");
+      const updatedTable = {
+        ...table,
+        bookingStatus: true,
+        guests: reservedTablesDetails.guests,
+        occasion: reservedTablesDetails.occasion,
+      };
+      console.log(updatedTable);
+      return updatedTable;
+    }
+    else {
+      console.log("else")
+      return table;
+    }
   });
+  return tablesWithAvailabilities;
 };
 
-// Reducer function to update the main state
-export const updateMainState = (state, action) => {
+// Reducer function to update the main state - per far funzionare il secondo test
+export const reducerForUpdatingMainState = (state, action) => {
   switch (action.type) {
-    case "UPDATE_SLOTS_SHOWN_IN_UI":
-      console.log("state", state);
-      console.log("action", action);
+    case "UPDATE_SLOTS_SHOWN_IN_UI": {
+      // console.log("state", state);
+      // console.log("action", action);
+      // console.log(new Date (action.payload.selectedDate));
+      // const availableTimesForSelectedDay = fetchAPI(action.payload.selectedDate);
+      // console.log(availableTimesForSelectedDay);
+      // console.log(action.payload);
+
+      const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
+        (el) => el.date === action.payload.selectedDate.toLocaleDateString("it-IT")
+      );
+
+      const tablesInUiForTheSelectedDayWithAvailabilities = updateBookingStatus(
+        tablesInUiForTheSelectedDay,
+        { date: action.payload.selectedDate }
+      );
+
       return {
         tablesForTheWeek: [...state.tablesForTheWeek],
-        tableInUiForTheSelectedDay: state.tablesForTheWeek.filter(
-          (el) => el.date === action.payload
-        ),
+        tableInUiForTheSelectedDay: tablesInUiForTheSelectedDayWithAvailabilities
       };
+    }
 
-    case "BOOK_A_TIME_SLOT":
-      console.log(action.payload);
-      const updatedBookings = updateBookingStatus(
+    case "BOOK_A_TIME_SLOT": {
+
+      const updatedTablesForTheWeek = updateBookingStatus(
         state.tablesForTheWeek,
-        action.payload
-        // new Date(action.payload.date).toLocaleDateString('it-IT'),
-        // action.payload.selectedTime
+        {
+          date: action.payload.formData.date,
+          selectedTime: action.payload.formData.selectedTime,
+          guests: action.payload.formData.guests,
+          occasion: action.payload.formData.occasion
+         }
       );
-      const updatedBookingsUi = updateBookingStatus(
+      const updatedTablesInUiForTheSelectedDay = updateBookingStatus(
         state.tableInUiForTheSelectedDay,
-        action.payload
-        // new Date(action.payload.date).toLocaleDateString('it-IT'),
-        // action.payload.selectedTime
+        {
+          date: action.payload.formData.date,
+          selectedTime: action.payload.formData.selectedTime,
+          guests: action.payload.formData.guests,
+          occasion: action.payload.formData.occasion
+         }
       );
-      return {
-        tableInUiForTheSelectedDay: updatedBookingsUi,
-        tablesForTheWeek: updatedBookings,
-      };
+      console.table(updatedTablesForTheWeek);
+      console.table(updatedTablesInUiForTheSelectedDay);
 
-    // return initialMainState;
+      return {
+        tableInUiForTheSelectedDay: updatedTablesInUiForTheSelectedDay,
+        tablesForTheWeek: updatedTablesForTheWeek,
+      };
+    }
     default:
       return state;
   }
@@ -120,43 +245,84 @@ export const updateMainState = (state, action) => {
 
 // Initial state for the mainState
 export const initializeMainState = () => {
-  let initializedMainState = [];
-
+  let initializedTableForTheWeek = [];
   for (let i = 0; i < 7; i++) {
-    for (let j = 0; j < 6; j++) {
-      initializedMainState.push({
-        bookingStatus: false,
+    let hour = 17;
+    let minute = 0;
+    for (let j = 0; j < 14; j++) {
+      let timeString =
+        hour.toString().padStart(2, "0") +
+        ":" +
+        minute.toString().padStart(2, "0");
+      initializedTableForTheWeek.push({
+        bookingStatus: true,
         date: new Date(
           new Date().getFullYear(),
           new Date().getMonth(),
           new Date().getDate() + i
         ).toLocaleDateString("it-IT"),
-        hour: 17 + j + ":00",
+        hour: timeString,
         guests: "0",
         occasion: "",
       });
+      minute += 30;
+      if (minute === 60) {
+        minute = 0;
+        hour += 1;
+      }
     }
   }
 
-  console.log("initializedMainState", initializedMainState);
-  console.log("initialMainState", initialMainState);
-  console.log("initialMainState.tablesForTheWeek", initialMainState.tablesForTheWeek);
+  const tablesForTheWeekWithAvailabilities = updateBookingStatus(
+    initializedTableForTheWeek,
+    { date: new Date() }
+  );
 
+  // const availableTimesForCurrentDay = fetchAPI(new Date());
+  // const tablesForTheWeekWithAvailabilities = initializedTableForTheWeek.map((slot) => {
+  //   if (
+  //     (slot.date === (new Date()).toLocaleDateString("it-IT")) &&
+  //     (availableTimesForCurrentDay.some(item => item.includes(slot.hour)))
+  //   ) {
+  //     return {
+  //       ...slot,
+  //       bookingStatus: false,
+  //     };
+  //   }
+  //   return slot;
+  // });
+
+  console.log(tablesForTheWeekWithAvailabilities);
   return {
-    tableInUiForTheSelectedDay: tablesForToday,
-    tablesForTheWeek: initializedMainState,
+    tablesForTheWeek: tablesForTheWeekWithAvailabilities,
+    tableInUiForTheSelectedDay: tablesForTheWeekWithAvailabilities.filter(
+      (el) => el.date === new Date().toLocaleDateString("it-IT")
+    ),
   };
-  
 };
 
 function Main() {
-  const [mainState, dispatchTimeSlot] = useReducer(
-    updateMainState,
+  const navigate = useNavigate();
+
+  const [mainState, dispatchUpdatingMainState] = useReducer(
+    reducerForUpdatingMainState,
     initialMainState,
     initializeMainState
   );
 
-  console.table(mainState);
+  const submitForm = (formData) => {
+    // Save booking data in Local Storage
+    localStorage.setItem("bookingData", JSON.stringify(formData));
+    const isSubmitted = submitAPI(formData);
+    if (isSubmitted) {
+      navigate("/confirmed-booking");
+    } else {
+      alert("There was an error submitting your booking. Please try again.");
+    }
+    console.table(mainState.tablesForTheWeek);
+    console.table(mainState.tableInUiForTheSelectedDay);
+  };
+
   return (
     <main className="main">
       <Routes>
@@ -168,14 +334,15 @@ function Main() {
           element={
             <BookingPage
               mainState={mainState}
-              dispatchTimeSlot={dispatchTimeSlot}
+              dispatchUpdatingMainState={dispatchUpdatingMainState}
+              submitForm={submitForm}
             />
           }
         />
         <Route path="/orderonline" element={<OrderOnline />} />
         <Route path="/login" element={<Login />} />
         <Route
-          path="/confermed-booking"
+          path="/confirmed-booking"
           element={<ConfirmedBooking mainState={mainState} />}
         />
       </Routes>
