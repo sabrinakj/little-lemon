@@ -21,3 +21,8 @@
   border-radius: 8px;
   /* margin-bottom: 20px; */
 }
+
+.bookingform-input-field {
+  font-size: 0.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

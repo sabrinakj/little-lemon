@@ -9,6 +9,8 @@
   font-weight: 600;
   border-radius: 5px;
   box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.175);
+  display: inline-block;
+  margin: 0.25rem;
 }
 
 .table-ui-reserved {
@@ -18,7 +20,8 @@
   background-color: #495e5771;
 }
 
-.booking-slot-time-slot {
+.bookingslot-time-slot {
   align-content: center;
   text-align: center;
 }
+

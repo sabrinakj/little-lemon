@@ -1,6 +1,7 @@
 .booking-page-form-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 4rem;
   margin-top: 1rem;
   margin-bottom: 1rem;

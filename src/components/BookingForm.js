@@ -104,6 +104,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
       <form onSubmit={bookATimeSlot} className="booking-form-style">
         <label htmlFor="res-date">Choose date</label>
         <input
+          className="bookingform-input-field"
           type="date"
           value={formData.date}
           onChange={handleDateChange}
@@ -114,6 +115,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
 
         <label htmlFor="res-time">Choose time</label>
         <select
+          className="bookingform-input-field"
           name="res-time"
           id="res-time"
           value={formData.selectedTime}
@@ -135,6 +137,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
 
         <label htmlFor="guests">Number of guests</label>
         <input
+          className="bookingform-input-field"
           type="number"
           name="guests"
           value={formData.guests}
@@ -148,6 +151,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
 
         <label htmlFor="occasion">Occasion</label>
         <select
+        className="bookingform-input-field"
           name="occasion"
           id="occasion"
           value={formData.occasion}
