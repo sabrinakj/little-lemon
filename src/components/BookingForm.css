@@ -26,3 +26,12 @@
   font-size: 0.5rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+.bookingform-container {
+  position: relative;
+}
+
+.confirmedbooking{
+  position: absolute;
+  z-index: 1;
+}

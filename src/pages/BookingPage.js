@@ -4,8 +4,8 @@ import "./BookingPage.css";
 import resturantImg from "../assets/icons_assets/restaurant.jpg";
 
 
-function BookingPage({ mainState, dispatchUpdatingMainState, submitForm }) {
-  // // console.log(mainState);
+function BookingPage({ mainState, dispatchUpdatingMainState, submitForm, isReservationConfirmed }) {
+  // console.log(isReservationConfirmed);
   return (
     <>
       <img className="booking-img" src={resturantImg} alt="resturant" />
@@ -15,6 +15,7 @@ function BookingPage({ mainState, dispatchUpdatingMainState, submitForm }) {
           mainState={mainState}
           dispatchUpdatingMainState={dispatchUpdatingMainState}
           submitForm={submitForm}
+          isReservationConfirmed={isReservationConfirmed}
         />
         <BookingSlot mainState={mainState} />
       </div>

@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
@@ -245,6 +245,8 @@ export const reducerForUpdatingMainState = (state, action) => {
 
 // Initial state for the mainState
 export const initializeMainState = () => {
+  const previousMainStateFromLocalStorage = localStorage.getItem('mainState');
+  console.log(previousMainStateFromLocalStorage)
   let initializedTableForTheWeek = [];
   for (let i = 0; i < 7; i++) {
     let hour = 17;
@@ -278,21 +280,6 @@ export const initializeMainState = () => {
     { date: new Date() }
   );
 
-  // const availableTimesForCurrentDay = fetchAPI(new Date());
-  // const tablesForTheWeekWithAvailabilities = initializedTableForTheWeek.map((slot) => {
-  //   if (
-  //     (slot.date === (new Date()).toLocaleDateString("it-IT")) &&
-  //     (availableTimesForCurrentDay.some(item => item.includes(slot.hour)))
-  //   ) {
-  //     return {
-  //       ...slot,
-  //       bookingStatus: false,
-  //     };
-  //   }
-  //   return slot;
-  // });
-
-  // console.log(tablesForTheWeekWithAvailabilities);
   return {
     tablesForTheWeek: tablesForTheWeekWithAvailabilities,
     tableInUiForTheSelectedDay: tablesForTheWeekWithAvailabilities.filter(
@@ -302,7 +289,7 @@ export const initializeMainState = () => {
 };
 
 function Main() {
-  const navigate = useNavigate();
+  const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
 
   const [mainState, dispatchUpdatingMainState] = useReducer(
     reducerForUpdatingMainState,
@@ -311,16 +298,14 @@ function Main() {
   );
 
   const submitForm = (formData) => {
-    // Save booking data in Local Storage
-    localStorage.setItem("bookingData", JSON.stringify(formData));
     const isSubmitted = submitAPI(formData);
     if (isSubmitted) {
-      navigate("/confirmed-booking");
+      setIsReservationConfirmed(isSubmitted);
+      localStorage.setItem("mainState", JSON.stringify(mainState));
+      return true
     } else {
       alert("There was an error submitting your booking. Please try again.");
     }
-    // console.table(mainState.tablesForTheWeek);
-    // console.table(mainState.tableInUiForTheSelectedDay);
     return isSubmitted;
   };
 
@@ -337,15 +322,16 @@ function Main() {
               mainState={mainState}
               dispatchUpdatingMainState={dispatchUpdatingMainState}
               submitForm={submitForm}
+              isReservationConfirmed={isReservationConfirmed}
             />
           }
         />
         <Route path="/orderonline" element={<OrderOnline />} />
         <Route path="/login" element={<Login />} />
-        <Route
+        {/* <Route
           path="/confirmed-booking"
           element={<ConfirmedBooking mainState={mainState} />}
-        />
+        /> */}
       </Routes>
     </main>
   );

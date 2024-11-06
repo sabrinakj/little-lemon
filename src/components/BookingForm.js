@@ -1,6 +1,7 @@
 import "./BookingForm.css";
 import { useState, useEffect } from "react";
 import { fetchAPI } from "../BookingAPI";
+import ConfirmedBooking from "./ConfirmedBooking";
 
 // using the functions definitions below (remoteFunctionFetchAPI) was the reccomended way 
 // indicated by the coursera meta fe course capstone project,
@@ -14,7 +15,8 @@ import { fetchAPI } from "../BookingAPI";
 //
 // const remoteFunctionFetchAPI = window.fetchAPI;
 
-function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
+function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReservationConfirmed }) {
+  // console.log(isReservationConfirmed)
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
@@ -74,7 +76,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
     // Chiama la funzione submitForm passando i dati del form
     const formSubmitionStatus = submitForm(formData);
     if (formSubmitionStatus) {
-      console.log("son qua");
+      // console.log("son qua");
       dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
         formData: {
           ...formData,
@@ -100,7 +102,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   }, [formData]);
 
   return (
-    <div>
+    <div className="bookingform-container">
       <form onSubmit={bookATimeSlot} className="booking-form-style">
         <label htmlFor="res-date">Choose date</label>
         <input
@@ -172,6 +174,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
           Make Your reservation
         </button>
       </form>
+      {isReservationConfirmed && <ConfirmedBooking/>}
     </div>
   );
 }

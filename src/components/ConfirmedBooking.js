@@ -31,6 +31,7 @@ const ConfirmedBooking = () => {
           <p>Loading booking details...</p>
         )}
       </div>
+      {/* <div className="confirmedbooking-background"></div> */}
     </div>
   );
 };
