@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ConfirmedBooking.css";
 
-const ConfirmedBooking = () => {
+function ConfirmedBooking() {
   const [bookingData, setBookingData] = useState(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ConfirmedBooking = () => {
           <p>Loading booking details...</p>
         )}
       </div>
-      {/* <div className="confirmedbooking-background"></div> */}
+
     </div>
   );
 };

@@ -24,6 +24,8 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
     occasion: "",
   });
 
+  // const [stateOfIsReservationConfirmed, setStateOfIsReservationConfirmed] = useState(false)
+
   const [isFormValid, setIsFormValid] = useState(false); // Track form validity
 
   // // console.log(mainState);
@@ -101,6 +103,18 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
     }
   }, [formData]);
 
+  useEffect(() => {
+    if ( isReservationConfirmed ) {
+      setIsFormValid(false);
+      setFormData({
+        date: "",
+        selectedTime: "",
+        guests: "0",
+        occasion: "",
+      });
+    }
+  }, [isReservationConfirmed]);
+
   return (
     <div className="bookingform-container">
       <form onSubmit={bookATimeSlot} className="booking-form-style">
@@ -174,7 +188,10 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
           Make Your reservation
         </button>
       </form>
-      {isReservationConfirmed && <ConfirmedBooking/>}
+      {
+        isReservationConfirmed &&
+        <ConfirmedBooking/>
+      }
     </div>
   );
 }
