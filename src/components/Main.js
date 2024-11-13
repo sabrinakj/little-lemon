@@ -29,6 +29,7 @@ const tablesForToday = [
     hour: "17:00",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -36,6 +37,7 @@ const tablesForToday = [
     hour: "17:30",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -43,6 +45,7 @@ const tablesForToday = [
     hour: "18:00",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -50,6 +53,7 @@ const tablesForToday = [
     hour: "18:30",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -57,6 +61,7 @@ const tablesForToday = [
     hour: "19:00",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -64,6 +69,7 @@ const tablesForToday = [
     hour: "19:30",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -71,6 +77,7 @@ const tablesForToday = [
     hour: "20:00",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -78,6 +85,7 @@ const tablesForToday = [
     hour: "20:30",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -85,6 +93,7 @@ const tablesForToday = [
     hour: "21:00",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -92,6 +101,7 @@ const tablesForToday = [
     hour: "21:30",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -99,6 +109,7 @@ const tablesForToday = [
     hour: "22:0",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -106,6 +117,7 @@ const tablesForToday = [
     hour: "22:30",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -113,6 +125,7 @@ const tablesForToday = [
     hour: "23:00",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
   {
     bookingStatus: true,
@@ -120,6 +133,7 @@ const tablesForToday = [
     hour: "23:30",
     guests: "0",
     occasion: "birthday",
+    refreshedStatus: false
   },
 ];
 
@@ -131,35 +145,19 @@ const initialMainState = {
 let lastBookingDataFromLocalStorage = localStorage.getItem('bookingData');
 let previousMainStateFromLocalStorage = localStorage.getItem('mainState');
 
-// (initialMainState.tablesForTheWeek, {availableTimesForSelectedDay, SelectedDate})
 const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
   const availableTimesForSelectedDay = fetchAPI(reservedTablesDetails.date);
-  // console.log(availableTimesForSelectedDay);
   const tablesWithAvailabilities = tablesForTheWeek.map((table) => {
-    // console.log(table.date);
-    // console.log('table.hour', table.hour);
-    // console.log('reservedTablesDetails', reservedTablesDetails)
-    // // console.log('reservedTablesDetails.selectedTime', reservedTablesDetails.selectedTime)
-    // // console.log("else if", table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") );
-    // // console.log("else if", availableTimesForSelectedDay.some((item) => item.includes(table.hour)));
-    // // console.log("else if", table.hour === reservedTablesDetails.selectedTime);
-    // // console.log("else if", reservedTablesDetails.guests !== "0");
-    // console.log(
-    //   table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
-    //   availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
-    //   table.hour === reservedTablesDetails.selectedTime &&
-    //   reservedTablesDetails.guests !== "0"
-    // );
-
     if (
       table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
       availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
       (reservedTablesDetails.guests === undefined ||reservedTablesDetails.guests === null)
     ) {
-      // console.log("if of update ui slots");
+      console.log("if of update ui slots");
       return {
         ...table,
         bookingStatus: false,
+        refreshedStatus: true
       };
     }
     else if (
@@ -168,19 +166,20 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
       table.hour === reservedTablesDetails.selectedTime &&
       reservedTablesDetails.guests !== "0"
     ) {
-      // console.log("else if of make a reservation");
+      console.log("else if of make a reservation");
       const updatedTable = {
         ...table,
         bookingStatus: true,
         guests: reservedTablesDetails.guests,
         occasion: reservedTablesDetails.occasion,
+        refreshedStatus: true
       };
-      // console.log(updatedTable);
+      console.log(updatedTable);
       return updatedTable;
     }
     else {
-      // console.log("else")
-      return table;
+      console.log("else")
+      return {...table, refreshedStatus: true};
     }
   });
   return tablesWithAvailabilities;
@@ -190,36 +189,46 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
 export const reducerForUpdatingMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI": {
-      console.log(action.payload.selectedDate.toLocaleDateString("it-IT"))
       let formatedPayloadDate = action.payload.selectedDate.toLocaleDateString("it-IT");
+      lastBookingDataFromLocalStorage = localStorage.getItem('bookingData');
       console.log(lastBookingDataFromLocalStorage)
-      console.log(lastBookingDataFromLocalStorage?.date)
-      console.log(lastBookingDataFromLocalStorage?.guests)
-      console.log(formatedPayloadDate)
-      // run this if block when:
-      // 1. no data in local storage
-      // 2. the local storage bookingData.date is different then the formatedPayloadDate
+      const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
+        (el) => el.date === formatedPayloadDate
+      );
+      const otherTablesNotForTheSelectedDay = state.tablesForTheWeek.filter(
+        (el) => el.date !== formatedPayloadDate
+      );
+      console.log((tablesInUiForTheSelectedDay))
+      console.log((tablesInUiForTheSelectedDay[0].refreshedStatus === false))
       if(
-        (lastBookingDataFromLocalStorage?.date !== formatedPayloadDate) ||
+        (tablesInUiForTheSelectedDay[0].refreshedStatus === false) ||
         (lastBookingDataFromLocalStorage === null)
       ) {
         console.log(lastBookingDataFromLocalStorage)
-        const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
-          (el) => el.date === formatedPayloadDate
-        );
         const tablesInUiForTheSelectedDayWithAvailabilities = updateBookingStatus(
           tablesInUiForTheSelectedDay,
           { date: action.payload.selectedDate }
         );
+        console.log(
+          {
+            tablesForTheWeek: [...state.tablesForTheWeek],
+            tableInUiForTheSelectedDay: tablesInUiForTheSelectedDayWithAvailabilities
+          }
+        );
+        const updatedTablesForTheWeek = [
+          ...otherTablesNotForTheSelectedDay, ...tablesInUiForTheSelectedDayWithAvailabilities
+        ];
         return {
-          tablesForTheWeek: [...state.tablesForTheWeek],
+          tablesForTheWeek: updatedTablesForTheWeek,
           tableInUiForTheSelectedDay: tablesInUiForTheSelectedDayWithAvailabilities
         };
       }
-
       else {
-        const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
-          (el) => el.date === formatedPayloadDate
+        console.log(
+          {
+            tablesForTheWeek: [...state.tablesForTheWeek],
+            tableInUiForTheSelectedDay: tablesInUiForTheSelectedDay
+          }
         );
         return {
           tablesForTheWeek: [...state.tablesForTheWeek],
@@ -236,8 +245,9 @@ export const reducerForUpdatingMainState = (state, action) => {
           date: action.payload.formData.date,
           selectedTime: action.payload.formData.selectedTime,
           guests: action.payload.formData.guests,
-          occasion: action.payload.formData.occasion
-         }
+          occasion: action.payload.formData.occasion,
+          refreshedStatus: true
+        }
       );
       const updatedTablesInUiForTheSelectedDay = updateBookingStatus(
         state.tableInUiForTheSelectedDay,
@@ -245,9 +255,16 @@ export const reducerForUpdatingMainState = (state, action) => {
           date: action.payload.formData.date,
           selectedTime: action.payload.formData.selectedTime,
           guests: action.payload.formData.guests,
-          occasion: action.payload.formData.occasion
+          occasion: action.payload.formData.occasion,
+          refreshedStatus: true
          }
       );
+      console.log(
+        {
+          tableInUiForTheSelectedDay: updatedTablesInUiForTheSelectedDay,
+          tablesForTheWeek: updatedTablesForTheWeek,
+        }
+      )
       return {
         tableInUiForTheSelectedDay: updatedTablesInUiForTheSelectedDay,
         tablesForTheWeek: updatedTablesForTheWeek,
@@ -287,6 +304,7 @@ export const initializeMainState = () => {
           hour: timeString,
           guests: "0",
           occasion: "",
+          refreshedStatus: false
         });
         minute += 30;
         if (minute === 60) {
@@ -327,7 +345,7 @@ function Main() {
       };
       localStorage.setItem("mainState", JSON.stringify(mainState));
       localStorage.setItem("bookingData", JSON.stringify(lastBookingData));
-      lastBookingDataFromLocalStorage = lastBookingData;
+      // lastBookingDataFromLocalStorage = lastBookingData;
       setIsReservationConfirmed(isSubmitted);
       return true
     } else {
