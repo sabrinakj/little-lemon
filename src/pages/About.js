@@ -1,5 +1,6 @@
 import "./About.css";
-import imageResturantA from "../assets/icons_assets/Mario and Adrian A.jpg";
+import imageResturantA from "../assets/icons_assets/Mario and Adrian A-433x288.png";
+import imageBruschette from "../assets/icons_assets/bruschette-small.png";
 
 function About() {
   return (
@@ -25,7 +26,7 @@ function About() {
           />
           <img
             className="about-img-two"
-            src="https://plus.unsplash.com/premium_photo-1677686707294-e5f616c39e0b?q=80&w=3648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={imageBruschette}
             alt="two chefs are cooking"
           />
         </div>

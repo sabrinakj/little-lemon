@@ -1,5 +1,5 @@
 import "./SectionBrochure.css";
-import resturantFoodImg from "../assets/icons_assets/restauranfood.jpg";
+import resturantFoodImg from "../assets/icons_assets/restauranfood-171x258.png";
 import { Link } from "react-router-dom";
 
 function SectionBrochure(props) {

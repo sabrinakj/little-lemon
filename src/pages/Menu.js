@@ -1,6 +1,7 @@
 import Card from "../components/Card";
 import lemonDesertImg from "../assets/icons_assets/lemon dessert.jpg";
 import "./Menu.css"
+import bisteccaImg from "../assets/icons_assets/bistecca-small.png";
 
 const cardsSides = [
   {
@@ -52,8 +53,7 @@ const cardsMeal = [
     dishDescription:
       "Our meat comes from natural farms. The available cuts vary based on the availability of the fresh product.",
     delivery: "Order a delivey",
-    image:
-      "https://images.unsplash.com/photo-1683315446874-e6a629087ef8?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: bisteccaImg,
   },
   {
     id: 2,
