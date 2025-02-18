@@ -43,6 +43,7 @@
   background-color: #495E57;
   height: 29rem;
 }
+
 .wrapped-section {
   display: flex;
   flex-direction: row;
@@ -50,3 +51,13 @@
   max-width: 53.75rem;
   margin: auto;
 }
+
+.sec-brochure-second {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .sec-brochure-second {
+    display: block;
+  }
+}
+
