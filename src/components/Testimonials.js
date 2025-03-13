@@ -1,6 +1,7 @@
 import "./Testimonials.css";
 import raitingIcon from "../assets/icons_assets/star_rate_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg";
 import Card from "./Card";
+import React from "react";
 
 const cardsFood = [
   {
@@ -31,22 +32,34 @@ const cardsFood = [
 
 function Testimonials() {
   return (
-    <section className="testimonials-specials">
+    <section className="testimonials-container">
       <div className="testimonials-online-menu">
         <h2 className="testimonials-card-titolo">Testimonials</h2>
       </div>
-      <div className="testimonials-specials-cards">
-        {cardsFood.map((cardFood) => (
-          <Card className="testimonials-card"
-            key={cardFood.id}
-            imgURL={cardFood.image}
-            dishPrice={cardFood.dishPrice}
-            title={cardFood.dishName}
-            delivery={cardFood.delivery}
-            description={cardFood.dishDescription}
-            isSmall={true}
-          />
+      <div className="testimonials-container-cards">
+        {cardsFood.reduce((result, cardFood, index) => {
+          if (index % 2 === 0) {
+            result.push([]);
+          }
+          result[result.length - 1].push(cardFood);
+          return result;
+        }, []).map((group, groupIndex) => (
+          <div className="card-pair-block" key={`group-${groupIndex}`}>
+            {group.map((cardFood) => (
+              <Card
+                key={cardFood.id}
+                className="testimonials-card"
+                imgURL={cardFood.image}
+                dishPrice={cardFood.dishPrice}
+                title={cardFood.dishName}
+                delivery={cardFood.delivery}
+                description={cardFood.dishDescription}
+                isSmall={true}
+              />
+            ))}
+          </div>
         ))}
+
       </div>
     </section>
   );

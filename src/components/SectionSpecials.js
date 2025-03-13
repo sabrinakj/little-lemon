@@ -45,6 +45,7 @@ function SectionSpecials() {
           <button className="btn-specials">Online Menu</button>
         </Link>
       </div>
+
       <div className="specials-cards">
         {cardsFood.map((cardFood) => (
           <Card
@@ -57,6 +58,9 @@ function SectionSpecials() {
             isSmall={false}
           />
         ))}
+        <Link to="/menu" className="custom-link-mobile">
+          <button className="btn-specials">Online Menu</button>
+        </Link>
       </div>
     </section>
   );
