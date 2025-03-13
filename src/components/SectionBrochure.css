@@ -1,15 +1,18 @@
 .title-section-brochure {
   color: #F4CE14;
   font-size: 50pt;
-  margin-top: 100px;
-  margin-bottom: 15px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.h3-section-brochure {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .section-brochure h3 {
   color: #ffffff;
   font-size: 30pt;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 .section-brochure p {
@@ -33,31 +36,42 @@
 .section-brochure img {
   width: 25.60rem;
   height: 30rem;
-  margin-top: 2rem;
   border-radius: 0.8rem;
  }
 
 .section-brochure {
-  /* border: 1px blue solid; */
+  /* border: 3px blue solid; */
   margin: auto;
   background-color: #495E57;
-  height: 29rem;
 }
 
 .wrapped-section {
+  /* border: 3px red solid; */
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   max-width: 53.75rem;
   margin: auto;
 }
 
-.sec-brochure-second {
-  display: none;
+.sec-brochure-text {
+  /* border: 2px green solid; */
 }
-@media (min-width: 1024px) {
-  .sec-brochure-second {
-    display: block;
+
+.sec-brochure-image {
+  /* border: 2px orange solid; */
+}
+
+@media (min-width: 860px) {
+  .wrapped-section {
+    flex-direction: row;
+    justify-content: space-between;
   }
+
+  .section-brochure {
+    height: 29rem;
+  }
+
 }
 
