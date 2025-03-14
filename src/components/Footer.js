@@ -6,10 +6,7 @@ import Nav from '../components/Nav.js'
 function Footer() {
   return (
     <footer className='footer' id='contact'>
-      {/* <p>&copy; 2024 Little Lemon. All rights reserved.</p>
-      <p>Contact us: info@littlelemon.com</p> */}
       <div className='footer-container'>
-
         <div className='footer-logo-bg'>
           <img className='footer-img' src={logo} alt="Little Lemon Logo"/>
         </div>
@@ -19,7 +16,7 @@ function Footer() {
           <Nav isVertical={true}/>
         </div>
 
-        <div>
+        <div className='contact-info'>
           <h2>Contact</h2>
           <p>
             9601 Best street way<br/>Chicago Illinois
@@ -30,7 +27,7 @@ function Footer() {
 
         </div>
 
-        <div>
+        <div className='social-media'>
           <h2>Social Media Links</h2>
           <p>Facebook</p>
           <p>Instagram</p>
