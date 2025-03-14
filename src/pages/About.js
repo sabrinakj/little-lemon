@@ -4,9 +4,9 @@ import imageBruschette from "../assets/icons_assets/bruschette-small.png";
 
 function About() {
   return (
-    <div className="about-main-div">
-      <div className="about-page">
-        <div className="about-div-left">
+    <div className="about-container">
+      <div className="about-subcontainer">
+        <div className="about-div-description">
           <h1 className="about-h1">Little Lemon</h1>
           <h2 className="about-h2">Chicago</h2>
           <p className="about-p">
@@ -18,7 +18,7 @@ function About() {
             tantalize your taste buds and leave you craving more.
           </p>
         </div>
-        <div className="about-div-right">
+        <div className="about-div-images">
           <img
             className="about-img-one"
             src={imageResturantA}

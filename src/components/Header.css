@@ -1,4 +1,5 @@
-header {
+#home {
+  border: 2px solid red;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -9,6 +10,7 @@ header {
 }
 
 .header-img {
+  border: 2px solid green;
   height: 2.5rem;
   width: 9.25rem;
   margin-top: 2rem;

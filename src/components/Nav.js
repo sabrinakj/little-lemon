@@ -7,7 +7,7 @@ import "./Nav.css";
 function Nav({ isVertical }) {
   const navClass = isVertical ? "ul-list-vertical" : "ul-list";
   return (
-    <nav>
+    <nav className="nav-container">
       <ul className={navClass}>
         <li className="list">
           <Link to="/" className="custom-link">Home</Link>
