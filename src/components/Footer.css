@@ -14,14 +14,6 @@
   margin: auto;
 }
 
-.footer-nav {
-  /* border: 4px yellow solid; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 360px;
-}
-
 .footer-nav h2 {
     margin-bottom: 0px;
 }
@@ -39,13 +31,7 @@
   width: 120px;
 }
 
-.contact-info {
-  /* border: 4px purple solid; */
-  width: 360px;
-  text-align: center;
-}
-
-.social-media {
+.footer-element {
   /* border: 4px orange solid; */
   width: 360px;
   text-align: center;
@@ -59,21 +45,9 @@
     width: 53.75rem;
   }
 
-  .contact-info {
+  .footer-element {
     width: 360px;
     text-align: center;
-  }
-
-  .social-media {
-    width: 360px;
-    text-align: center;
-  }
-
-  .footer-nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 360px;
   }
 
 }
