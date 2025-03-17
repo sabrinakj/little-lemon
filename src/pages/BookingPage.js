@@ -11,13 +11,17 @@ function BookingPage({ mainState, dispatchUpdatingMainState, submitForm, isReser
       <img className="booking-img" src={resturantImg} alt="resturant" />
 
       <div className="booking-page-form-container">
-        <BookingForm
-          mainState={mainState}
-          dispatchUpdatingMainState={dispatchUpdatingMainState}
-          submitForm={submitForm}
-          isReservationConfirmed={isReservationConfirmed}
-        />
-        <BookingSlot mainState={mainState} />
+        <div className="booking-page-form">
+          <BookingForm
+            mainState={mainState}
+            dispatchUpdatingMainState={dispatchUpdatingMainState}
+            submitForm={submitForm}
+            isReservationConfirmed={isReservationConfirmed}
+          />
+        </div>
+        <div className="booking-page-timeslot">
+          <BookingSlot mainState={mainState} />
+        </div>
       </div>
     </>
   );
