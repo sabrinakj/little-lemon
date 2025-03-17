@@ -2,9 +2,10 @@ import "./About.css";
 import imageResturantA from "../assets/icons_assets/Mario and Adrian A-433x288.png";
 import imageBruschette from "../assets/icons_assets/bruschette-small.png";
 
-function About() {
+function About( { isInHome } ) {
+  const aboutContainerClass = isInHome ? "about-container" : "about-container-in-page";
   return (
-    <div className="about-container">
+    <div className={aboutContainerClass}>
       <div className="about-subcontainer">
         <div className="about-div-description">
           <h1 className="about-h1">Little Lemon</h1>

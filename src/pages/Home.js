@@ -15,7 +15,7 @@ function Home() {
       />
       <SectionSpecials />
       <Testimonials />
-      <About />
+      <About isInHome={true}/>
     </>
   );
 }
