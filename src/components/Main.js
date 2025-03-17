@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
 import Menu from "../pages/Menu";
-import OrderOnline from "../pages/OrderOnline";
 import Login from "../pages/Login";
 import BookingPage from "../pages/BookingPage";
 import "./Main.css";
@@ -353,7 +352,7 @@ function Main() {
             />
           }
         />
-        <Route path="/orderonline" element={<OrderOnline />} />
+        <Route path="/menu" element={<Menu />} />
         <Route path="/login" element={<Login />} />
       </Routes>
       { isReservationConfirmed &&

@@ -2,6 +2,8 @@ import Card from "../components/Card";
 import lemonDesertImg from "../assets/icons_assets/lemon dessert.jpg";
 import "./Menu.css"
 import bisteccaImg from "../assets/icons_assets/bistecca-small.png";
+import { useLocation } from 'react-router-dom';
+
 
 const cardsSides = [
   {
@@ -101,6 +103,9 @@ const cardsDessert = [
 
 
 function Menu() {
+  const location = useLocation();
+  const { isInOrderOline } = location.state || {};
+
   return (
     <div className="menu-container">
       <div className="menu-div"></div>
@@ -116,6 +121,7 @@ function Menu() {
             description={cardFood.dishDescription}
             isSmall={false}
             delivery={cardFood.delivery}
+            showButton={isInOrderOline}
           />
         ))}
       </div>
@@ -131,6 +137,7 @@ function Menu() {
             description={cardFood.dishDescription}
             isSmall={false}
             delivery={cardFood.delivery}
+            showButton={isInOrderOline}
           />
         ))}
       </div>
@@ -146,6 +153,7 @@ function Menu() {
             description={cardFood.dishDescription}
             isSmall={false}
             delivery={cardFood.delivery}
+            showButton={isInOrderOline}
           />
         ))}
       </div>

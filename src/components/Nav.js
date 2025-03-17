@@ -32,13 +32,13 @@ function Nav({ isHamburgerClicked, isVertical }) {
           <Link to="/about" className="nav-custom-link">About</Link>
         </li>
         <li className="nav-list">
-          <Link to="/menu" className="nav-custom-link">Menu</Link>
+          <Link to="/menu" className="nav-custom-link" state={{ isInOrderOline: false }}>Menu</Link>
         </li>
         <li className="nav-list">
           <Link to="/reservation" className="nav-custom-link">Reservation</Link>
         </li>
         <li className="nav-list">
-          <Link to="/menu" className="nav-custom-link">Order Online</Link>
+          <Link to="/menu" className="nav-custom-link" state={{ isInOrderOline: true }}>Order Online</Link>
         </li>
         <li className="nav-list">
           <Link to="/login" className="nav-custom-link">Login</Link>

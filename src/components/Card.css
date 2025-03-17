@@ -66,12 +66,20 @@ p.descrip-margin {
   justify-content: space-between;
 }
 
-/* .title-price {
+.card-delivery-bottom {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.price-card {
-  color: red;
-} */
+.card-btn {
+    background-color: #F4CE14;
+    color: 495E57;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333333;
+    padding: 0.25rem 1rem;
+    font-family: "Karla", serif;
+}
