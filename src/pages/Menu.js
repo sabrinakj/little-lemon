@@ -104,7 +104,7 @@ function Menu() {
       <div className="menu-div"></div>
 
       <h2 className="menu-title">Pasta</h2>
-      <div className="menu-cards-sides">
+      <div className="menu-cards">
         {cardsSides.map((cardFood) => (
           <Card
             key={cardFood.id}
@@ -118,7 +118,7 @@ function Menu() {
       </div>
 
       <h2 className="menu-title">Main courses</h2>
-      <div className="menu-cards-meal">
+      <div className="menu-cards">
         {cardsMeal.map((cardFood) => (
           <Card
             key={cardFood.id}
@@ -132,7 +132,7 @@ function Menu() {
       </div>
 
       <h2 className="menu-title">Dessert</h2>
-      <div className="menu-cards-dessert">
+      <div className="menu-cards">
         {cardsDessert.map((cardFood) => (
           <Card
             key={cardFood.id}
@@ -145,10 +145,8 @@ function Menu() {
         ))}
       </div>
 
-      <h2 className="menu-h3">A charge of €2 is applied to each place setting.</h2>
+      <h2 className="menu-h3">*a charge of €2 is applied to each place setting.</h2>
       <div className="menu-div"></div>
-   
-    
     </div>
   );
 }

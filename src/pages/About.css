@@ -22,13 +22,13 @@
 }
 
 .about-img-one {
-  width: 200px;
+  width: 48vw;
   height: 250px;
   object-fit: cover;
 }
 
 .about-img-two {
-  width: 200px;
+  width: 48vw;
   height: 250px;
   object-fit: cover;
 }
@@ -47,8 +47,8 @@
 }
 
 .about-div-images {
-  /* border: 2px solid green; */
-  width: 25rem;
+  /* border: 4px solid green; */
+  padding: 1rem;
   display: flex;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
