@@ -30,6 +30,7 @@ const cardsSides = [
     dishPrice: "$ 15.00",
     dishDescription:
       "Homemade fettuccine with a rich ragù of naturally raised lamb and lemon.",
+      delivery: "Order a delivey",
     image:
       "https://images.unsplash.com/photo-1664214649080-52c879182270?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
@@ -59,6 +60,7 @@ const cardsMeal = [
     id: 2,
     dishName: "Fish of the day",
     dishPrice: "$ 23.00",
+    delivery: "Order a delivey",
     dishDescription:
       "The menù changes based on the fresh fish of the day. Our chefs will surprise you with delicious Italian recipes.",
     image:
@@ -72,7 +74,7 @@ const cardsDessert = [
     dishName: "Tiramisù",
     dishPrice: "$ 10.00",
     dishDescription:
-      "An icon of Italian pastry, our tiramisu is a unique sensory experience. Layers of ladyfingers soaked in espresso blend harmoniously with a velvety cream made with the highest quality mascarpone.",
+      "An icon of Italian pastry, our tiramisu is a unique sensory experience. Layers of ladyfingers soaked in espresso blend harmoniously with a cream.",
     delivery: "Order a delivey",
     image: "https://plus.unsplash.com/premium_photo-1695028378225-97fbe39df62a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
@@ -81,7 +83,7 @@ const cardsDessert = [
     dishName: "Neapolitan pastiera",
     dishPrice: "$ 12.00",
     dishDescription:
-      "A classic of the Neapolitan confectionery tradition, Pastiera Napoletana is a delicious shortcrust pastry cake filled with a rich filling of ricotta, sugar, eggs and wheat boiled in milk. Flavoured with orange zest and orange blossom water",
+      "A classic of the Neapolitan confectionery tradition, Pastiera Napoletana is a delicious shortcrust pastry cake filled with a rich filling of ricotta, sugar, eggs and wheat boiled in milk.",
     delivery: "Order a delivey",
     image:
       "https://images.unsplash.com/photo-1649931189158-489360fd46f8?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -113,6 +115,7 @@ function Menu() {
             title={cardFood.dishName}
             description={cardFood.dishDescription}
             isSmall={false}
+            delivery={cardFood.delivery}
           />
         ))}
       </div>
@@ -127,6 +130,7 @@ function Menu() {
             title={cardFood.dishName}
             description={cardFood.dishDescription}
             isSmall={false}
+            delivery={cardFood.delivery}
           />
         ))}
       </div>
@@ -141,6 +145,7 @@ function Menu() {
             title={cardFood.dishName}
             description={cardFood.dishDescription}
             isSmall={false}
+            delivery={cardFood.delivery}
           />
         ))}
       </div>

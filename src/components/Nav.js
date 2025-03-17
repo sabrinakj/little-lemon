@@ -38,7 +38,7 @@ function Nav({ isHamburgerClicked, isVertical }) {
           <Link to="/reservation" className="nav-custom-link">Reservation</Link>
         </li>
         <li className="nav-list">
-          <Link to="/orderonline" className="nav-custom-link">Order Online</Link>
+          <Link to="/menu" className="nav-custom-link">Order Online</Link>
         </li>
         <li className="nav-list">
           <Link to="/login" className="nav-custom-link">Login</Link>
