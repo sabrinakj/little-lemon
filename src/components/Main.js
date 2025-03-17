@@ -256,10 +256,10 @@ export const reducerForUpdatingMainState = (state, action) => {
 // Initial state for the mainState
 export const initializeMainState = () => {
   let tablesForTheWeekWithAvailabilities;
-  previousMainStateFromLocalStorage = localStorage.getItem('mainState');
-
+  previousMainStateFromLocalStorage = JSON.parse(localStorage.getItem('mainState'));
   if(previousMainStateFromLocalStorage) {
-    tablesForTheWeekWithAvailabilities = previousMainStateFromLocalStorage
+    // console.log('previousMainStateFromLocalStorage.tablesForTheWeek', previousMainStateFromLocalStorage.tablesForTheWeek)
+    tablesForTheWeekWithAvailabilities = previousMainStateFromLocalStorage.tablesForTheWeek
   }
   else {
     let initializedTableForTheWeek = [];
@@ -294,6 +294,7 @@ export const initializeMainState = () => {
       initializedTableForTheWeek,
       { date: new Date() }
     );
+    // console.log('tablesForTheWeekWithAvailabilities', tablesForTheWeekWithAvailabilities)
   }
 
   return {
@@ -320,6 +321,7 @@ function Main() {
         ...formData,
         date: new Date(formData.date).toLocaleDateString("it-IT")
       };
+      // console.log(mainState)
       localStorage.setItem("mainState", JSON.stringify(mainState));
       localStorage.setItem("bookingData", JSON.stringify(lastBookingData));
       // lastBookingDataFromLocalStorage = lastBookingData;

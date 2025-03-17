@@ -40,11 +40,24 @@
   color: inherit;
 }
 
-.display-none {
+.show-close-sidenav-button {
+  display: block;
+  list-style-type: none;
+}
+
+.hide-close-sidenav-button {
   display: none;
 }
 
 @media (min-width: 860px) {
+  .hide-close-sidenav-button {
+    display: none;
+  }
+
+  .show-close-sidenav-button {
+    display: none;
+  }
+
   .nav-container {
     position: static;
     background-color: transparent;

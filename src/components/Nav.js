@@ -1,29 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Nav.css";
-import { useState } from "react";
 
-function Nav({ isHamburgerClicked, isVertical }) {
-  // console.log('isHamburgerClicked', isHamburgerClicked);
-
+function Nav({ isVertical, isHamburgerClicked, setIsHamburgerClicked }) {
   const navClass = isVertical ? "nav-ul-list-vertical" : "nav-ul-list";
-  let navContainerClass = isHamburgerClicked ? "nav-container" : "nav-container-hidden";
-  // console.log(navContainerClass);
-
-  const [isSideNavOpen, setIsSideNavOpen] = useState(isHamburgerClicked);
-  // console.log("isSideNavOpen", isSideNavOpen);
-  const displayStatus = isSideNavOpen ? "nav-list" : "display-none";
-  // console.log("displayStatus", displayStatus);
-  const handleSidenavClosing = () => {
-    // console.log("isSideNavOpen", isSideNavOpen);
-    setIsSideNavOpen(!isSideNavOpen);
-    // console.log("isSideNavOpen", isSideNavOpen);
-  };
-
+  const navContainerClass = isHamburgerClicked ? "nav-container" : "nav-container-hidden";
+  const showCloseButton = isHamburgerClicked ? "show-close-sidenav-button" : "hide-close-sidenav-button";
   return (
     <nav className={navContainerClass}>
       <ul className={navClass}>
-        <li className={displayStatus} onClick={handleSidenavClosing}>X</li>
+        <li className={showCloseButton} onClick={setIsHamburgerClicked}>X</li>
         <li className="nav-list"></li>
         <li className="nav-list">
           <Link to="/" className="nav-custom-link">Home</Link>

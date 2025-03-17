@@ -22,7 +22,7 @@ function Header() {
     <div className={hamburgerClass} onClick={handleHamburgerClick}>
       <HamburgerMenu />
     </div>
-    <Nav isVertical={false} isHamburgerClicked={isHamburgerClicked}/>
+    <Nav isVertical={false} isHamburgerClicked={isHamburgerClicked} setIsHamburgerClicked={handleHamburgerClick}/>
   </header>
   )
 }
