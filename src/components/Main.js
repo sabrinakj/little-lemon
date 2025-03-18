@@ -243,10 +243,14 @@ export const reducerForUpdatingMainState = (state, action) => {
           refreshedStatus: true
          }
       );
-      return {
+
+      const updatedMainState = {
         tableInUiForTheSelectedDay: updatedTablesInUiForTheSelectedDay,
         tablesForTheWeek: updatedTablesForTheWeek,
       };
+      // console.log('updatedMainState', updatedMainState);
+      localStorage.setItem("mainState", JSON.stringify(updatedMainState));
+      return updatedMainState;
     }
     default:
       return state;
@@ -322,7 +326,7 @@ function Main() {
         date: new Date(formData.date).toLocaleDateString("it-IT")
       };
       // console.log(mainState)
-      localStorage.setItem("mainState", JSON.stringify(mainState));
+      // localStorage.setItem("mainState", JSON.stringify(mainState));
       localStorage.setItem("bookingData", JSON.stringify(lastBookingData));
       // lastBookingDataFromLocalStorage = lastBookingData;
       setIsReservationConfirmed(isSubmitted);
