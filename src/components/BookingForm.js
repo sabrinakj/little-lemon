@@ -76,18 +76,43 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
     // console.log(new Date(formData.date))
     event.preventDefault();
     // Chiama la funzione submitForm passando i dati del form
-    const formSubmitionStatus = submitForm(formData);
-    if (formSubmitionStatus) {
-      // console.log("son qua");
-      dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
-        formData: {
-          ...formData,
-          date: new Date(formData.date)
-        },
-        tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
-      }});
-    }
+    // console.log('formDAta', formData);
+    // console.log('mainState', mainState);
+
+    let tableAvailability = false;
+    mainState.tablesForTheWeek.forEach((table) => {
+      // console.log('table.date ',table.date);
+      // console.log('new Date(formData.date).toLocaleDateString("it-IT")',new Date(formData.date).toLocaleDateString("it-IT"));
+      // console.log('table.hour',table.hour);
+      // console.log('formData.selectedTime',formData.selectedTime);
+      // console.log('table.bookingStatus',table.bookingStatus);
+
+      if (
+        (table.date === new Date(formData.date).toLocaleDateString("it-IT")) &&
+        (table.hour === formData.selectedTime) &&
+        (table.bookingStatus === false)
+      ) {
+        tableAvailability = true;
+      }
+    });
+
+    console.log('tableAvailability', tableAvailability);
+    if (tableAvailability) {
+      const formSubmitionStatus = submitForm(formData);
+      if (formSubmitionStatus) {
+        // console.log("son qua");
+        dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
+          formData: {
+            ...formData,
+            date: new Date(formData.date)
+          },
+          tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
+        }});
+      }
+    };
   };
+
+
 
   // Check form validity on every formData change
   useEffect(() => {

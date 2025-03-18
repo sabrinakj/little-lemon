@@ -164,8 +164,10 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
       table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
       availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
       table.hour === reservedTablesDetails.selectedTime &&
-      reservedTablesDetails.guests !== "0"
+      reservedTablesDetails.guests !== "0" &&
+      table.bookingStatus === false
     ) {
+      console.log('table.bookingStatus', table.bookingStatus);
       const updatedTable = {
         ...table,
         bookingStatus: true,
