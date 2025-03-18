@@ -49,6 +49,10 @@
   display: none;
 }
 
+.nav-no-mobile {
+  display: none;
+}
+
 @media (min-width: 860px) {
   .hide-close-sidenav-button {
     display: none;
@@ -72,5 +76,13 @@
   .nav-ul-list {
     flex-direction: row;
     justify-content: flex-end;
+  }
+
+  .nav-mobile {
+    display: none;
+  }
+
+  .nav-no-mobile {
+    display: block;
   }
 }
