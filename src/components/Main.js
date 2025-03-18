@@ -167,7 +167,7 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
       reservedTablesDetails.guests !== "0" &&
       table.bookingStatus === false
     ) {
-      console.log('table.bookingStatus', table.bookingStatus);
+      // console.log('table.bookingStatus', table.bookingStatus);
       const updatedTable = {
         ...table,
         bookingStatus: true,
@@ -312,7 +312,7 @@ export const initializeMainState = () => {
 };
 
 function Main() {
-  const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
+  const [isFormSubmited, setIsFormSubmited] = useState(false);
 
   const [mainState, dispatchUpdatingMainState] = useReducer(
     reducerForUpdatingMainState,
@@ -331,7 +331,7 @@ function Main() {
       // localStorage.setItem("mainState", JSON.stringify(mainState));
       localStorage.setItem("bookingData", JSON.stringify(lastBookingData));
       // lastBookingDataFromLocalStorage = lastBookingData;
-      setIsReservationConfirmed(isSubmitted);
+      setIsFormSubmited(isSubmitted);
       return true
     } else {
       alert("There was an error submitting your booking. Please try again.");
@@ -340,7 +340,7 @@ function Main() {
   };
 
   const handleCloseConfirmedModal = () => {
-    setIsReservationConfirmed(!isReservationConfirmed);
+    setIsFormSubmited(!isFormSubmited);
   };
 
   return (
@@ -356,14 +356,14 @@ function Main() {
               mainState={mainState}
               dispatchUpdatingMainState={dispatchUpdatingMainState}
               submitForm={submitForm}
-              isReservationConfirmed={isReservationConfirmed}
+              isFormSubmited={isFormSubmited}
             />
           }
         />
         <Route path="/menu" element={<Menu />} />
         <Route path="/login" element={<Login />} />
       </Routes>
-      { isReservationConfirmed &&
+      { isFormSubmited &&
         <div onClick={handleCloseConfirmedModal} className="inactive-background"></div>
       }
     </main>

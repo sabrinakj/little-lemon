@@ -15,8 +15,8 @@ import ConfirmedBooking from "./ConfirmedBooking";
 //
 // const remoteFunctionFetchAPI = window.fetchAPI;
 
-function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReservationConfirmed }) {
-  // console.log(isReservationConfirmed)
+function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormSubmited }) {
+  // console.log(isFormSubmited)
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
@@ -24,9 +24,10 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
     occasion: "",
   });
 
-  // const [stateOfIsReservationConfirmed, setStateOfIsReservationConfirmed] = useState(false)
+  // const [stateOfisFormSubmited, setStateOfisFormSubmited] = useState(false)
 
   const [isFormValid, setIsFormValid] = useState(false); // Track form validity
+  const [isBookedSuccess, setisBookedSuccess] = useState(false);
 
   // // console.log(mainState);
   const handleDateChange = (event) => {
@@ -73,20 +74,9 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
   };
 
   const bookATimeSlot = (event) => {
-    // console.log(new Date(formData.date))
     event.preventDefault();
-    // Chiama la funzione submitForm passando i dati del form
-    // console.log('formDAta', formData);
-    // console.log('mainState', mainState);
-
     let tableAvailability = false;
     mainState.tablesForTheWeek.forEach((table) => {
-      // console.log('table.date ',table.date);
-      // console.log('new Date(formData.date).toLocaleDateString("it-IT")',new Date(formData.date).toLocaleDateString("it-IT"));
-      // console.log('table.hour',table.hour);
-      // console.log('formData.selectedTime',formData.selectedTime);
-      // console.log('table.bookingStatus',table.bookingStatus);
-
       if (
         (table.date === new Date(formData.date).toLocaleDateString("it-IT")) &&
         (table.hour === formData.selectedTime) &&
@@ -95,12 +85,11 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
         tableAvailability = true;
       }
     });
-
+    const formSubmitionStatus = submitForm(formData);
     console.log('tableAvailability', tableAvailability);
     if (tableAvailability) {
-      const formSubmitionStatus = submitForm(formData);
+      // const formSubmitionStatus = submitForm(formData);
       if (formSubmitionStatus) {
-        // console.log("son qua");
         dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
           formData: {
             ...formData,
@@ -109,7 +98,10 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
           tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
         }});
       }
+      setisBookedSuccess(true);
+      return;
     };
+    setisBookedSuccess(false);
   };
 
 
@@ -129,7 +121,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
   }, [formData]);
 
   useEffect(() => {
-    if ( isReservationConfirmed ) {
+    if ( isFormSubmited ) {
       setIsFormValid(false);
       setFormData({
         date: "",
@@ -138,7 +130,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
         occasion: "",
       });
     }
-  }, [isReservationConfirmed]);
+  }, [isFormSubmited]);
 
   return (
     <div className="bookingform-container">
@@ -213,10 +205,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isReser
           Make Your reservation
         </button>
       </form>
-      {
-        isReservationConfirmed &&
-        <ConfirmedBooking/>
-      }
+      {isFormSubmited && <ConfirmedBooking confimedSuccess={isBookedSuccess}/>}
     </div>
   );
 }
