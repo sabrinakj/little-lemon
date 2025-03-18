@@ -30,6 +30,14 @@
 	margin-bottom: 0;
 }
 
+.class-display {
+	display: block;
+}
+
+.class-display-none {
+	display: none;
+}
+
 @media (min-width: 860px) {
 	.confirmed-page {
 		right: -60px;
