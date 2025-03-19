@@ -1,7 +1,7 @@
 import React from 'react';
 import './Footer.css';
 import logo from '../assets/icons_assets/small_logo.png';
-// import Nav from '../components/Nav.js'
+import Nav from '../components/Nav.js'
 
 function Footer() {
   return (
@@ -12,13 +12,15 @@ function Footer() {
         </div>
 
         <div className='footer-element'>
-          <h2>Navigation</h2>
+          <h2 className='footer-nav'>Navigation</h2>
+          {/*
           <p>Home</p>
           <p>About</p>
           <p>Menu</p>
           <p>Reservation</p>
           <p>Order Online</p>
-          <p>Login</p>
+          <p>Login</p> */}
+          <Nav isVertical={true} />
         </div>
 
         <div className='footer-element'>

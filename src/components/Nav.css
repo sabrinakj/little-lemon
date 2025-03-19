@@ -53,6 +53,10 @@
   display: none;
 }
 
+.nav-mobile {
+  display: block;
+}
+
 @media (min-width: 860px) {
   .hide-close-sidenav-button {
     display: none;
