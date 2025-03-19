@@ -128,7 +128,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
       setFormData({
         date: "",
         selectedTime: "",
-        guests: "0",
+        guests: "2",
         occasion: "",
       });
     }
