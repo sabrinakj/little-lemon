@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ConfirmedBooking.css";
 
-function ConfirmedBooking({ confimedSuccess}) {
+function ConfirmedBooking({ confimedSuccess, isFormSubmited}) {
   const [bookingData, setBookingData] = useState(null);
   const successClass = confimedSuccess ? "class-display" : "class-display-none";
   const failureClass = !confimedSuccess ? "class-display" : "class-display-none";
@@ -13,6 +13,25 @@ function ConfirmedBooking({ confimedSuccess}) {
       setBookingData(JSON.parse(storedBookingData)); // Parse from JSON string to object
     }
   }, []);
+
+    useEffect(() => {
+    // When modal opens, disable scrolling
+    if (isFormSubmited) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    // Cleanup: Re-enable scrolling when component unmounts
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isFormSubmited]);
+
+  if (!isFormSubmited) {
+    return null;
+  }
+
 
   return (
     <div className="confirmed-page">

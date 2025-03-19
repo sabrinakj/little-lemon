@@ -205,7 +205,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
           Make Your reservation
         </button>
       </form>
-      {isFormSubmited && <ConfirmedBooking confimedSuccess={isBookedSuccess}/>}
+      {isFormSubmited && <ConfirmedBooking confimedSuccess={isBookedSuccess} isFormSubmited={isFormSubmited}/>}
     </div>
   );
 }

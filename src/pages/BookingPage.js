@@ -2,6 +2,7 @@ import BookingForm from "../components/BookingForm";
 import BookingSlot from "../components/BookingSlot";
 import "./BookingPage.css";
 import resturantImg from "../assets/icons_assets/restaurant.jpg";
+import React, { useEffect } from 'react';
 
 
 function BookingPage({ mainState, dispatchUpdatingMainState, submitForm, isFormSubmited }) {
