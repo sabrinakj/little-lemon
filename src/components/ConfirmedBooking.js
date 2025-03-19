@@ -17,7 +17,7 @@ function ConfirmedBooking({ confimedSuccess}) {
   return (
     <div className="confirmed-page">
       <div className="confirmed-container">
-        <h1 className={successClass}>Your booking has been confirmed!</h1>
+        <h1 className={successClass}>Your booking <br/> has been confirmed!</h1>
         <h1 className={failureClass}>Sorry, <br/> your booking request was denied.</h1>
 
         <p className={successClass}>
