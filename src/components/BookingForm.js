@@ -20,9 +20,11 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
-    guests: "0",
+    guests: "2",
     occasion: "",
   });
+
+  // console.log('formDat.selectedTime', formData.selectedTime);
 
   // const [stateOfisFormSubmited, setStateOfisFormSubmited] = useState(false)
 
@@ -155,6 +157,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
           onChange={handleTimeChange}
           required
         >
+          <option value="" disabled hidden>Select a time</option>
           {/* Usa gli orari disponibili dallo stato */}
           {mainState.tableInUiForTheSelectedDay &&
           mainState.tableInUiForTheSelectedDay.length > 0 ? (
