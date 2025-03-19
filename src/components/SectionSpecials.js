@@ -1,6 +1,7 @@
 import "./SectionSpecials.css";
-import greekSaladImg from "../assets/icons_assets/greek salad.jpg";
+import greekSaladImg from "../assets/icons_assets/greek salad-460x307.png";
 import lemonDesertImg from "../assets/icons_assets/lemon dessert.jpg";
+import bruschettaImg from "../assets/icons_assets/bruschetta.png";
 import Card from "./Card";
 import { Link } from "react-router-dom";
 
@@ -22,7 +23,7 @@ const cardsFood = [
       "Our Bruschetta is made from grilled bread that has been smeared with garlic and seasoned with salt and olive oil.",
     delivery: "Order a delivey",
     image:
-      "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?q=80&w=2371&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      bruschettaImg,
   },
   {
     id: 2,
@@ -44,6 +45,7 @@ function SectionSpecials() {
           <button className="btn-specials">Online Menu</button>
         </Link>
       </div>
+
       <div className="specials-cards">
         {cardsFood.map((cardFood) => (
           <Card
@@ -56,6 +58,9 @@ function SectionSpecials() {
             isSmall={false}
           />
         ))}
+        <Link to="/menu" className="custom-link-mobile">
+          <button className="btn-specials">Online Menu</button>
+        </Link>
       </div>
     </section>
   );

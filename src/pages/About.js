@@ -1,11 +1,13 @@
 import "./About.css";
-import imageResturantA from "../assets/icons_assets/Mario and Adrian A.jpg";
+import imageResturantA from "../assets/icons_assets/Mario and Adrian A-433x288.png";
+import imageBruschette from "../assets/icons_assets/bruschette-small.png";
 
-function About() {
+function About( { isInHome } ) {
+  const aboutContainerClass = isInHome ? "about-container" : "about-container-in-page";
   return (
-    <div className="about-main-div">
-      <div className="about-page">
-        <div className="about-div-left">
+    <div className={aboutContainerClass}>
+      <div className="about-subcontainer">
+        <div className="about-div-description">
           <h1 className="about-h1">Little Lemon</h1>
           <h2 className="about-h2">Chicago</h2>
           <p className="about-p">
@@ -17,7 +19,7 @@ function About() {
             tantalize your taste buds and leave you craving more.
           </p>
         </div>
-        <div className="about-div-right">
+        <div className="about-div-images">
           <img
             className="about-img-one"
             src={imageResturantA}
@@ -25,7 +27,7 @@ function About() {
           />
           <img
             className="about-img-two"
-            src="https://plus.unsplash.com/premium_photo-1677686707294-e5f616c39e0b?q=80&w=3648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={imageBruschette}
             alt="two chefs are cooking"
           />
         </div>

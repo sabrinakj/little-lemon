@@ -1,4 +1,5 @@
-header {
+.header-container {
+  /* border: 4px solid red; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -6,11 +7,33 @@ header {
   align-items: center;
   max-width: 53.75rem;
   margin: auto;
+  padding: 0 1rem;
 }
 
 .header-img {
+  /* border: 4px solid green; */
   height: 2.5rem;
   width: 9.25rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.header-hamburger {
+  display: block;
+}
+
+.header-hamburger-clicked {
+  display: none;
+}
+
+@media (min-width: 860px) {
+
+  .header-hamburger {
+    display: none;
+  }
+
+  .header-hamburger-clicked {
+    display: none;
+  }
+
 }

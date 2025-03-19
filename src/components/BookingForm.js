@@ -1,6 +1,7 @@
 import "./BookingForm.css";
 import { useState, useEffect } from "react";
 import { fetchAPI } from "../BookingAPI";
+import ConfirmedBooking from "./ConfirmedBooking";
 
 // using the functions definitions below (remoteFunctionFetchAPI) was the reccomended way 
 // indicated by the coursera meta fe course capstone project,
@@ -14,17 +15,23 @@ import { fetchAPI } from "../BookingAPI";
 //
 // const remoteFunctionFetchAPI = window.fetchAPI;
 
-function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
+function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormSubmited }) {
+  // console.log(isFormSubmited)
   const [formData, setFormData] = useState({
     date: "",
     selectedTime: "",
-    guests: "0",
+    guests: "2",
     occasion: "",
   });
 
-  const [isFormValid, setIsFormValid] = useState(false); // Track form validity
+  // console.log('formDat.selectedTime', formData.selectedTime);
 
-  // console.log(mainState);
+  // const [stateOfisFormSubmited, setStateOfisFormSubmited] = useState(false)
+
+  const [isFormValid, setIsFormValid] = useState(false); // Track form validity
+  const [isBookedSuccess, setisBookedSuccess] = useState(false);
+
+  // // console.log(mainState);
   const handleDateChange = (event) => {
     let selectedDate = new Date();
     if (event.target.value) {
@@ -54,7 +61,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   };
 
   const handleGuestsChange = (event) => {
-    console.log(typeof(event.target.value));
+    // console.log(typeof(event.target.value));
     setFormData({
       ...formData,
       guests: event.target.value,
@@ -69,19 +76,37 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
   };
 
   const bookATimeSlot = (event) => {
-    console.log(new Date(formData.date))
     event.preventDefault();
-    // Chiama la funzione submitForm passando i dati del form
-
-    dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
-      formData: {
-        ...formData,
-        date: new Date(formData.date)
-      },
-      tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
-    }});
-    submitForm(formData);
+    let tableAvailability = false;
+    mainState.tablesForTheWeek.forEach((table) => {
+      if (
+        (table.date === new Date(formData.date).toLocaleDateString("it-IT")) &&
+        (table.hour === formData.selectedTime) &&
+        (table.bookingStatus === false)
+      ) {
+        tableAvailability = true;
+      }
+    });
+    const formSubmitionStatus = submitForm(formData);
+    console.log('tableAvailability', tableAvailability);
+    if (tableAvailability) {
+      // const formSubmitionStatus = submitForm(formData);
+      if (formSubmitionStatus) {
+        dispatchUpdatingMainState({ type: "BOOK_A_TIME_SLOT", payload: {
+          formData: {
+            ...formData,
+            date: new Date(formData.date)
+          },
+          tablesInUiForTheSelectedDayWithAvailabilities: mainState.tableInUiForTheSelectedDay
+        }});
+      }
+      setisBookedSuccess(true);
+      return;
+    };
+    setisBookedSuccess(false);
   };
+
+
 
   // Check form validity on every formData change
   useEffect(() => {
@@ -97,11 +122,24 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
     }
   }, [formData]);
 
+  useEffect(() => {
+    if ( isFormSubmited ) {
+      setIsFormValid(false);
+      setFormData({
+        date: "",
+        selectedTime: "",
+        guests: "2",
+        occasion: "",
+      });
+    }
+  }, [isFormSubmited]);
+
   return (
-    <div>
+    <div className="bookingform-container">
       <form onSubmit={bookATimeSlot} className="booking-form-style">
         <label htmlFor="res-date">Choose date</label>
         <input
+          className="bookingform-input-field"
           type="date"
           value={formData.date}
           onChange={handleDateChange}
@@ -112,12 +150,14 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
 
         <label htmlFor="res-time">Choose time</label>
         <select
+          className="bookingform-input-field"
           name="res-time"
           id="res-time"
           value={formData.selectedTime}
           onChange={handleTimeChange}
           required
         >
+          <option value="" disabled hidden>Select a time</option>
           {/* Usa gli orari disponibili dallo stato */}
           {mainState.tableInUiForTheSelectedDay &&
           mainState.tableInUiForTheSelectedDay.length > 0 ? (
@@ -133,6 +173,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
 
         <label htmlFor="guests">Number of guests</label>
         <input
+          className="bookingform-input-field"
           type="number"
           name="guests"
           value={formData.guests}
@@ -146,6 +187,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
 
         <label htmlFor="occasion">Occasion</label>
         <select
+        className="bookingform-input-field"
           name="occasion"
           id="occasion"
           value={formData.occasion}
@@ -166,6 +208,9 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm }) {
           Make Your reservation
         </button>
       </form>
+      <div className="container-confirmed-booking">
+       {isFormSubmited && <ConfirmedBooking confimedSuccess={isBookedSuccess} isFormSubmited={isFormSubmited}/>}
+      </div>
     </div>
   );
 }

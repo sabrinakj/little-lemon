@@ -21,3 +21,25 @@
   border-radius: 8px;
   /* margin-bottom: 20px; */
 }
+
+.bookingform-input-field {
+  font-size: 0.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.bookingform-container {
+  position: relative;
+}
+
+.container-confirmed-booking {
+  position: fixed;
+  top: calc(100vh - 282px);
+  z-index: 20;
+  width: 292px;
+}
+
+@media (min-width: 860px) {
+  .container-confirmed-booking {
+    position: static;
+  }
+}
