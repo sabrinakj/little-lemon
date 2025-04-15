@@ -22,9 +22,13 @@
   /* margin-bottom: 20px; */
 }
 
-.bookingform-input-field {
-  font-size: 0.5rem;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+.bookingform-container-input-field {
+  display: flex;
+  flex-direction: column;
+  /* font-size: 0.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif; */
+  width: 235px;
+  height: 2rem;
 }
 
 .bookingform-container {

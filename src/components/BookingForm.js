@@ -106,8 +106,6 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
     setisBookedSuccess(false);
   };
 
-
-
   // Check form validity on every formData change
   useEffect(() => {
     if (
@@ -137,17 +135,18 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
   return (
     <div className="bookingform-container">
       <form onSubmit={bookATimeSlot} className="booking-form-style">
-        <label htmlFor="res-date">Choose date</label>
-        <input
-          className="bookingform-input-field"
-          type="date"
-          value={formData.date}
-          onChange={handleDateChange}
-          name="res-date"
-          id="res-date"
-          required
-        />
-
+        <div className="bookingform-container-input-field">
+          <label htmlFor="res-date">Choose date</label>
+          <input
+            className="bookingform-input-field"
+            type="date"
+            value={formData.date}
+            onChange={handleDateChange}
+            name="res-date"
+            id="res-date"
+            required
+          />
+        </div>
         <label htmlFor="res-time">Choose time</label>
         <select
           className="bookingform-input-field"
