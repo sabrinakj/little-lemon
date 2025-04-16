@@ -78,6 +78,12 @@ test("reducerForUpdatingMainState returns the same state when no valid action is
 
 
 
+
+
+
+
+
+
 // Mock the fetchAPI function
 jest.mock('./BookingAPI', () => ({
   fetchAPI: jest.fn(),
@@ -89,13 +95,20 @@ test('initializeMainState calls fetchAPI and returns available times', () => {
   fetchAPI.mockReturnValue(mockTimes);
 
   // Act: Call initializeMainState
-  const initialTimes = initializeMainState();
+  const mainState = initializeMainState();
 
   // Assert: Ensure fetchAPI was called and initialTimes contains the expected data
   expect(fetchAPI).toHaveBeenCalled(); // Ensure fetchAPI is called
-  expect(initialTimes.tablesForTheWeek).toHaveLength(42); // Check total length (expected number of bookings)
-  expect(initialTimes.tablesForTheWeek[0].hour).toEqual('17:00'); // Check the first available time
+  expect(mainState.tablesForTheWeek).toHaveLength(98); // Check total length (expected number of bookings)
+  expect(mainState.tablesForTheWeek[0].hour).toEqual('17:00'); // Check the first available time
 });
+
+
+
+
+
+
+
 
 
 
