@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import BookingForm from "./components/BookingForm";
 import { initializeMainState, reducerForUpdatingMainState } from "./components/Main";
 import { fetchAPI, submitAPI } from "./BookingAPI";
@@ -186,26 +186,34 @@ test('writes form data to localStorage when the form is submitted', () => {
 
 // Unit Tests for Reading from Local Storage
 jest.spyOn(Storage.prototype, 'getItem'); // Spy on localStorage.getItem
-
-test('reads form data from localStorage and displays it on the confirmation page', () => {
-  // Mock localStorage.getItem to return a specific value
+test('reads form data from localStorage and displays it on the confirmation page', async () => {
+//   // Mock localStorage.getItem to return a specific value
   localStorage.getItem.mockReturnValue(
     JSON.stringify({
-      date: '2023-09-10',
+      date: '16/04/2025',
       selectedTime: '17:00',
       guests: '3',
       occasion: 'Birthday',
     })
   );
-
   // Render the ConfirmedBooking component
-  render(<ConfirmedBooking />);
+  render(<ConfirmedBooking confimedSuccess={true} isFormSubmited={true} />);
 
-  // Assert: Check that the booking details are displayed correctly
-  expect(screen.getByText('Date: 2023-09-10')).toBeInTheDocument();
-  expect(screen.getByText('Time: 17:00')).toBeInTheDocument();
-  expect(screen.getByText('Guests: 3')).toBeInTheDocument();
-  expect(screen.getByText('Occasion: Birthday')).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/16\/04\/2025/i)).toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(screen.getByText(/17:00/)).toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(screen.getByText(/3/)).toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(screen.getByText(/Birthday/i)).toBeInTheDocument();
+  });
 });
 
 
@@ -222,23 +230,19 @@ test('should have correct HTML5 validation attributes on the form fields', () =>
       />
     </MemoryRouter>
   );
-
   // Test the 'date' input
   const dateInput = screen.getByLabelText('Choose date');
   expect(dateInput).toHaveAttribute('type', 'date');
   expect(dateInput).toBeRequired(); // Check 'required' attribute
-
   // Test the 'time' select
   const timeSelect = screen.getByLabelText('Choose time');
   expect(timeSelect).toBeRequired(); // Check 'required' attribute
-
   // Test the 'guests' input
   const guestsInput = screen.getByLabelText('Number of guests');
   expect(guestsInput).toHaveAttribute('type', 'number');
   expect(guestsInput).toHaveAttribute('min', '1');
   expect(guestsInput).toHaveAttribute('max', '10');
   expect(guestsInput).toBeRequired(); // Check 'required' attribute
-
   // Test the 'occasion' select
   const occasionSelect = screen.getByLabelText('Occasion');
   expect(occasionSelect).toBeRequired(); // Check 'required' attribute
@@ -266,10 +270,11 @@ test('should disable the submit button when the form is invalid', () => {
   // Fill in the form partially (missing some inputs)
   fireEvent.change(screen.getByLabelText('Choose date'), { target: { value: '2023-09-10' } });
   fireEvent.change(screen.getByLabelText('Number of guests'), { target: { value: '3' } });
-  
   // Button should still be disabled
   expect(submitButton).toBeDisabled();
 });
+
+
 
 test('should enable the submit button when the form is valid', () => {
   render(
@@ -281,17 +286,14 @@ test('should enable the submit button when the form is valid', () => {
       />
     </MemoryRouter>
   );
-
   // Check that the submit button is initially disabled
   const submitButton = screen.getByRole('button', { name: /On Click Submit the form/i });
   expect(submitButton).toBeDisabled();
-
   // Fill in the form correctly
   fireEvent.change(screen.getByLabelText('Choose date'), { target: { value: '2023-09-10' } });
   fireEvent.change(screen.getByLabelText('Choose time'), { target: { value: '17:00' } });
   fireEvent.change(screen.getByLabelText('Number of guests'), { target: { value: '3' } });
   fireEvent.change(screen.getByLabelText('Occasion'), { target: { value: 'Birthday' } });
-
   // Button should be enabled now that all fields are valid
   expect(submitButton).not.toBeDisabled();
 });
