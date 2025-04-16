@@ -32,20 +32,34 @@ test("Renders the BookingForm heading", () => {
 
 
 
-
-
-
 test("initializeMainState returns the correct initial state", () => {
-  const initialTimes = initializeMainState();
-  expect(initialTimes.tablesForTheWeek).toHaveLength(42); 
-  expect(initialTimes.tablesForTheWeek[0]).toEqual({
-    bookingStatus: false,
-    date: expect.any(String), // Since you format the date using toLocaleDateString, expect it to be a string
+  const mainState = initializeMainState();
+  expect(mainState.tablesForTheWeek).toHaveLength(98);
+  expect(mainState.tablesForTheWeek[0]).toEqual({
+    bookingStatus:  expect.any(Boolean),
+    date: expect.any(String),
     hour: "17:00",
     guests: "0",
     occasion: "",
+    refreshedStatus: false,
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 test("reducerForUpdatingMainState returns the same state when no valid action is provided", () => {
   const initialState = [
     {
