@@ -189,7 +189,7 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
 export const reducerForUpdatingMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI": {
-      let formatedPayloadDate = action.payload.selectedDate.toLocaleDateString("it-IT");
+      let formatedPayloadDate = action.payload.selectedDate?.toLocaleDateString("it-IT");
       lastBookingDataFromLocalStorage = localStorage.getItem('bookingData');
       const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
         (el) => el.date === formatedPayloadDate
@@ -199,7 +199,7 @@ export const reducerForUpdatingMainState = (state, action) => {
       );
 
       if(
-        (tablesInUiForTheSelectedDay[0].refreshedStatus === false) ||
+        (tablesInUiForTheSelectedDay[0]?.refreshedStatus === false) ||
         (lastBookingDataFromLocalStorage === null)
       ) {
         const tablesInUiForTheSelectedDayWithAvailabilities = updateBookingStatus(

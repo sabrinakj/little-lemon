@@ -78,7 +78,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
   const bookATimeSlot = (event) => {
     event.preventDefault();
     let tableAvailability = false;
-    mainState.tablesForTheWeek.forEach((table) => {
+    mainState.tablesForTheWeek?.forEach((table) => {
       if (
         (table.date === new Date(formData.date).toLocaleDateString("it-IT")) &&
         (table.hour === formData.selectedTime) &&
