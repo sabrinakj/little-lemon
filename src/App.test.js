@@ -1,22 +1,24 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import BookingForm from "./components/BookingForm";
 import { initializeMainState, reducerForUpdatingMainState } from "./components/Main";
-import { fetchAPI, submitAPI } from "./BookingAPI";
+import { fetchAPI } from "./BookingAPI";
 import { MemoryRouter } from 'react-router-dom';
 import ConfirmedBooking from "./components/ConfirmedBooking";
 import '@testing-library/jest-dom';
 
-// inizializziazioni, Definisci dei dummy props per il test
 const fakeMainState = {
-  tableInUiForTheSelectedDay: [],  // o un array di esempio, se necessario
-  tablesForTheWeek: []             // eventuali altre proprietà necessarie
+  tableInUiForTheSelectedDay: [],
+  tablesForTheWeek: []
 };
 const fakeDispatchUpdatingMainState = jest.fn();
-const fakeSubmitForm = jest.fn(() => true); // restituisci un valore valido se necessario
+const fakeSubmitForm = jest.fn(() => true);
 const fakeIsFormSubmited = false;
 
-// First unit test
-test("Renders the BookingForm heading", () => {
+jest.mock('./BookingAPI', () => ({
+  fetchAPI: jest.fn(),
+}));
+
+test("Check for some static text being rendered in the BookingForm component: testing the BookingForm heading", () => {
   render(
     <BookingForm
       mainState={fakeMainState}
@@ -25,14 +27,11 @@ test("Renders the BookingForm heading", () => {
       isFormSubmited={fakeIsFormSubmited}
     />
   );
-  // Usa eventualmente una regex per rendere la ricerca case-insensitive
   const headingElement = screen.getByText(/Make Your reservation/i);
   expect(headingElement).toBeInTheDocument();
 });
 
-
-
-test("initializeMainState returns the correct initial state", () => {
+test("Check for initializeTimes, testing if initializeMainState returns the correct initial state", () => {
   const mainState = initializeMainState();
   expect(mainState.tablesForTheWeek).toHaveLength(98);
   expect(mainState.tablesForTheWeek[0]).toEqual({
@@ -44,7 +43,6 @@ test("initializeMainState returns the correct initial state", () => {
     refreshedStatus: false,
   });
 });
-
 
 test("reducerForUpdatingMainState returns the same state when no valid action is provided", () => {
   const initialState = [
@@ -61,74 +59,34 @@ test("reducerForUpdatingMainState returns the same state when no valid action is
   expect(updatedState).toEqual(initialState);
 });
 
-
-// Mock the fetchAPI function
-jest.mock('./BookingAPI', () => ({
-  fetchAPI: jest.fn(),
-}));
-
 test('initializeMainState calls fetchAPI and returns available times', () => {
-  // Arrange: Mock fetchAPI to return a non-empty array
   const mockTimes = ['17:00', '18:00', '19:00'];
   fetchAPI.mockReturnValue(mockTimes);
-
-  // Act: Call initializeMainState
   const mainState = initializeMainState();
-
-  // Assert: Ensure fetchAPI was called and initialTimes contains the expected data
-  expect(fetchAPI).toHaveBeenCalled(); // Ensure fetchAPI is called
-  expect(mainState.tablesForTheWeek).toHaveLength(98); // Check total length (expected number of bookings)
-  expect(mainState.tablesForTheWeek[0].hour).toEqual('17:00'); // Check the first available time
+  expect(fetchAPI).toHaveBeenCalled();
+  expect(mainState.tablesForTheWeek).toHaveLength(98);
+  expect(mainState.tablesForTheWeek[0].hour).toEqual('17:00');
 });
 
+test('reducerForUpdatingMainState updates available times for a selected date', () => {
+  const mockSelectedDate = new Date('2025-04-18');
+  const mockTimes = ["17:00","17:30","19:30","20:00","21:30","22:30","23:00","23:30"];
+  fetchAPI.mockReturnValue(mockTimes);
+  const initialState = initializeMainState();
+  const action = {
+    type: "UPDATE_SLOTS_SHOWN_IN_UI",
+    payload: {
+        selectedDate: mockSelectedDate,
+        availableTimesForTheSelectedDay: mockTimes,
+    }
+}
+  const updatedState = reducerForUpdatingMainState(initialState, action);
+  expect(updatedState.tableInUiForTheSelectedDay[0]?.hour).toEqual('17:00');
+});
 
-
-
-
-
-
-
-
-
-
-// // Mock the fetchAPI function
-// jest.mock('./BookingAPI', () => ({
-//   fetchAPI: jest.fn(),
-// }));
-
-// test('reducerForUpdatingMainState updates available times for a selected date', () => {
-//   // Arrange: Mock fetchAPI to return a non-empty array of times
-//   const mockTimes = ['17:00', '18:00', '19:00'];
-//   fetchAPI.mockReturnValue(mockTimes);
-
-//   // Define the selected date and create an action
-//   const selectedDate = new Date('2023-09-10'); // Define the selected date
-//   const initialState = { tablesForTheWeek: [], tableInUiForTheSelectedDay: [] };
-
-//   const action = {
-//     type: 'UPDATE_SLOTS_SHOWN_IN_UI',
-//     payload: {
-//       date: selectedDate.toISOString(), // Ensure the date is in the correct format
-//       times: mockTimes,
-//     },
-//   };
-
-//   // Act: Call reducerForUpdatingMainState
-//   const updatedState = reducerForUpdatingMainState(initialState, action);
-
-//   // Assert: Ensure the state was updated correctly
-//   expect(updatedState.tableInUiForTheSelectedDay).toHaveLength(mockTimes.length);
-//   expect(updatedState.tableInUiForTheSelectedDay[0].hour).toEqual('17:00'); // Check if the first time matches
-// });
-
-
-
-
-// Unit Tests for Writing to Local Storage
-jest.spyOn(Storage.prototype, 'setItem'); // Spy on localStorage.setItem
+jest.spyOn(Storage.prototype, 'setItem');
 
 test('writes form data to localStorage when the form is submitted', () => {
-  // Mock submitForm to track the localStorage setItem call
   const mockSubmitForm = jest.fn((formData) => {
     localStorage.setItem('bookingData', JSON.stringify(formData));
   });
@@ -137,20 +95,19 @@ test('writes form data to localStorage when the form is submitted', () => {
     <MemoryRouter>
       <BookingForm
         mainState={{
-          tableInUiForTheSelectedDay: [{ hour: '17:00' }, { hour: '18:00' }], // Simulate available times
+          tableInUiForTheSelectedDay: [{ hour: '17:00' }, { hour: '18:00' }],
         }}
         dispatchUpdatingMainState={jest.fn()}
-        submitForm={mockSubmitForm} // Pass the mocked submitForm
+        submitForm={mockSubmitForm}
       />
     </MemoryRouter>
   );
 
-  // Act: Fill out the form
   const dateInput = screen.getByLabelText('Choose date');
   fireEvent.change(dateInput, { target: { value: '2023-09-10' } });
 
   const timeInput = screen.getByLabelText('Choose time');
-  fireEvent.change(timeInput, { target: { value: '17:00' } }); // Ensure selectedTime is set
+  fireEvent.change(timeInput, { target: { value: '17:00' } });
 
   const guestsInput = screen.getByLabelText('Number of guests');
   fireEvent.change(guestsInput, { target: { value: '3' } });
@@ -158,14 +115,12 @@ test('writes form data to localStorage when the form is submitted', () => {
   const occasionInput = screen.getByLabelText('Occasion');
   fireEvent.change(occasionInput, { target: { value: 'Birthday' } });
 
-  // Submit the form
   const submitButton = screen.getByRole('button', { name: /On Click Submit the form/i });
   fireEvent.click(submitButton);
 
-  // Assert: Check that submitForm was called and localStorage.setItem was called with the correct data
   expect(mockSubmitForm).toHaveBeenCalledWith({
     date: '2023-09-10',
-    selectedTime: '17:00', // Ensure the selectedTime is correctly passed
+    selectedTime: '17:00',
     guests: '3',
     occasion: 'Birthday',
   });
@@ -181,13 +136,8 @@ test('writes form data to localStorage when the form is submitted', () => {
   );
 });
 
-
-
-
-// Unit Tests for Reading from Local Storage
-jest.spyOn(Storage.prototype, 'getItem'); // Spy on localStorage.getItem
+jest.spyOn(Storage.prototype, 'getItem');
 test('reads form data from localStorage and displays it on the confirmation page', async () => {
-//   // Mock localStorage.getItem to return a specific value
   localStorage.getItem.mockReturnValue(
     JSON.stringify({
       date: '16/04/2025',
@@ -196,7 +146,7 @@ test('reads form data from localStorage and displays it on the confirmation page
       occasion: 'Birthday',
     })
   );
-  // Render the ConfirmedBooking component
+
   render(<ConfirmedBooking confimedSuccess={true} isFormSubmited={true} />);
 
   await waitFor(() => {
@@ -216,10 +166,6 @@ test('reads form data from localStorage and displays it on the confirmation page
   });
 });
 
-
-
-
-// Unit Tests for HTML5 Validation Attributes
 test('should have correct HTML5 validation attributes on the form fields', () => {
   render(
     <MemoryRouter>
@@ -230,28 +176,20 @@ test('should have correct HTML5 validation attributes on the form fields', () =>
       />
     </MemoryRouter>
   );
-  // Test the 'date' input
   const dateInput = screen.getByLabelText('Choose date');
   expect(dateInput).toHaveAttribute('type', 'date');
-  expect(dateInput).toBeRequired(); // Check 'required' attribute
-  // Test the 'time' select
+  expect(dateInput).toBeRequired();
   const timeSelect = screen.getByLabelText('Choose time');
-  expect(timeSelect).toBeRequired(); // Check 'required' attribute
-  // Test the 'guests' input
+  expect(timeSelect).toBeRequired();
   const guestsInput = screen.getByLabelText('Number of guests');
   expect(guestsInput).toHaveAttribute('type', 'number');
   expect(guestsInput).toHaveAttribute('min', '1');
   expect(guestsInput).toHaveAttribute('max', '10');
-  expect(guestsInput).toBeRequired(); // Check 'required' attribute
-  // Test the 'occasion' select
+  expect(guestsInput).toBeRequired();
   const occasionSelect = screen.getByLabelText('Occasion');
-  expect(occasionSelect).toBeRequired(); // Check 'required' attribute
+  expect(occasionSelect).toBeRequired();
 });
 
-
-
-
-// Unit Tests for JavaScript Validation
 test('should disable the submit button when the form is invalid', () => {
   render(
     <MemoryRouter>
@@ -263,18 +201,12 @@ test('should disable the submit button when the form is invalid', () => {
     </MemoryRouter>
   );
 
-  // Check that the submit button is initially disabled
   const submitButton = screen.getByRole('button', { name: /On Click Submit the form/i });
   expect(submitButton).toBeDisabled();
-
-  // Fill in the form partially (missing some inputs)
   fireEvent.change(screen.getByLabelText('Choose date'), { target: { value: '2023-09-10' } });
   fireEvent.change(screen.getByLabelText('Number of guests'), { target: { value: '3' } });
-  // Button should still be disabled
   expect(submitButton).toBeDisabled();
 });
-
-
 
 test('should enable the submit button when the form is valid', () => {
   render(
@@ -286,14 +218,12 @@ test('should enable the submit button when the form is valid', () => {
       />
     </MemoryRouter>
   );
-  // Check that the submit button is initially disabled
+
   const submitButton = screen.getByRole('button', { name: /On Click Submit the form/i });
   expect(submitButton).toBeDisabled();
-  // Fill in the form correctly
   fireEvent.change(screen.getByLabelText('Choose date'), { target: { value: '2023-09-10' } });
   fireEvent.change(screen.getByLabelText('Choose time'), { target: { value: '17:00' } });
   fireEvent.change(screen.getByLabelText('Number of guests'), { target: { value: '3' } });
   fireEvent.change(screen.getByLabelText('Occasion'), { target: { value: 'Birthday' } });
-  // Button should be enabled now that all fields are valid
   expect(submitButton).not.toBeDisabled();
 });
