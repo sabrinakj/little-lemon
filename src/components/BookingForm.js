@@ -78,7 +78,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
   const bookATimeSlot = (event) => {
     event.preventDefault();
     let tableAvailability = false;
-    mainState.tablesForTheWeek.forEach((table) => {
+    mainState.tablesForTheWeek?.forEach((table) => {
       if (
         (table.date === new Date(formData.date).toLocaleDateString("it-IT")) &&
         (table.hour === formData.selectedTime) &&
@@ -88,7 +88,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
       }
     });
     const formSubmitionStatus = submitForm(formData);
-    console.log('tableAvailability', tableAvailability);
+    // console.log('tableAvailability', tableAvailability);
     if (tableAvailability) {
       // const formSubmitionStatus = submitForm(formData);
       if (formSubmitionStatus) {
@@ -105,8 +105,6 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
     };
     setisBookedSuccess(false);
   };
-
-
 
   // Check form validity on every formData change
   useEffect(() => {
@@ -137,17 +135,18 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
   return (
     <div className="bookingform-container">
       <form onSubmit={bookATimeSlot} className="booking-form-style">
-        <label htmlFor="res-date">Choose date</label>
-        <input
-          className="bookingform-input-field"
-          type="date"
-          value={formData.date}
-          onChange={handleDateChange}
-          name="res-date"
-          id="res-date"
-          required
-        />
-
+        <div className="bookingform-container-input-field">
+          <label htmlFor="res-date">Choose date</label>
+          <input
+            className="bookingform-input-field"
+            type="date"
+            value={formData.date}
+            onChange={handleDateChange}
+            name="res-date"
+            id="res-date"
+            required
+          />
+        </div>
         <label htmlFor="res-time">Choose time</label>
         <select
           className="bookingform-input-field"

@@ -150,7 +150,7 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
 
     if (
       table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
-      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      availableTimesForSelectedDay?.some((item) => item.includes(table.hour)) &&
       (reservedTablesDetails.guests === undefined ||reservedTablesDetails.guests === null)
     ) {
       return {
@@ -162,7 +162,7 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
 
     else if (
       table.date === reservedTablesDetails.date.toLocaleDateString("it-IT") &&
-      availableTimesForSelectedDay.some((item) => item.includes(table.hour)) &&
+      availableTimesForSelectedDay?.some((item) => item.includes(table.hour)) &&
       table.hour === reservedTablesDetails.selectedTime &&
       reservedTablesDetails.guests !== "0" &&
       table.bookingStatus === false
@@ -189,7 +189,7 @@ const updateBookingStatus = (tablesForTheWeek, reservedTablesDetails) => {
 export const reducerForUpdatingMainState = (state, action) => {
   switch (action.type) {
     case "UPDATE_SLOTS_SHOWN_IN_UI": {
-      let formatedPayloadDate = action.payload.selectedDate.toLocaleDateString("it-IT");
+      let formatedPayloadDate = action.payload.selectedDate?.toLocaleDateString("it-IT");
       lastBookingDataFromLocalStorage = localStorage.getItem('bookingData');
       const tablesInUiForTheSelectedDay = state.tablesForTheWeek.filter(
         (el) => el.date === formatedPayloadDate
@@ -199,7 +199,7 @@ export const reducerForUpdatingMainState = (state, action) => {
       );
 
       if(
-        (tablesInUiForTheSelectedDay[0].refreshedStatus === false) ||
+        (tablesInUiForTheSelectedDay[0]?.refreshedStatus === false) ||
         (lastBookingDataFromLocalStorage === null)
       ) {
         const tablesInUiForTheSelectedDayWithAvailabilities = updateBookingStatus(
@@ -262,7 +262,11 @@ export const reducerForUpdatingMainState = (state, action) => {
 // Initial state for the mainState
 export const initializeMainState = () => {
   let tablesForTheWeekWithAvailabilities;
-  previousMainStateFromLocalStorage = JSON.parse(localStorage.getItem('mainState'));
+  // console.log(localStorage.getItem('mainState'));
+  if ((localStorage.getItem('mainState') !== null) && (localStorage.getItem('mainState') !== undefined)) {
+    // console.log("sono qui");
+    previousMainStateFromLocalStorage = JSON.parse(localStorage.getItem('mainState'));
+  } 
   if(previousMainStateFromLocalStorage) {
     // console.log('previousMainStateFromLocalStorage.tablesForTheWeek', previousMainStateFromLocalStorage.tablesForTheWeek)
     tablesForTheWeekWithAvailabilities = previousMainStateFromLocalStorage.tablesForTheWeek
