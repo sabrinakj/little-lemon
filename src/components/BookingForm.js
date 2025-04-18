@@ -88,7 +88,7 @@ function BookingForm({ mainState, dispatchUpdatingMainState, submitForm, isFormS
       }
     });
     const formSubmitionStatus = submitForm(formData);
-    console.log('tableAvailability', tableAvailability);
+    // console.log('tableAvailability', tableAvailability);
     if (tableAvailability) {
       // const formSubmitionStatus = submitForm(formData);
       if (formSubmitionStatus) {

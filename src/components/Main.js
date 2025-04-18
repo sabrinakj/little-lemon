@@ -262,9 +262,9 @@ export const reducerForUpdatingMainState = (state, action) => {
 // Initial state for the mainState
 export const initializeMainState = () => {
   let tablesForTheWeekWithAvailabilities;
-  console.log(localStorage.getItem('mainState'));
+  // console.log(localStorage.getItem('mainState'));
   if ((localStorage.getItem('mainState') !== null) && (localStorage.getItem('mainState') !== undefined)) {
-    console.log("sono qui");
+    // console.log("sono qui");
     previousMainStateFromLocalStorage = JSON.parse(localStorage.getItem('mainState'));
   } 
   if(previousMainStateFromLocalStorage) {
